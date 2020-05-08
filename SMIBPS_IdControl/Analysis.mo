@@ -1143,6 +1143,60 @@ They have to be rearranged based on the order provided by the linearization func
 <p><span style=\"font-size: 10pt;\">It helps in understanding the automated analysis function which linearizes and compares all model variants.</span></p>
 </html>"));
       end PerturbPSS;
+
+      model PerturbPm
+        "Simulates the nonlinear SMIB model with a 1% step in the mechanical power input."
+        extends Modelica.Icons.Example;
+        extends
+          SMIBPS_IdControl.Analysis.LinearAnalysis.Interfaces.OutputsInterface;
+        Modelica.Blocks.Sources.Constant constEfd(k=0)
+          annotation (Placement(transformation(extent={{-120,10},{-100,30}})));
+        Interfaces.SMIB_GEN_wInput PS_ConstantPm
+          annotation (Placement(transformation(extent={{-40,-40},{40,40}})));
+        Modelica.Blocks.Math.Gain efdInputGain(k=1)  annotation (Placement(
+              transformation(
+              extent={{-10,-10},{10,10}},
+              rotation=0,
+              origin={-70,20})));
+        Modelica.Blocks.Math.Gain pmInputGain(k=1) annotation (Placement(
+              transformation(
+              extent={{-10,-10},{10,10}},
+              rotation=0,
+              origin={-70,-20})));
+        Modelica.Blocks.Sources.Step     Pmchange(height=0.01, startTime=1)
+                                                       annotation (Placement(
+              transformation(extent={{-118,-30},{-98,-10}})));
+      equation
+        connect(Vt, PS_ConstantPm.Vt) annotation (Line(points={{150,79},{98,79},
+                {98,22.5714},{42.8571,22.5714}}, color={0,0,127}));
+        connect(P, PS_ConstantPm.P) annotation (Line(points={{150,41},{112,41},
+                {112,11.7143},{42.8571,11.7143}}, color={0,0,127}));
+        connect(Q, PS_ConstantPm.Q) annotation (Line(points={{150,1},{96,1},{96,
+                0.285714},{42.8571,0.285714}}, color={0,0,127}));
+        connect(w, PS_ConstantPm.w) annotation (Line(points={{150,-39},{108,-39},
+                {108,-11.1429},{42.8571,-11.1429}}, color={0,0,127}));
+        connect(delta, PS_ConstantPm.delta) annotation (Line(points={{150,-81},
+                {92,-81},{92,-23.1429},{42.8571,-23.1429}}, color={0,0,127}));
+        connect(efdInputGain.u, constEfd.y)
+          annotation (Line(points={{-82,20},{-99,20}}, color={0,0,127}));
+        connect(pmInputGain.y, PS_ConstantPm.uPm) annotation (Line(points={{-59,
+                -20},{-54,-20},{-54,-11.4286},{-45.7143,-11.4286}}, color={0,0,
+                127}));
+        connect(efdInputGain.y, PS_ConstantPm.uEfd) annotation (Line(points={{
+                -59,20},{-52,20},{-52,11.4286},{-45.7143,11.4286}}, color={0,0,
+                127}));
+        connect(Pmchange.y, pmInputGain.u)
+          annotation (Line(points={{-97,-20},{-82,-20}}, color={0,0,127}));
+        annotation (
+          Icon(coordinateSystem(preserveAspectRatio=false)),
+          Diagram(coordinateSystem(preserveAspectRatio=false)),
+          experiment(
+            StopTime=60,
+            __Dymola_NumberOfIntervals=5000,
+            Tolerance=1e-05,
+            __Dymola_fixedstepsize=0.01,
+            __Dymola_Algorithm="Euler"));
+      end PerturbPm;
     end PerturbationAnalysis;
 
   end LinearAnalysis;
