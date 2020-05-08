@@ -705,8 +705,11 @@ This is visible in the Text layer only."),
 
       function LinearizeSMIBGeneral
         "Makes the approach shown in the LinearModelExample and LinearizeSMIB more general."
+        // See the Documentation for an explanation of the goals.
+        // IMPORTING FUNCTIONS
         // Import things needed for the calculations
         import Modelica_LinearSystems2.StateSpace; // to create and manipulate state space objects
+        // OUTPUTS OF THEFUNCTION - FOR DISPLAY
         // Declare outputs to display
         output Real A[:,:] "A-matrix";
         output Real B[:,:] "B-matrix";
@@ -716,12 +719,42 @@ This is visible in the Text layer only."),
         output String outputNames[:] "Modelica names of outputs";
         output String stateNames[:] "Modelica names of states";
         output Real y0out[:] "Initial value of the output variables";
-        // Declare reconfigurable inputs
+        // INPUTS TO THE FUNCTION
+        // Declare reconfigurable simulation parameters
         input Modelica.SIunits.Time tlin = 0 "t for model linearization";
         input Modelica.SIunits.Time tsim = 15 "Simulation time";
-        input String pathToNonlinearPlantModel = "SMIB_PSControl.Analysis.LinearAnalysis.Interfaces.SMIB_GEN_wInput";
-        input String pathToNonlinearExperiment=
-            "SMIB_PSControl.Analysis.LinearAnalysis.PerturbationAnalysis.PerturbGen";
+        input Real numberOfIntervalsin=10000 "No. of intervals";
+        // Use this for Case A
+        //input String method = "Rkfix4" "Solver";
+        input String methodin = "DASSL" "Solver";
+        input Real fixedstepsizein= 0.01 "Time step - needed only for fixed time step solvers";
+        //
+        // DEFINING THE NONLINEAR PLANT, NONLINEAR EXPERIMENT, AND LINEAR EXPERIMENT MODELS
+        //
+        // 1) NONLINEAR PLANT: this is a model with input and outputs definde and under the .Analysis.LinearAnalysis.Interfaces sub-package
+        // This is the model that will be linearized, i.e. the nonlinear plant model
+        // The default is the model with constant Efd and Pm
+        // commented, are the other two cases for AVR and AVR+PSS
+        // Case A: with no controls - i.e. constant Efd and Pm
+        // input String pathToNonlinearPlantModel = "SMIB_PSControl.Analysis.LinearAnalysis.Interfaces.SMIB_GEN_wInput" "Nonlinear plant model";
+        // Case B: with AVR only
+        input String pathToNonlinearPlantModel = "SMIBPS_IdControl.Analysis.LinearAnalysis.Interfaces.SMIB_AVR_wInput" "Nonlinear model";
+        // Case C: with AVR+PSS
+        // input String pathToNonlinearPlantModel = "SMIBPS_IdControl.Analysis.LinearAnalysis.Interfaces.SMIB_AVR_PSS_wInput" "Nonlinear plant model";
+        //
+        //
+        // 2) NONLINEAR EXPERIMENT: this is a model which applies a change to the input of the nonlinear model.
+        // It must match the nonlinar plant above. These models are under .Analysis.LinearAnalysis.PerturbationAnalysis
+        // This model will be simulated, and the simulation results will be compared to the simulation of the corresponding linearized model.
+        // Case A: with no controls - constant Efd and Pm
+        // input String pathToNonlinearExperiment= "SMIB_PSControl.Analysis.LinearAnalysis.PerturbationAnalysis.PerturbGen" "Nonlinear experiment model";
+        // Case B: with AVR only
+        input String pathToNonlinearExperiment= "SMIB_PSControl.Analysis.LinearAnalysis.PerturbationAnalysis.PerturbAVR" "Nonlinear experiment model";
+        // Case C: with AVR+PSS
+        // input String pathToNonlinearExperiment= "SMIB_PSControl.Analysis.LinearAnalysis.PerturbationAnalysis.PerturbPSS" "Nonlinear experiment model";
+        //
+        //
+        // 3) LINEAR EXPERIMENT: this is a template that can be used for all three cases, so it is not necessary to create other cases here
         input String pathToLinearExperiment = "SMIB_PSControl.Analysis.LinearAnalysis.Linearization.LinearModelGeneral";
 
       algorithm
@@ -753,7 +786,7 @@ This is visible in the Text layer only."),
         simulateModel(
           pathToNonlinearExperiment,
           stopTime=tsim,
-          numberOfIntervals=10000, method = "Rkfix4", fixedstepsize=0.01,
+          numberOfIntervals=numberOfIntervalsin, method = methodin, fixedstepsize=fixedstepsizein,
           resultFile="res_nl");
          ny := size(ss.C, 1);
          y0 := DymolaCommands.Trajectories.readTrajectory(
@@ -776,9 +809,35 @@ This is visible in the Text layer only."),
         simulateModel(
           pathToLinearExperiment,
           stopTime=tsim,
-          numberOfIntervals=10000, method = "Rkfix4", fixedstepsize=0.01,
+          numberOfIntervals=numberOfIntervalsin, method = methodin, fixedstepsize=fixedstepsizein,
           resultFile="res_lin");
-        annotation(__Dymola_interactive=true);
+        annotation(__Dymola_interactive=true, Documentation(info="<html>
+<p>This&nbsp;function&nbsp;will&nbsp;take&nbsp;in&nbsp;the&nbsp;nonlinear&nbsp;plant&nbsp;model,&nbsp;nonlinear&nbsp;experiments,&nbsp;and&nbsp;a&nbsp;linear&nbsp;model&nbsp;template.</p>
+<p><br>It&nbsp;will&nbsp;linearize&nbsp;the&nbsp;nonlinear&nbsp;plant,&nbsp;use&nbsp;the&nbsp;linear&nbsp;model&nbsp;for&nbsp;simulation&nbsp;in&nbsp;a&nbsp;linear&nbsp;model&nbsp;experiment,&nbsp;and&nbsp;run&nbsp;the&nbsp;nonlinear&nbsp;model.</p>
+<p><br>The&nbsp;function&nbsp;has&nbsp;been&nbsp;designed&nbsp;so&nbsp;that&nbsp;only&nbsp;the&nbsp;nonlinear&nbsp;plant&nbsp;and&nbsp;nonlinear&nbsp;experiment&nbsp;have&nbsp;to&nbsp;be&nbsp;specified.</p>
+<p>The goal is to show the limits of linearized models, including when typical controllers are represented.</p>
+<p>Three cases are included:</p>
+<p style=\"margin-left: 30px;\">- Case A: Constant Efd and Pm, i.e. no controls</p>
+<p style=\"margin-left: 30px;\">- Case B: AVR only</p>
+<p style=\"margin-left: 30px;\">- Case C: AVR+PSS</p>
+<p>To analyze each of these cases, the function source code can be commented out, for example, the default is Case A, which is:</p>
+<p><span style=\"font-family: Courier New;\">&nbsp;&nbsp;<span style=\"color: #006400;\">//&nbsp;Case&nbsp;A:&nbsp;with&nbsp;no&nbsp;controls&nbsp;-&nbsp;i.e.&nbsp;constant&nbsp;Efd&nbsp;and&nbsp;Pm&nbsp;</span></p>
+<p><span style=\"font-family: Courier New;\">&nbsp;&nbsp;<span style=\"color: #0000ff;\">input&nbsp;</span><span style=\"color: #ff0000;\">String</span>&nbsp;pathToNonlinearPlantModel&nbsp;=&nbsp;&quot;SMIB_PSControl.Analysis.LinearAnalysis.Interfaces.SMIB_GEN_wInput&quot;&nbsp;<span style=\"font-family: Courier New; color: #006400;\">&quot;Nonlinear&nbsp;plant&nbsp;model&quot;</span>;</p>
+<p><span style=\"font-family: Courier New;\">&nbsp;&nbsp;<span style=\"color: #006400;\">//&nbsp;Case&nbsp;A:&nbsp;with&nbsp;no&nbsp;controls&nbsp;-&nbsp;constant&nbsp;Efd&nbsp;and&nbsp;Pm</span></p>
+<p><span style=\"font-family: Courier New;\">&nbsp;&nbsp;<span style=\"color: #0000ff;\">input&nbsp;</span><span style=\"color: #ff0000;\">String</span>&nbsp;pathToNonlinearExperiment=&nbsp;&quot;SMIB_PSControl.Analysis.LinearAnalysis.PerturbationAnalysis.PerturbGen&quot;&nbsp;<span style=\"font-family: Courier New; color: #006400;\">&quot;Nonlinear&nbsp;experiment&nbsp;model&quot;</span>;</p>
+<p><br>Commenting the source code line above and uncommenting the following line in the source code would allow to analyze Case B:</p>
+<p><span style=\"font-family: Courier New;\">&nbsp;&nbsp;<span style=\"color: #006400;\">//&nbsp;Case&nbsp;B:&nbsp;with&nbsp;AVR&nbsp;only</span></p>
+<p><span style=\"font-family: Courier New;\">&nbsp;&nbsp;<span style=\"color: #0000ff;\">input&nbsp;</span><span style=\"color: #ff0000;\">String</span>&nbsp;pathToNonlinearPlantModel&nbsp;=&nbsp;&quot;SMIBPS_IdControl.Analysis.LinearAnalysis.Interfaces.SMIB_AVR_wInput&quot;&nbsp;<span style=\"font-family: Courier New; color: #006400;\">&quot;Nonlinear&nbsp;model&quot;</span>;</p>
+<p><span style=\"font-family: Courier New;\">&nbsp;&nbsp;<span style=\"color: #006400;\">//&nbsp;Case&nbsp;B:&nbsp;with&nbsp;AVR&nbsp;only</span></p>
+<p><span style=\"font-family: Courier New;\">&nbsp;&nbsp;<span style=\"color: #0000ff;\">input&nbsp;</span><span style=\"color: #ff0000;\">String</span>&nbsp;pathToNonlinearExperiment=&nbsp;&quot;SMIB_PSControl.Analysis.LinearAnalysis.PerturbationAnalysis.PerturbAVR&quot;&nbsp;<span style=\"font-family: Courier New; color: #006400;\">&quot;Nonlinear&nbsp;experiment&nbsp;model&quot;</span>;</p>
+<p><br><br>This can be similarly done for case C.</p>
+<p><br><b>Note:</b></p>
+<p>If the amplitude and time of the step change needs to be modified, they must be changed in the &quot;LinearModelGeneral&quot; model and in each of the &quot;PerturbXYZ&quot; models under perturbation analysis.</p>
+<p><br><b>To do:</b></p>
+<p>- allow to modify as a parameter the height of the step for the nonlinear and linear experiments.</p>
+<p>- include perturbations on Pm?</p>
+<p>- other things?</p>
+</html>"));
       end LinearizeSMIBGeneral;
 
       model LinearModelGeneral
@@ -793,7 +852,8 @@ This is visible in the Text layer only."),
         import Modelica_LinearSystems2.StateSpace;
         parameter StateSpace ss=StateSpace.Import.fromFile("MyData.mat", "ABCD");
         parameter Integer ny=size(ss.C, 1);
-        Modelica.Blocks.Sources.Step stepEfd(height=0.01, startTime=1)
+        Modelica.Blocks.Sources.Step step_voltage_input(height=0.01, startTime=
+              1)
           annotation (Placement(transformation(extent={{-120,22},{-100,42}})));
         inner Modelica_LinearSystems2.Controller.SampleClock sampleClock
           annotation (Placement(transformation(extent={{60,60},{80,80}})));
@@ -813,8 +873,8 @@ This is visible in the Text layer only."),
         Modelica_LinearSystems2.Controller.StateSpace stateSpace(system=ss)
           annotation (Placement(transformation(extent={{-40,-10},{-20,10}})));
       equation
-        connect(multiplex2_1.u1[1], stepEfd.y) annotation (Line(points={{-82,6},{-90,6},
-                {-90,32},{-99,32}}, color={0,0,127}));
+        connect(multiplex2_1.u1[1], step_voltage_input.y) annotation (Line(
+              points={{-82,6},{-90,6},{-90,32},{-99,32}}, color={0,0,127}));
         connect(demultiplex2_2.y1[1], Vt) annotation (Line(points={{102,16},{108,16},{
                 108,79},{150,79}},
                                color={0,0,127}));
@@ -934,14 +994,14 @@ They have to be rearranged based on the order provided by the linearization func
         Modelica.Blocks.Sources.Constant Pmchange(k=0) annotation (Placement(
               transformation(extent={{-118,-30},{-98,-10}})));
       equation
-        connect(Vt, PS_ConstantEfd.Vt) annotation (Line(points={{150,79},{98,
-                79},{98,22.5714},{42.8571,22.5714}},
+        connect(Vt, PS_ConstantEfd.Vt) annotation (Line(points={{150,79},{98,79},
+                {98,22.5714},{42.8571,22.5714}},
                                     color={0,0,127}));
-        connect(P, PS_ConstantEfd.P) annotation (Line(points={{150,41},{112,
-                41},{112,11.7143},{42.8571,11.7143}},
+        connect(P, PS_ConstantEfd.P) annotation (Line(points={{150,41},{112,41},
+                {112,11.7143},{42.8571,11.7143}},
                                     color={0,0,127}));
-        connect(Q, PS_ConstantEfd.Q) annotation (Line(points={{150,1},{96,1},
-                {96,0.285714},{42.8571,0.285714}},
+        connect(Q, PS_ConstantEfd.Q) annotation (Line(points={{150,1},{96,1},{
+                96,0.285714},{42.8571,0.285714}},
                                      color={0,0,127}));
         connect(w, PS_ConstantEfd.w) annotation (Line(points={{150,-39},{108,
                 -39},{108,-11.1429},{42.8571,-11.1429}},
@@ -997,8 +1057,8 @@ They have to be rearranged based on the order provided by the linearization func
         connect(Q, PS_wAVR.Q) annotation (Line(points={{150,1},{96,1},{96,
                 0.285714},{42.8571,0.285714}},
                             color={0,0,127}));
-        connect(w, PS_wAVR.w) annotation (Line(points={{150,-39},{108,-39},{
-                108,-11.1429},{42.8571,-11.1429}},
+        connect(w, PS_wAVR.w) annotation (Line(points={{150,-39},{108,-39},{108,
+                -11.1429},{42.8571,-11.1429}},
                                      color={0,0,127}));
         connect(delta, PS_wAVR.delta) annotation (Line(points={{150,-81},{92,
                 -81},{92,-23.1429},{42.8571,-23.1429}},
@@ -1053,8 +1113,8 @@ They have to be rearranged based on the order provided by the linearization func
         connect(Q, PS_wPSS.Q) annotation (Line(points={{150,1},{96,1},{96,
                 0.285714},{42.8571,0.285714}},
                                      color={0,0,127}));
-        connect(w, PS_wPSS.w) annotation (Line(points={{150,-39},{108,-39},{
-                108,-11.1429},{42.8571,-11.1429}},
+        connect(w, PS_wPSS.w) annotation (Line(points={{150,-39},{108,-39},{108,
+                -11.1429},{42.8571,-11.1429}},
                                      color={0,0,127}));
         connect(delta, PS_wPSS.delta) annotation (Line(points={{150,-81},{92,
                 -81},{92,-23.1429},{42.8571,-23.1429}},
