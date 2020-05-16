@@ -490,6 +490,26 @@ AVR+PSS
     package Linearization
       "Gives an example of basic linearization analysis for the SMIB."
       extends Modelica.Icons.ExamplesPackage;
+      package StartHere "\"Please read these notes to use this subpackage\""
+        extends Modelica.Icons.Information;
+        annotation (Documentation(info="<html>
+<p>Before excecuting the functions in this subpackage or running the examples, please make sure that the following flag is disabled.</p>
+<ul>
+<li>Go to simulation and click on &quot;Simulation Set-up&quot;.</li>
+<li>Go to the &quot;Translation&quot; tab.</li>
+<li>Disable the flag &quot;Include a variable for elapsed CPU time during simulation&quot;</li>
+</ul>
+<p><br>If you have issues running the functions &quot;LinearizeSMIB&quot; and &quot;LinearizeSMIBGeneral&quot; it is most likely because the number of output signals increases due to this flag being enabled, which is not considered in the code.</p>
+<p>The model &quot;LinearModelExample&quot; can be executed on its own. The model has been parametrized from the values obtained by running the &quot;LinearizeSMIB&quot;, you can see the script and apply it to other cases to understand how the model and data are put together.</p>
+<p>Please see the &quot;Documentation&quot; view for the functions:</p>
+<ul>
+<li>LinearizeSMIB - linearizes the model and runs the non-linear model to obtain the steady state outputs used to parametrize the linear model for simulation.</li>
+<li>LinearizeSMIBGeneral - automates the process above and generates results for comparison between the nonlinear and linear model.</li>
+</ul>
+<p><br>Please see the documentation of each function and the code comments.</p>
+</html>"));
+      end StartHere;
+
       function LinearizeSMIB
         // Import things needed for the calculations
         import Modelica_LinearSystems2.StateSpace; // to create and manipulate state space objects
@@ -736,7 +756,7 @@ This is visible in the Text layer only."),
         // The default is the model with constant Efd and Pm
         // commented, are the other two cases for AVR and AVR+PSS
         // Case A: with no controls - i.e. constant Efd and Pm
-        // input String pathToNonlinearPlantModel = "SMIB_PSControl.Analysis.LinearAnalysis.Interfaces.SMIB_GEN_wInput" "Nonlinear plant model";
+        // input String pathToNonlinearPlantModel = "SMIBPS_IdControl.Analysis.LinearAnalysis.Interfaces.SMIB_GEN_wInput" "Nonlinear plant model";
         // Case B: with AVR only
         input String pathToNonlinearPlantModel = "SMIBPS_IdControl.Analysis.LinearAnalysis.Interfaces.SMIB_AVR_wInput" "Nonlinear model";
         // Case C: with AVR+PSS
@@ -747,11 +767,11 @@ This is visible in the Text layer only."),
         // It must match the nonlinar plant above. These models are under .Analysis.LinearAnalysis.PerturbationAnalysis
         // This model will be simulated, and the simulation results will be compared to the simulation of the corresponding linearized model.
         // Case A: with no controls - constant Efd and Pm
-        // input String pathToNonlinearExperiment= "SMIB_PSControl.Analysis.LinearAnalysis.PerturbationAnalysis.PerturbGen" "Nonlinear experiment model";
+        // input String pathToNonlinearExperiment= "SMIBPS_IdControl.Analysis.LinearAnalysis.PerturbationAnalysis.PerturbGen" "Nonlinear experiment model";
         // Case B: with AVR only
-        input String pathToNonlinearExperiment= "SMIB_PSControl.Analysis.LinearAnalysis.PerturbationAnalysis.PerturbAVR" "Nonlinear experiment model";
+        input String pathToNonlinearExperiment= "SMIBPS_IdControl.Analysis.LinearAnalysis.PerturbationAnalysis.PerturbAVR" "Nonlinear experiment model";
         // Case C: with AVR+PSS
-        // input String pathToNonlinearExperiment= "SMIB_PSControl.Analysis.LinearAnalysis.PerturbationAnalysis.PerturbPSS" "Nonlinear experiment model";
+        // input String pathToNonlinearExperiment= "SMIBPS_IdControl.Analysis.LinearAnalysis.PerturbationAnalysis.PerturbPSS" "Nonlinear experiment model";
         //
         //
         // 3) LINEAR EXPERIMENT: this is a template that can be used for all three cases, so it is not necessary to create other cases here
@@ -822,14 +842,14 @@ This is visible in the Text layer only."),
 <p style=\"margin-left: 30px;\">- Case C: AVR+PSS</p>
 <p>To analyze each of these cases, the function source code can be commented out, for example, the default is Case A, which is:</p>
 <p><span style=\"font-family: Courier New;\">&nbsp;&nbsp;<span style=\"color: #006400;\">//&nbsp;Case&nbsp;A:&nbsp;with&nbsp;no&nbsp;controls&nbsp;-&nbsp;i.e.&nbsp;constant&nbsp;Efd&nbsp;and&nbsp;Pm&nbsp;</span></p>
-<p><span style=\"font-family: Courier New;\">&nbsp;&nbsp;<span style=\"color: #0000ff;\">input&nbsp;</span><span style=\"color: #ff0000;\">String</span>&nbsp;pathToNonlinearPlantModel&nbsp;=&nbsp;&quot;SMIB_PSControl.Analysis.LinearAnalysis.Interfaces.SMIB_GEN_wInput&quot;&nbsp;<span style=\"font-family: Courier New; color: #006400;\">&quot;Nonlinear&nbsp;plant&nbsp;model&quot;</span>;</p>
+<p><span style=\"font-family: Courier New;\">&nbsp;&nbsp;<span style=\"color: #0000ff;\">input&nbsp;</span><span style=\"color: #ff0000;\">String</span>&nbsp;pathToNonlinearPlantModel&nbsp;=&nbsp;&quot;SMIBPS_IdControl.Analysis.LinearAnalysis.Interfaces.SMIB_GEN_wInput&quot;&nbsp;<span style=\"font-family: Courier New; color: #006400;\">&quot;Nonlinear&nbsp;plant&nbsp;model&quot;</span>;</p>
 <p><span style=\"font-family: Courier New;\">&nbsp;&nbsp;<span style=\"color: #006400;\">//&nbsp;Case&nbsp;A:&nbsp;with&nbsp;no&nbsp;controls&nbsp;-&nbsp;constant&nbsp;Efd&nbsp;and&nbsp;Pm</span></p>
-<p><span style=\"font-family: Courier New;\">&nbsp;&nbsp;<span style=\"color: #0000ff;\">input&nbsp;</span><span style=\"color: #ff0000;\">String</span>&nbsp;pathToNonlinearExperiment=&nbsp;&quot;SMIB_PSControl.Analysis.LinearAnalysis.PerturbationAnalysis.PerturbGen&quot;&nbsp;<span style=\"font-family: Courier New; color: #006400;\">&quot;Nonlinear&nbsp;experiment&nbsp;model&quot;</span>;</p>
+<p><span style=\"font-family: Courier New;\">&nbsp;&nbsp;<span style=\"color: #0000ff;\">input&nbsp;</span><span style=\"color: #ff0000;\">String</span>&nbsp;pathToNonlinearExperiment=&nbsp;&quot;SMIBPS_IdControl.Analysis.LinearAnalysis.PerturbationAnalysis.PerturbGen&quot;&nbsp;<span style=\"font-family: Courier New; color: #006400;\">&quot;Nonlinear&nbsp;experiment&nbsp;model&quot;</span>;</p>
 <p><br>Commenting the source code line above and uncommenting the following line in the source code would allow to analyze Case B:</p>
 <p><span style=\"font-family: Courier New;\">&nbsp;&nbsp;<span style=\"color: #006400;\">//&nbsp;Case&nbsp;B:&nbsp;with&nbsp;AVR&nbsp;only</span></p>
 <p><span style=\"font-family: Courier New;\">&nbsp;&nbsp;<span style=\"color: #0000ff;\">input&nbsp;</span><span style=\"color: #ff0000;\">String</span>&nbsp;pathToNonlinearPlantModel&nbsp;=&nbsp;&quot;SMIBPS_IdControl.Analysis.LinearAnalysis.Interfaces.SMIB_AVR_wInput&quot;&nbsp;<span style=\"font-family: Courier New; color: #006400;\">&quot;Nonlinear&nbsp;model&quot;</span>;</p>
 <p><span style=\"font-family: Courier New;\">&nbsp;&nbsp;<span style=\"color: #006400;\">//&nbsp;Case&nbsp;B:&nbsp;with&nbsp;AVR&nbsp;only</span></p>
-<p><span style=\"font-family: Courier New;\">&nbsp;&nbsp;<span style=\"color: #0000ff;\">input&nbsp;</span><span style=\"color: #ff0000;\">String</span>&nbsp;pathToNonlinearExperiment=&nbsp;&quot;SMIB_PSControl.Analysis.LinearAnalysis.PerturbationAnalysis.PerturbAVR&quot;&nbsp;<span style=\"font-family: Courier New; color: #006400;\">&quot;Nonlinear&nbsp;experiment&nbsp;model&quot;</span>;</p>
+<p><span style=\"font-family: Courier New;\">&nbsp;&nbsp;<span style=\"color: #0000ff;\">input&nbsp;</span><span style=\"color: #ff0000;\">String</span>&nbsp;pathToNonlinearExperiment=&nbsp;&quot;SMIBPS_IdControl.Analysis.LinearAnalysis.PerturbationAnalysis.PerturbAVR&quot;&nbsp;<span style=\"font-family: Courier New; color: #006400;\">&quot;Nonlinear&nbsp;experiment&nbsp;model&quot;</span>;</p>
 <p><br><br>This can be similarly done for case C.</p>
 <p><br><b>Note:</b></p>
 <p>If the amplitude and time of the step change needs to be modified, they must be changed in the &quot;LinearModelGeneral&quot; model and in each of the &quot;PerturbXYZ&quot; models under perturbation analysis.</p>
