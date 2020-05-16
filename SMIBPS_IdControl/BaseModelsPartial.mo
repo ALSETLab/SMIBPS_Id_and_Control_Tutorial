@@ -227,14 +227,14 @@ package BaseModelsPartial "Partial Models - Cannot be simulated!"
       connect(pss_off.y, avr.vs) annotation (Line(points={{-71,8},{-50.3333,8},
               {-50.3333,6}},
                    color={0,0,127}));
-      connect(avr.vf, machine.vf) annotation (Line(points={{-10.3333,16},{2,
-              16},{2,15},{8,15}},
+      connect(avr.vf, machine.vf) annotation (Line(points={{-10.3333,16},{2,16},
+              {2,15},{8,15}},
                            color={0,0,127}));
       connect(machine.v, avr.v) annotation (Line(points={{77,9},{88,9},{88,52},
               {-50.3333,52},{-50.3333,26}},
                                   color={0,0,127}));
-      connect(machine.vf0, avr.vf0) annotation (Line(points={{20,33},{4,33},{
-              4,44},{-30,44},{-30,34.3333},{-32,34.3333}},
+      connect(machine.vf0, avr.vf0) annotation (Line(points={{20,33},{4,33},{4,
+              44},{-30,44},{-30,34.3333},{-32,34.3333}},
                                                     color={0,0,127}));
       connect(machine.pm0, machine.pm) annotation (Line(points={{20,-33},{20,
               -40},{-10,-40},{-10,-15},{8,-15}}, color={0,0,127}));
@@ -330,11 +330,10 @@ package BaseModelsPartial "Partial Models - Cannot be simulated!"
       connect(machine.p, pwPin)
         annotation (Line(points={{74,-6},{92,-6},{92,0},{110,0}},
                                                            color={0,0,255}));
-      connect(avr.vf, machine.vf) annotation (Line(points={{-10.3333,10},{2,
-              10},{2,9},{8,9}},
-                           color={0,0,127}));
-      connect(machine.vf0, avr.vf0) annotation (Line(points={{20,27},{20,38},
-              {-30,38},{-30,28.3333},{-32,28.3333}},color={0,0,127}));
+      connect(avr.vf, machine.vf) annotation (Line(points={{-10.3333,10},{2,10},
+              {2,9},{8,9}},color={0,0,127}));
+      connect(machine.vf0, avr.vf0) annotation (Line(points={{20,27},{20,38},{
+              -30,38},{-30,28.3333},{-32,28.3333}}, color={0,0,127}));
       connect(machine.v, avr.v) annotation (Line(points={{77,3},{86,3},{86,60},
               {-64,60},{-64,20},{-50.3333,20}},   color={0,0,127}));
       connect(avr.vs, uVs) annotation (Line(points={{-50.3333,0},{-86,0},{-86,
@@ -434,8 +433,8 @@ package BaseModelsPartial "Partial Models - Cannot be simulated!"
               20,-40},{0,-40},{0,-15},{8,-15}},  color={0,0,127}));
       connect(machine.p, pwPin) annotation (Line(points={{74,0},{78.5,0},{78.5,0},{
               110,0}},           color={0,0,255}));
-      connect(avr.vf, machine.vf) annotation (Line(points={{-10.3333,16},{2,
-              16},{2,15},{8,15}},
+      connect(avr.vf, machine.vf) annotation (Line(points={{-10.3333,16},{2,16},
+              {2,15},{8,15}},
                        color={0,0,127}));
       connect(machine.v, avr.v) annotation (Line(points={{77,9},{88,9},{88,52},
               {-50.3333,52},{-50.3333,26}},
@@ -443,8 +442,8 @@ package BaseModelsPartial "Partial Models - Cannot be simulated!"
       connect(pss.vs, avr.vs)
         annotation (Line(points={{-63,8},{-63,6},{-50.3333,6}},
                                                            color={0,0,127}));
-      connect(machine.vf0, avr.vf0) annotation (Line(points={{20,33},{-6,33},
-              {-6,44},{-32,44},{-32,34.3333}},
+      connect(machine.vf0, avr.vf0) annotation (Line(points={{20,33},{-6,33},{
+              -6,44},{-32,44},{-32,34.3333}},
                                        color={0,0,127}));
       connect(machine.w, pss.vSI) annotation (Line(points={{77,27},{77,-54},{-98,
               -54},{-98,8},{-85,8}}, color={0,0,127}));

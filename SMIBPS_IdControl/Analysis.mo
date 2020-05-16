@@ -504,10 +504,10 @@ AVR+PSS
         // Declare reconfigurable inputs
         input Modelica.SIunits.Time tlin = 0 "t for model linearization";
         input Modelica.SIunits.Time tsim = 15 "Simulation time";
-        input String pathToNonlinearPlantModel = "SMIB_PSControl.Analysis.LinearAnalysis.Interfaces.SMIB_GEN_wInput";
+        input String pathToNonlinearPlantModel = "SMIBPS_IdControl.Analysis.LinearAnalysis.Interfaces.SMIB_GEN_wInput";
         input String pathToNonlinearExperiment=
-            "SMIB_PSControl.Analysis.LinearAnalysis.PerturbationAnalysis.PerturbGen";
-        input String pathToLinearExperiment = "SMIB_PSControl.Analysis.LinearAnalysis.BasicLinearization.LinearModelExample";
+            "SMIBPS_IdControl.Analysis.LinearAnalysis.PerturbationAnalysis.PerturbGen";
+        input String pathToLinearExperiment = "SMIBPS_IdControl.Analysis.LinearAnalysis.Linearization.LinearModelExample";
 
       algorithm
         // Compute and display the ABCD matrices, etc
@@ -755,7 +755,7 @@ This is visible in the Text layer only."),
         //
         //
         // 3) LINEAR EXPERIMENT: this is a template that can be used for all three cases, so it is not necessary to create other cases here
-        input String pathToLinearExperiment = "SMIB_PSControl.Analysis.LinearAnalysis.Linearization.LinearModelGeneral";
+        input String pathToLinearExperiment = "SMIBPS_IdControl.Analysis.LinearAnalysis.Linearization.LinearModelGeneral";
 
       algorithm
         // Compute and display the ABCD matrices, etc
@@ -1023,7 +1023,7 @@ They have to be rearranged based on the order provided by the linearization func
           experiment(
             StopTime=15,
             __Dymola_fixedstepsize=0.01,
-            __Dymola_Algorithm="Radau"));
+            __Dymola_Algorithm="Rkfix2"));
       end PerturbGen;
 
       model PerturbAVR
