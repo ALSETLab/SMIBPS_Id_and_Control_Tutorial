@@ -6,19 +6,34 @@ package Analysis
     extends Modelica.Icons.ExamplesPackage;
     model SMIB
       extends Modelica.Icons.Example;
-      extends BaseModelsPartial.BaseNetwork.SMIB_Partial;
+      extends BaseModelsPartial.BaseNetwork.SMIB_Partial(
+        powerFlow_Data(
+          redeclare record Bus = PF_Data.Bus_Data.PF_Bus_2,
+          redeclare record Loads = PF_Data.Loads_Data.PF_Loads_2,
+          redeclare record Trafos = PF_Data.Trafos_Data.PF_Trafos_2,
+          redeclare record Machines = PF_Data.Machines_Data.PF_Machines_2),
+        transformer(kT=1),
+        B1(nn=1),
+        load_ExtInput(
+          d_P=0,
+          t1=0,
+          d_t=0));
       import Modelica.Constants.pi;
       BaseModelsPartial.BasePlants.Generator G1(
-        V_0=1,
-        P_0=0.899999999997135*S_b,
-        Q_0=0.436002238696658*S_b,
-        angle_0=0.494677176989155*180/pi)
+        V_0=powerFlow_Data.bus.V1,
+        P_0=powerFlow_Data.machines.PG1,
+        Q_0=powerFlow_Data.machines.QG1,
+        angle_0=powerFlow_Data.bus.A1)
         annotation (Placement(transformation(extent={{-120,-10},{-100,10}})));
+      Modelica.Blocks.Sources.Constant const(k=0)
+        annotation (Placement(transformation(extent={{-2,-46},{6,-38}})));
     protected
       parameter Real S_b=SysData.S_b;
     equation
-      connect(G1.pwPin, B1.p)
+      connect(G1.pwPin, B1.n[1])
         annotation (Line(points={{-99,0},{-80,0}}, color={0,0,255}));
+      connect(const.y, load_ExtInput.u) annotation (Line(points={{6.4,-42},{10,
+              -42},{10,-40.7},{13.14,-40.7}}, color={0,0,127}));
       annotation (
         Diagram(coordinateSystem(extent={{-140,-100},{120,100}},
               preserveAspectRatio=false), graphics={Text(
@@ -61,19 +76,33 @@ package Analysis
 
     model SMIB_AVR
         extends Modelica.Icons.Example;
-      extends BaseModelsPartial.BaseNetwork.SMIB_Partial;
+      extends BaseModelsPartial.BaseNetwork.SMIB_Partial(
+        B1(nn=1),
+        powerFlow_Data(
+          redeclare record Bus = PF_Data.Bus_Data.PF_Bus_3,
+          redeclare record Loads = PF_Data.Loads_Data.PF_Loads_3,
+          redeclare record Trafos = PF_Data.Trafos_Data.PF_Trafos_3,
+          redeclare record Machines = PF_Data.Machines_Data.PF_Machines_3),
+        load_ExtInput(
+          d_P=0,
+          t1=0,
+          d_t=0));
       import Modelica.Constants.pi;
       BaseModelsPartial.BasePlants.Generator_AVR G1(
-        V_0=1,
-        P_0=0.899999999997135*S_b,
-        Q_0=0.436002238696658*S_b,
-        angle_0=0.494677176989155*180/pi)
+        V_0=powerFlow_Data.bus.V1,
+        P_0=powerFlow_Data.machines.PG1,
+        Q_0=powerFlow_Data.machines.QG1,
+        angle_0=powerFlow_Data.bus.A1)
         annotation (Placement(transformation(extent={{-120,-10},{-100,10}})));
+      Modelica.Blocks.Sources.Constant const(k=0)
+        annotation (Placement(transformation(extent={{-2,-46},{6,-38}})));
     protected
       parameter Real S_b=SysData.S_b;
     equation
-      connect(G1.pwPin, B1.p)
-        annotation (Line(points={{-99,0},{-90,0},{-80,0}}, color={0,0,255}));
+      connect(const.y, load_ExtInput.u) annotation (Line(points={{6.4,-42},{10,
+              -42},{10,-40.7},{13.14,-40.7}}, color={0,0,127}));
+      connect(G1.pwPin, B1.n[1])
+        annotation (Line(points={{-99,0},{-80,0}}, color={0,0,255}));
       annotation (
         Diagram(coordinateSystem(extent={{-140,-100},{120,100}},
               preserveAspectRatio=false), graphics={Text(
@@ -116,19 +145,33 @@ package Analysis
 
     model SMIB_AVR_PSS
         extends Modelica.Icons.Example;
-      extends BaseModelsPartial.BaseNetwork.SMIB_Partial;
+      extends BaseModelsPartial.BaseNetwork.SMIB_Partial(
+        B1(nn=1),
+        powerFlow_Data(
+          redeclare record Bus = PF_Data.Bus_Data.PF_Bus_8,
+          redeclare record Loads = PF_Data.Loads_Data.PF_Loads_8,
+          redeclare record Trafos = PF_Data.Trafos_Data.PF_Trafos_8,
+          redeclare record Machines = PF_Data.Machines_Data.PF_Machines_8),
+        load_ExtInput(
+          d_P=0,
+          t1=0,
+          d_t=0));
       import Modelica.Constants.pi;
       BaseModelsPartial.BasePlants.Generator_AVR_PSS G1(
-        V_0=1,
-        P_0=0.899999999997135*S_b,
-        Q_0=0.436002238696658*S_b,
-        angle_0=0.494677176989155*180/pi)
+        V_0=powerFlow_Data.bus.V1,
+        P_0=powerFlow_Data.machines.PG1,
+        Q_0=powerFlow_Data.machines.QG1,
+        angle_0=powerFlow_Data.bus.A1)
         annotation (Placement(transformation(extent={{-120,-10},{-100,10}})));
+      Modelica.Blocks.Sources.Constant const(k=0)
+        annotation (Placement(transformation(extent={{-2,-48},{6,-40}})));
     protected
       parameter Real S_b=SysData.S_b;
     equation
-      connect(G1.pwPin, B1.p)
-        annotation (Line(points={{-99,0},{-90,0},{-80,0}}, color={0,0,255}));
+      connect(const.y, load_ExtInput.u) annotation (Line(points={{6.4,-44},{10,
+              -44},{10,-40.7},{13.14,-40.7}}, color={0,0,127}));
+      connect(G1.pwPin, B1.n[1])
+        annotation (Line(points={{-99,0},{-80,0}}, color={0,0,255}));
       annotation (
         Diagram(coordinateSystem(extent={{-140,-100},{120,100}},
               preserveAspectRatio=false), graphics={Text(

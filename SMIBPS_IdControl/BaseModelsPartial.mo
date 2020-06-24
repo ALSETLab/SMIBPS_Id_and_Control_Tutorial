@@ -645,12 +645,6 @@ package BaseModelsPartial "Partial Models - Cannot be simulated!"
 
     partial model SMIB_Base "Partial model containing the network elements"
       import Modelica.Constants.pi;
-      OpenIPSL.Electrical.Buses.Bus B1
-        annotation (Placement(transformation(extent={{-92,-12},{-68,12}})));
-      OpenIPSL.Electrical.Buses.Bus B2
-        annotation (Placement(transformation(extent={{-32,-12},{-8,12}})));
-      OpenIPSL.Electrical.Buses.Bus B3
-        annotation (Placement(transformation(extent={{48,-12},{72,12}})));
       OpenIPSL.Electrical.Branches.PSAT.TwoWindingTransformer transformer(
         Sn=2220,
         x=0.15,
@@ -671,30 +665,55 @@ package BaseModelsPartial "Partial Models - Cannot be simulated!"
         R=0,
         G=0,
         B=0,
-        X=0.93,
+        X=0.93/2,
         opening=1)
-        annotation (Placement(transformation(extent={{10,-26},{28,-14}})));
+        annotation (Placement(transformation(extent={{-4,-28},{14,-16}})));
       inner OpenIPSL.Electrical.SystemBase SysData(S_b=2220, fn=60)
         annotation (Placement(transformation(extent={{-140,80},{-86,100}})));
+      OpenIPSL.Electrical.Branches.PwLine line_3(
+        R=0,
+        G=0,
+        B=0,
+        X=0.93/2,
+        opening=1)
+        annotation (Placement(transformation(extent={{28,-28},{46,-16}})));
+      OpenIPSL.Electrical.Buses.BusExt B1(V_b=400, np=1)
+        annotation (Placement(transformation(extent={{-80,-10},{-78,10}})));
+      OpenIPSL.Electrical.Buses.BusExt B2(
+        V_b=400,
+        np=1,
+        nn=1)
+        annotation (Placement(transformation(extent={{-28,-10},{-26,10}})));
+      OpenIPSL.Electrical.Buses.BusExt B4(
+        V_b=400,
+        np=1,
+        nn=1) annotation (Placement(transformation(extent={{20,-28},{22,-16}})));
+      OpenIPSL.Electrical.Buses.BusExt B3(
+        V_b=400,
+        np=1,
+        nn=2) annotation (Placement(transformation(extent={{60,-10},{62,10}})));
     protected
       parameter Real S_b=SysData.S_b;
     equation
-      connect(B1.p, transformer.p)
-        annotation (Line(points={{-80,0},{-70,0},{-61,0}}, color={0,0,255}));
-      connect(transformer.n, B2.p)
-        annotation (Line(points={{-39,0},{-20,0}}, color={0,0,255}));
-      connect(B2.p, line_1.p) annotation (Line(points={{-20,0},{-14,0},{-10,0},{-10,
-              20},{10.9,20}},color={0,0,255}));
-      connect(line_1.n, B3.p) annotation (Line(points={{27.1,20},{50,20},{50,0},{60,
-              0}}, color={0,0,255}));
-      connect(B3.p, infinite_bus.p)
-        annotation (Line(points={{60,0},{86,0},{86,0},{100,0}},
-                                                 color={0,0,255}));
-      connect(line_2.n, B3.p) annotation (Line(points={{27.1,-20},{50,-20},{50,0},{
-              60,0}}, color={0,0,255}));
-      connect(line_2.p, line_1.p) annotation (Line(points={{10.9,-20},{-10,-20},{
-              -10,20},{10.9,20}},
+      connect(line_2.p, line_1.p) annotation (Line(points={{-3.1,-22},{-10,-22},
+              {-10,20},{10.9,20}},
                              color={0,0,255}));
+      connect(B1.p[1], transformer.p)
+        annotation (Line(points={{-78,0},{-61,0}}, color={0,0,255}));
+      connect(B2.n[1], transformer.n)
+        annotation (Line(points={{-28,0},{-39,0}}, color={0,0,255}));
+      connect(B2.p[1], line_1.p) annotation (Line(points={{-26,0},{-10,0},{-10,
+              20},{10.9,20}}, color={0,0,255}));
+      connect(B4.n[1], line_2.n)
+        annotation (Line(points={{20,-22},{13.1,-22}}, color={0,0,255}));
+      connect(B4.p[1], line_3.p)
+        annotation (Line(points={{22,-22},{28.9,-22}}, color={0,0,255}));
+      connect(B3.p[1], infinite_bus.p)
+        annotation (Line(points={{62,0},{100,0}}, color={0,0,255}));
+      connect(line_3.n, B3.n[1]) annotation (Line(points={{45.1,-22},{52,-22},{
+              52,-3},{60,-3}}, color={0,0,255}));
+      connect(line_1.n, B3.n[2]) annotation (Line(points={{27.1,20},{52,20},{52,
+              2},{60,2},{60,3}}, color={0,0,255}));
       annotation (
         Diagram(coordinateSystem(extent={{-140,-100},{120,100}},
               preserveAspectRatio=false), graphics={Text(
@@ -742,15 +761,40 @@ package BaseModelsPartial "Partial Models - Cannot be simulated!"
     end SMIB_Base;
 
     partial model SMIB_Partial "Partial SMIB Model with a fault block"
-      extends SMIB_Base(line_2(t1=0.57));
+      extends SMIB_Base(
+        B1(V_0=powerFlow_Data.bus.V1, angle_0=powerFlow_Data.bus.A1),
+        B2(
+          V_0=powerFlow_Data.bus.V2,
+          angle_0=powerFlow_Data.bus.A2,
+          np=2),
+        line_2(t1=0.57),
+        B4(nn=2),
+        B3(V_0=powerFlow_Data.bus.V3, angle_0=powerFlow_Data.bus.A3),
+        infinite_bus(
+          V_0=powerFlow_Data.bus.V3,
+          angle_0=powerFlow_Data.bus.A3,
+          P_0=powerFlow_Data.machines.PG2,
+          Q_0=powerFlow_Data.machines.QG2));
       OpenIPSL.Electrical.Events.PwFault fault(
         R=0,
         t1=0.5,
         t2=0.57,
-        X=1e-5) annotation (Placement(transformation(extent={{0,-58},{20,-38}})));
+        X=1e-5) annotation (Placement(transformation(extent={{-6,-6},{6,6}},
+            rotation=270,
+            origin={-20,-36})));
+      OpenIPSL.Electrical.Loads.PSSE.Load_ExtInput load_ExtInput(
+        V_0=powerFlow_Data.bus.V4,
+        angle_0=powerFlow_Data.bus.A4,
+        P_0=powerFlow_Data.loads.PL1,
+        Q_0=powerFlow_Data.loads.QL1)
+        annotation (Placement(transformation(extent={{12,-50},{24,-38}})));
+      PF_Data.PowerFlow_Data powerFlow_Data
+        annotation (Placement(transformation(extent={{-120,44},{-100,64}})));
     equation
-      connect(fault.p, B2.p) annotation (Line(points={{-1.66667,-48},{-14,-48},
-              {-14,0},{-20,0}}, color={0,0,255}));
+      connect(fault.p, B2.p[2])
+        annotation (Line(points={{-20,-29},{-20,0},{-26,0}}, color={0,0,255}));
+      connect(load_ExtInput.p, B4.n[2]) annotation (Line(points={{18,-38},{18,
+              -22},{20,-22}}, color={0,0,255}));
     end SMIB_Partial;
   end BaseNetwork;
 end BaseModelsPartial;
