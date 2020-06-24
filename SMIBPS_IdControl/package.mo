@@ -5,10 +5,11 @@ package SMIBPS_IdControl "A Tutorial on Power System Stability and Control"
 
 
 annotation(preferredView = "info",
-  uses(OpenIPSL(version="1.5.1"), Modelica(version="3.2.3"),
+  uses(                           Modelica(version="3.2.3"),
       Modelica_LinearSystems2(version="2.3.5"),
       DataFiles(version="1.0.5"),
-      DymolaCommands(version="1.8")),
+      DymolaCommands(version="1.8"),
+    OpenIPSL(version="1.5.0")),
   version="1",
   Documentation(info="<html>
 <p><br>This package contains examples on using Modelica, OpenIPSL and the Modelica Linear Systems 2 library to carry out typical power system stability and control studies.</p>

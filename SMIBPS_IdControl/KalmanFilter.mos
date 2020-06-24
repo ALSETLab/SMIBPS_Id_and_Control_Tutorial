@@ -1,0 +1,77 @@
+﻿working_dir = "C:/Users/sjoerd/Documents/MATLAB/Tutorial/SMIBPS_Id_and_Control_Tutorial\SMIBPS_IdControl/working_dir";
+cd(working_dir)
+
+Modelica.Utilities.Files.remove("results")
+Modelica.Utilities.Files.createDirectory("results");
+ 
+ sigma_y = .0;            // standard deviation measurement noise  
+ sigma_x = .0005;         // standard deviation process noise
+  
+
+
+// set settings for linearization
+Advanced.Define.DAEsolver = false;  
+
+
+SMIBPS_IdControl.Analysis.LinearAnalysis.Linearization.LinearizeSMIB
+
+
+translateModel("SMIB_GEN_with_Observer")
+        
+LPV.linearize("SMIB_GEN_with_Observer", ModelToSimulate, timeStep=ll*kk, samplePeriod=h, Nlin=ll, counter=kk, fileNameLin="results/"+LinRes, fileNameSim="results"+SimRes  );  
+     
+ 
+// set settings for time domain simulation
+experimentSetupOutput(states=false,derivatives=false,auxiliaries=false,events=false);
+Advanced.Define.DAEsolver = false;
+translateModel(ModelToSimulate);
+
+// set excitation parameters in the model
+multisine_Noise_Simu.normalNoise_P.samplePeriod = h;             
+multisine_Noise_Simu.normalNoise_P.sigma        = sigma_u;           
+multisine_Noise_Simu.normalNoise_Q.samplePeriod = h;             
+multisine_Noise_Simu.normalNoise_Q.sigma        = sigma_u; 
+
+multisine_Noise_Simu.generateMultiSine_P.A      = A;
+multisine_Noise_Simu.generateMultiSine_P.B      = B;
+multisine_Noise_Simu.generateMultiSine_P.C      = C;
+ 
+multisine_Noise_Simu_load.normalNoise_P.samplePeriod = h;
+multisine_Noise_Simu_load.normalNoise_P.sigma        = sigma_load;
+multisine_Noise_Simu_load.normalNoise_Q.samplePeriod = h;
+multisine_Noise_Simu_load.normalNoise_Q.sigma        = 0*sigma_load;
+
+// loop for time domain simulation
+for kk in 1:N loop
+  
+  //pwLine2.t1 = ll*d1;
+  //pwLine2.t2 = ll*d2;
+  
+  LPV.simulateExtendedModel(ModelToSimulate, startTime=ll*(kk-1), stopTime=ll*kk, outputInterval=h, method="Radau IIa", resultFile="results/"+SimRes+String(ll*kk) ); 
+  importInitial("dsfinal.txt");
+       
+end for;  
+
+// store used parameters in a .txt file
+Modelica.Utilities.Files.remove("results/"+parameters+".txt");
+Modelica.Utilities.Streams.print("N " + String(N), "results/"+parameters+".txt");
+Modelica.Utilities.Streams.print("ll " + String(ll), "results/"+parameters+".txt");
+Modelica.Utilities.Streams.print("h " + String(h), "results/"+parameters+".txt");
+Modelica.Utilities.Streams.print("M " + String(M), "results/"+parameters+".txt");
+Modelica.Utilities.Streams.print("K " + String(K), "results/"+parameters+".txt");
+Modelica.Utilities.Streams.print("sigma_u " + String(sigma_u), "results/"+parameters+".txt");
+Modelica.Utilities.Streams.print("sigma_y " + String(sigma_y), "results/"+parameters+".txt");
+Modelica.Utilities.Streams.print("sigma_load " + String(sigma_load), "results/"+parameters+".txt");
+
+// copy initial .mo to directory
+Modelica.Utilities.Files.copy("Multisine_Noise_SimuInit.mo", "../ExcitationGeneration/Multisine_Noise_Simu.mo", replace = true);
+
+// copy results to server
+Modelica.Utilities.Files.copy("results/", SimulationResults, replace = true);
+
+// clear up
+Modelica.Utilities.Files.remove("Modelica.Utilities.Streams.readRealMatrix.exe");
+Modelica.Utilities.Files.remove("Modelica.Utilities.Streams.readMatrixSize.exe");
+Modelica.Utilities.Files.remove("dymosim.exe");
+Modelica.Utilities.Files.remove("NetworkSimu.mat");
+Modelica.Utilities.Files.remove("NetworkSysId.mat");
