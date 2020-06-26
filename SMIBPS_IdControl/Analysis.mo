@@ -216,8 +216,7 @@ package Analysis
             redeclare record Bus = PF_Data.Bus_Data.PF_Bus_5,
             redeclare record Loads = PF_Data.Loads_Data.PF_Loads_5,
             redeclare record Trafos = PF_Data.Trafos_Data.PF_Trafos_5,
-            redeclare record Machines = PF_Data.Machines_Data.PF_Machines_5),
-            line_2(t1=Modelica.Constants.inf));
+            redeclare record Machines = PF_Data.Machines_Data.PF_Machines_5));
           extends
           SMIBPS_IdControl.Analysis.LinearAnalysis.Interfaces.OutputsInterface;
 
@@ -493,6 +492,115 @@ AVR+PSS
 </html>"));
       end SMIB_AVR_PSS_wInput;
 
+      model SMIB_AVR_PSS_wInput_wFault
+        extends BaseModelsPartial.BaseNetwork.SMIB_Partial(powerFlow_Data(
+            redeclare record Bus = PF_Data.Bus_Data.PF_Bus_5,
+            redeclare record Loads = PF_Data.Loads_Data.PF_Loads_5,
+            redeclare record Trafos = PF_Data.Trafos_Data.PF_Trafos_5,
+            redeclare record Machines = PF_Data.Machines_Data.PF_Machines_5),
+          fault(
+            R=R,
+            X=X,
+            t1=t1,
+            t2=t2),
+          line_2(
+            t1=t1_line,
+            t2=t2_line,
+            opening=opening_line));
+        extends SMIBPS_IdControl.Analysis.LinearAnalysis.Interfaces.OutputsInterface;
+        import Modelica.Constants.pi;
+        BaseModelsPartial.BasePlants.Generator_AVR_PSS_wInputs G1(
+          V_0=powerFlow_Data.bus.V1,
+          P_0=powerFlow_Data.machines.PG1,
+          Q_0=powerFlow_Data.machines.QG1,
+          angle_0=powerFlow_Data.bus.A1)
+          annotation (Placement(transformation(extent={{-120,-10},{-100,10}})));
+        Modelica.Blocks.Interfaces.RealInput uPSS
+          annotation (Placement(transformation(extent={{-180,20},{-140,60}})));
+        Modelica.Blocks.Interfaces.RealInput uPm
+          annotation (Placement(transformation(extent={{-180,-60},{-140,-20}})));
+        Modelica.Blocks.Interfaces.RealInput uPload annotation (Placement(
+              transformation(extent={{-180,-120},{-140,-80}})));
+        parameter Real R=0 "Resistance (pu)"
+          annotation (Dialog(group="Fault Parameters"));
+        parameter Real X=1e-5 "Reactance (pu)"
+          annotation (Dialog(group="Fault Parameters"));
+        parameter Real t1=0.5 "Start time of the fault (s)"
+          annotation (Dialog(group="Fault Parameters"));
+        parameter Real t2=0.57 "End time of the fault (s)"
+          annotation (Dialog(group="Fault Parameters"));
+        parameter Modelica.SIunits.Time t1_line=0.57
+          annotation (Dialog(group="Line Opening Parameters"));
+        parameter Modelica.SIunits.Time t2_line=Modelica.Constants.inf
+          annotation (Dialog(group="Line Opening Parameters"));
+        parameter Integer opening_line=1
+          annotation (Dialog(group="Line Opening Parameters"));
+      protected
+        parameter Real S_b=SysData.S_b;
+      equation
+        w = G1.machine.w;
+        delta = G1.machine.delta;
+        Vt = G1.machine.v;
+        P = G1.machine.P;
+        Q = G1.machine.Q;
+        connect(load_ExtInput.u, uPload) annotation (Line(points={{17.14,-66.7},{-2,-66.7},
+                {-2,-100},{-160,-100}},              color={0,0,127}));
+        connect(G1.uPSS, uPSS) annotation (Line(points={{-122,6},{-128,6},{-128,
+                40},{-160,40}},
+                      color={0,0,127}));
+        connect(uPm, G1.pm) annotation (Line(points={{-160,-40},{-130,-40},{
+                -130,-6},{-122,-6}},
+                           color={0,0,127}));
+        connect(G1.pwPin, B1.p)
+          annotation (Line(points={{-99,0},{-80,0}}, color={0,0,255}));
+        annotation (
+          Diagram(coordinateSystem(extent={{-140,-140},{140,140}})),
+          Icon(coordinateSystem(extent={{-140,-140},{140,140}}), graphics={
+              Rectangle(extent={{-140,140},{140,-140}}, lineColor={28,108,200}),
+              Text(
+                extent={{-140,60},{140,-80}},
+                lineColor={28,108,200},
+                fillColor={255,255,255},
+                fillPattern=FillPattern.Solid,
+                textString="Nonlinear
+Model
+AVR+PSS
+
+"),           Text(
+                extent={{-140,-80},{140,-220}},
+                lineColor={238,46,47},
+                fillColor={255,255,255},
+                fillPattern=FillPattern.Solid,
+                textString="%name
+")}),     experiment(
+            StopTime=10,
+            Interval=0.0001,
+            Tolerance=1e-06,
+            __Dymola_fixedstepsize=0.0001,
+            __Dymola_Algorithm="Dassl"),
+          __Dymola_experimentSetupOutput,
+          Documentation(info="<html>
+<table cellspacing=\"1\" cellpadding=\"1\" border=\"1\">
+<tr>
+<td><p>Reference</p></td>
+<td><p>SMIB PSAT, d_kundur2.mdl, PSAT</p></td>
+</tr>
+<tr>
+<td><p>Last update</p></td>
+<td>February 2016</td>
+</tr>
+<tr>
+<td><p>Author</p></td>
+<td><p>Maxime Baudette, Ahsan Murad, SmarTS Lab, KTH Royal Institute of Technology</p></td>
+</tr>
+<tr>
+<td><p>Contact</p></td>
+<td><p><a href=\"mailto:luigiv@kth.se\">luigiv@kth.se</a></p></td>
+</tr>
+</table>
+</html>"));
+      end SMIB_AVR_PSS_wInput_wFault;
+
       partial model OutputsInterface
         Modelica.Blocks.Interfaces.RealOutput Vt
           annotation (Placement(transformation(extent={{140,68},{160,90}})));
@@ -535,7 +643,6 @@ AVR+PSS
 </html>"),Diagram(coordinateSystem(extent={{-140,-140},{140,140}})),
           Icon(coordinateSystem(extent={{-140,-140},{140,140}})));
       end OutputsInterface;
-
     end Interfaces;
 
     package Linearization

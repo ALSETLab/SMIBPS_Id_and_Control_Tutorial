@@ -665,8 +665,7 @@ package BaseModelsPartial "Partial Models - Cannot be simulated!"
         R=0,
         G=0,
         B=0,
-        X=0.93/2,
-        opening=1)
+        X=0.93/2)
         annotation (Placement(transformation(extent={{-2,-46},{16,-34}})));
       inner OpenIPSL.Electrical.SystemBase SysData(S_b=2220, fn=60)
         annotation (Placement(transformation(extent={{-140,80},{-86,100}})));
@@ -691,6 +690,7 @@ package BaseModelsPartial "Partial Models - Cannot be simulated!"
       OpenIPSL.Electrical.Buses.Bus    B4(
         V_b=400)
               annotation (Placement(transformation(extent={{18,-50},{38,-30}})));
+
     protected
       parameter Real S_b=SysData.S_b;
     equation
@@ -794,21 +794,24 @@ package BaseModelsPartial "Partial Models - Cannot be simulated!"
         t1=0.5,
         t2=0.57,
         X=1e-5) annotation (Placement(transformation(extent={{-6,-6},{6,6}},
-            rotation=270,
-            origin={-20,-64})));
+            rotation=0,
+            origin={32,-14})));
       OpenIPSL.Electrical.Loads.PSSE.Load_ExtInput load_ExtInput(
         V_0=powerFlow_Data.bus.V4,
         angle_0=powerFlow_Data.bus.A4,
         P_0=powerFlow_Data.loads.PL1,
-        Q_0=powerFlow_Data.loads.QL1)
+        Q_0=powerFlow_Data.loads.QL1,
+        d_P=0,
+        t1=Modelica.Constants.inf,
+        d_t=Modelica.Constants.inf)
         annotation (Placement(transformation(extent={{16,-76},{28,-64}})));
       PF_Data.PowerFlow_Data powerFlow_Data
         annotation (Placement(transformation(extent={{-120,44},{-100,64}})));
     equation
-      connect(fault.p, B2.p)
-        annotation (Line(points={{-20,-57},{-20,0},{-30,0}}, color={0,0,255}));
       connect(load_ExtInput.p, line_2.n)
         annotation (Line(points={{22,-64},{22,-40},{15.1,-40}}, color={0,0,255}));
+      connect(fault.p, line_2.n) annotation (Line(points={{25,-14},{24,-14},{24,
+              -40},{15.1,-40}}, color={0,0,255}));
     end SMIB_Partial;
   end BaseNetwork;
 end BaseModelsPartial;
