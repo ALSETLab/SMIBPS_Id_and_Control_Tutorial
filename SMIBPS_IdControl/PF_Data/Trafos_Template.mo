@@ -1,3 +1,4 @@
+within SMIBPS_IdControl.PF_Data;
 record Trafos_Template
 
 parameter Real t1_trafo_1;

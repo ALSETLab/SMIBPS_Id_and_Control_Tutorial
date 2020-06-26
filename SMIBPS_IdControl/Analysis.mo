@@ -13,7 +13,6 @@ package Analysis
           redeclare record Trafos = PF_Data.Trafos_Data.PF_Trafos_2,
           redeclare record Machines = PF_Data.Machines_Data.PF_Machines_2),
         transformer(kT=1),
-        B1(nn=1),
         load_ExtInput(
           d_P=0,
           t1=0,
@@ -24,16 +23,16 @@ package Analysis
         P_0=powerFlow_Data.machines.PG1,
         Q_0=powerFlow_Data.machines.QG1,
         angle_0=powerFlow_Data.bus.A1)
-        annotation (Placement(transformation(extent={{-120,-10},{-100,10}})));
+        annotation (Placement(transformation(extent={{-122,-10},{-102,10}})));
       Modelica.Blocks.Sources.Constant const(k=0)
-        annotation (Placement(transformation(extent={{-2,-46},{6,-38}})));
+        annotation (Placement(transformation(extent={{-2,-70},{6,-62}})));
     protected
       parameter Real S_b=SysData.S_b;
     equation
-      connect(G1.pwPin, B1.n[1])
-        annotation (Line(points={{-99,0},{-80,0}}, color={0,0,255}));
-      connect(const.y, load_ExtInput.u) annotation (Line(points={{6.4,-42},{10,
-              -42},{10,-40.7},{13.14,-40.7}}, color={0,0,127}));
+      connect(const.y, load_ExtInput.u) annotation (Line(points={{6.4,-66},{10,
+              -66},{10,-66.7},{17.14,-66.7}}, color={0,0,127}));
+      connect(G1.pwPin, B1.p)
+        annotation (Line(points={{-101,0},{-80,0}}, color={0,0,255}));
       annotation (
         Diagram(coordinateSystem(extent={{-140,-100},{120,100}},
               preserveAspectRatio=false), graphics={Text(
@@ -76,14 +75,12 @@ package Analysis
 
     model SMIB_AVR
         extends Modelica.Icons.Example;
-      extends BaseModelsPartial.BaseNetwork.SMIB_Partial(
-        B1(nn=1),
-        powerFlow_Data(
+      extends BaseModelsPartial.BaseNetwork.SMIB_Partial(powerFlow_Data(
           redeclare record Bus = PF_Data.Bus_Data.PF_Bus_3,
           redeclare record Loads = PF_Data.Loads_Data.PF_Loads_3,
           redeclare record Trafos = PF_Data.Trafos_Data.PF_Trafos_3,
           redeclare record Machines = PF_Data.Machines_Data.PF_Machines_3),
-        load_ExtInput(
+          load_ExtInput(
           d_P=0,
           t1=0,
           d_t=0));
@@ -100,8 +97,8 @@ package Analysis
       parameter Real S_b=SysData.S_b;
     equation
       connect(const.y, load_ExtInput.u) annotation (Line(points={{6.4,-42},{10,
-              -42},{10,-40.7},{13.14,-40.7}}, color={0,0,127}));
-      connect(G1.pwPin, B1.n[1])
+              -42},{10,-66.7},{17.14,-66.7}}, color={0,0,127}));
+      connect(G1.pwPin, B1.p)
         annotation (Line(points={{-99,0},{-80,0}}, color={0,0,255}));
       annotation (
         Diagram(coordinateSystem(extent={{-140,-100},{120,100}},
@@ -145,14 +142,12 @@ package Analysis
 
     model SMIB_AVR_PSS
         extends Modelica.Icons.Example;
-      extends BaseModelsPartial.BaseNetwork.SMIB_Partial(
-        B1(nn=1),
-        powerFlow_Data(
+      extends BaseModelsPartial.BaseNetwork.SMIB_Partial(powerFlow_Data(
           redeclare record Bus = PF_Data.Bus_Data.PF_Bus_8,
           redeclare record Loads = PF_Data.Loads_Data.PF_Loads_8,
           redeclare record Trafos = PF_Data.Trafos_Data.PF_Trafos_8,
           redeclare record Machines = PF_Data.Machines_Data.PF_Machines_8),
-        load_ExtInput(
+          load_ExtInput(
           d_P=0,
           t1=0,
           d_t=0));
@@ -169,13 +164,13 @@ package Analysis
       parameter Real S_b=SysData.S_b;
     equation
       connect(const.y, load_ExtInput.u) annotation (Line(points={{6.4,-44},{10,
-              -44},{10,-40.7},{13.14,-40.7}}, color={0,0,127}));
-      connect(G1.pwPin, B1.n[1])
+              -44},{10,-66.7},{17.14,-66.7}}, color={0,0,127}));
+      connect(G1.pwPin, B1.p)
         annotation (Line(points={{-99,0},{-80,0}}, color={0,0,255}));
       annotation (
         Diagram(coordinateSystem(extent={{-140,-100},{120,100}},
               preserveAspectRatio=false), graphics={Text(
-              extent={{-110,74},{110,54}},
+              extent={{-112,64},{108,44}},
               lineColor={0,0,0},
               lineThickness=1,
               fillPattern=FillPattern.Solid,
@@ -227,7 +222,7 @@ package Analysis
           P_0=0.899999999997135*S_b,
           Q_0=0.436002238696658*S_b,
           angle_0=0.494677176989155*180/pi)
-          annotation (Placement(transformation(extent={{-124,-12},{-100,12}})));
+          annotation (Placement(transformation(extent={{-108,-12},{-84,12}})));
         Modelica.Blocks.Interfaces.RealInput uEfd
           annotation (Placement(transformation(extent={{-180,20},{-140,60}})));
         Modelica.Blocks.Interfaces.RealInput uPm
@@ -240,12 +235,14 @@ package Analysis
         Vt = G1.machine.v;
         P = G1.machine.P;
         Q = G1.machine.Q;
-        connect(G1.pwPin, B1.p)
-          annotation (Line(points={{-98.8,0},{-80,0}},       color={0,0,255}));
-        connect(G1.pm, uPm) annotation (Line(points={{-126.4,-7.2},{-132,-7.2},{-132,-40},
-                {-160,-40}}, color={0,0,127}));
-        connect(G1.efd, uEfd) annotation (Line(points={{-126.4,7.2},{-134,7.2},{-134,40},
-                {-160,40}}, color={0,0,127}));
+        connect(G1.pm, uPm) annotation (Line(points={{-110.4,-7.2},{-136,-7.2},
+                {-136,-40},{-160,-40}},
+                             color={0,0,127}));
+        connect(G1.efd, uEfd) annotation (Line(points={{-110.4,7.2},{-136,7.2},
+                {-136,40},{-160,40}},
+                            color={0,0,127}));
+        connect(bus.p, G1.pwPin)
+          annotation (Line(points={{-62,0},{-82.8,0}}, color={0,0,255}));
         annotation (
           Diagram(coordinateSystem(extent={{-140,-140},{140,140}}),
                                             graphics={Text(
@@ -330,12 +327,14 @@ Generator
         Vt = G1.machine.v;
         P = G1.machine.P;
         Q = G1.machine.Q;
-        connect(G1.pwPin, B1.p)
-          annotation (Line(points={{-98.8,0},{-80,0}},       color={0,0,255}));
-        connect(uVref, G1.uVs) annotation (Line(points={{-160,40},{-134,40},{-134,7.2},
-                {-126.64,7.2}}, color={0,0,127}));
-        connect(G1.pm, uPm) annotation (Line(points={{-126.4,-7.2},{-132,-7.2},{-132,-40},
-                {-160,-40}}, color={0,0,127}));
+        connect(uVref, G1.uVs) annotation (Line(points={{-160,40},{-134,40},{
+                -134,7.2},{-126.64,7.2}},
+                                color={0,0,127}));
+        connect(G1.pm, uPm) annotation (Line(points={{-126.4,-7.2},{-134,-7.2},
+                {-134,-40},{-160,-40}},
+                             color={0,0,127}));
+        connect(bus.p, G1.pwPin)
+          annotation (Line(points={{-62,0},{-98.8,0}}, color={0,0,255}));
         annotation (
           Diagram(coordinateSystem(extent={{-140,-140},{140,140}}),
                                             graphics={Text(
@@ -406,7 +405,7 @@ with AVR
           P_0=0.899999999997135*S_b,
           Q_0=0.436002238696658*S_b,
           angle_0=0.494677176989155*180/pi)
-          annotation (Placement(transformation(extent={{-120,-10},{-100,10}})));
+          annotation (Placement(transformation(extent={{-118,-10},{-98,10}})));
         Modelica.Blocks.Interfaces.RealInput uPSS
           annotation (Placement(transformation(extent={{-180,20},{-140,60}})));
         Modelica.Blocks.Interfaces.RealInput uPm
@@ -419,12 +418,14 @@ with AVR
         Vt = G1.machine.v;
         P = G1.machine.P;
         Q = G1.machine.Q;
-        connect(G1.pwPin, B1.p)
-          annotation (Line(points={{-99,0},{-80,0}},         color={0,0,255}));
-        connect(G1.uPSS, uPSS) annotation (Line(points={{-122,6},{-128,6},{-128,40},{-160,
-                40}}, color={0,0,127}));
-        connect(uPm, G1.pm) annotation (Line(points={{-160,-40},{-130,-40},{-130,-6},{
-                -122,-6}}, color={0,0,127}));
+        connect(G1.uPSS, uPSS) annotation (Line(points={{-120,6},{-128,6},{-128,
+                40},{-160,40}},
+                      color={0,0,127}));
+        connect(uPm, G1.pm) annotation (Line(points={{-160,-40},{-130,-40},{
+                -130,-6},{-120,-6}},
+                           color={0,0,127}));
+        connect(G1.pwPin, bus.p)
+          annotation (Line(points={{-97,0},{-62,0}}, color={0,0,255}));
         annotation (
           Diagram(coordinateSystem(extent={{-140,-140},{140,140}}),
                                             graphics={Text(

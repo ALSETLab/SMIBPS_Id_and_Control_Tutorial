@@ -1,3 +1,4 @@
+within SMIBPS_IdControl.PF_Data;
 record Machines_Template
 
 parameter Real PG1;

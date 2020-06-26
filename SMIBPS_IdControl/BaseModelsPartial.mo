@@ -650,12 +650,12 @@ package BaseModelsPartial "Partial Models - Cannot be simulated!"
         x=0.15,
         r=0,
         V_b=400,
-        Vn=400) annotation (Placement(transformation(extent={{-60,-10},{-40,10}})));
+        Vn=400) annotation (Placement(transformation(extent={{-66,-10},{-46,10}})));
       OpenIPSL.Electrical.Branches.PwLine line_1(
         R=0,
         G=0,
         B=0,
-        X=0.5) annotation (Placement(transformation(extent={{10,14},{28,26}})));
+        X=0.5) annotation (Placement(transformation(extent={{22,14},{40,26}})));
       OpenIPSL.Electrical.Buses.InfiniteBus infinite_bus(angle_0=0, V_0=
             0.900810000000000) annotation (Placement(transformation(
             extent={{10,10},{-10,-10}},
@@ -667,7 +667,7 @@ package BaseModelsPartial "Partial Models - Cannot be simulated!"
         B=0,
         X=0.93/2,
         opening=1)
-        annotation (Placement(transformation(extent={{-4,-28},{14,-16}})));
+        annotation (Placement(transformation(extent={{-2,-46},{16,-34}})));
       inner OpenIPSL.Electrical.SystemBase SysData(S_b=2220, fn=60)
         annotation (Placement(transformation(extent={{-140,80},{-86,100}})));
       OpenIPSL.Electrical.Branches.PwLine line_3(
@@ -676,44 +676,43 @@ package BaseModelsPartial "Partial Models - Cannot be simulated!"
         B=0,
         X=0.93/2,
         opening=1)
-        annotation (Placement(transformation(extent={{28,-28},{46,-16}})));
-      OpenIPSL.Electrical.Buses.BusExt B1(V_b=400, np=1)
-        annotation (Placement(transformation(extent={{-80,-10},{-78,10}})));
-      OpenIPSL.Electrical.Buses.BusExt B2(
-        V_b=400,
-        np=1,
-        nn=1)
-        annotation (Placement(transformation(extent={{-28,-10},{-26,10}})));
-      OpenIPSL.Electrical.Buses.BusExt B4(
-        V_b=400,
-        np=1,
-        nn=1) annotation (Placement(transformation(extent={{20,-28},{22,-16}})));
-      OpenIPSL.Electrical.Buses.BusExt B3(
-        V_b=400,
-        np=1,
-        nn=2) annotation (Placement(transformation(extent={{60,-10},{62,10}})));
+        annotation (Placement(transformation(extent={{44,-46},{62,-34}})));
+      OpenIPSL.Electrical.Buses.Bus    B1(V_b=400)
+        annotation (Placement(transformation(extent={{-90,-10},{-70,10}})));
+      OpenIPSL.Electrical.Buses.Bus    B2(
+        V_b=400)
+        annotation (Placement(transformation(extent={{10,10},{-10,-10}},
+            rotation=180,
+            origin={-30,0})));
+      OpenIPSL.Electrical.Buses.Bus    B3(V_b=400)
+        annotation (Placement(transformation(extent={{10,10},{-10,-10}},
+            rotation=180,
+            origin={82,0})));
+      OpenIPSL.Electrical.Buses.Bus    B4(
+        V_b=400)
+              annotation (Placement(transformation(extent={{18,-50},{38,-30}})));
     protected
       parameter Real S_b=SysData.S_b;
     equation
-      connect(line_2.p, line_1.p) annotation (Line(points={{-3.1,-22},{-10,-22},
-              {-10,20},{10.9,20}},
+      connect(line_2.p, line_1.p) annotation (Line(points={{-1.1,-40},{-10,-40},
+              {-10,20},{22.9,20}},
                              color={0,0,255}));
-      connect(B1.p[1], transformer.p)
-        annotation (Line(points={{-78,0},{-61,0}}, color={0,0,255}));
-      connect(B2.n[1], transformer.n)
-        annotation (Line(points={{-28,0},{-39,0}}, color={0,0,255}));
-      connect(B2.p[1], line_1.p) annotation (Line(points={{-26,0},{-10,0},{-10,
-              20},{10.9,20}}, color={0,0,255}));
-      connect(B4.n[1], line_2.n)
-        annotation (Line(points={{20,-22},{13.1,-22}}, color={0,0,255}));
-      connect(B4.p[1], line_3.p)
-        annotation (Line(points={{22,-22},{28.9,-22}}, color={0,0,255}));
-      connect(B3.p[1], infinite_bus.p)
-        annotation (Line(points={{62,0},{100,0}}, color={0,0,255}));
-      connect(line_3.n, B3.n[1]) annotation (Line(points={{45.1,-22},{52,-22},{
-              52,-3},{60,-3}}, color={0,0,255}));
-      connect(line_1.n, B3.n[2]) annotation (Line(points={{27.1,20},{52,20},{52,
-              2},{60,2},{60,3}}, color={0,0,255}));
+      connect(transformer.n, B2.p) annotation (Line(points={{-45,0},{-38,0},{
+              -38,4.44089e-16},{-30,4.44089e-16}}, color={0,0,255}));
+      connect(B2.p, line_1.p) annotation (Line(points={{-30,0},{-10,0},{-10,20},
+              {22.9,20}}, color={0,0,255}));
+      connect(B3.p, infinite_bus.p) annotation (Line(points={{82,4.44089e-16},{
+              81,4.44089e-16},{81,0},{100,0}}, color={0,0,255}));
+      connect(line_1.n, B3.p) annotation (Line(points={{39.1,20},{70,20},{70,0},
+              {82,0},{82,4.44089e-16}}, color={0,0,255}));
+      connect(line_3.n, B3.p) annotation (Line(points={{61.1,-40},{70,-40},{70,
+              4.44089e-16},{82,4.44089e-16}}, color={0,0,255}));
+      connect(B4.p, line_3.p)
+        annotation (Line(points={{28,-40},{44.9,-40}}, color={0,0,255}));
+      connect(B4.p, line_2.n)
+        annotation (Line(points={{28,-40},{15.1,-40}}, color={0,0,255}));
+      connect(B1.p, transformer.p)
+        annotation (Line(points={{-80,0},{-67,0}}, color={0,0,255}));
       annotation (
         Diagram(coordinateSystem(extent={{-140,-100},{120,100}},
               preserveAspectRatio=false), graphics={Text(
@@ -722,14 +721,7 @@ package BaseModelsPartial "Partial Models - Cannot be simulated!"
               lineThickness=1,
               fontSize=15,
               textStyle={TextStyle.Bold},
-              textString="Single-machine infinite bus model*"),           Text(
-              extent={{-138,-80},{80,-98}},
-              lineColor={0,0,0},
-              lineThickness=1,
-              fillPattern=FillPattern.Solid,
-              fontSize=12,
-              textString=
-                "*P. Kundur, \"Power System Stability and Control\", Example 13.2")}),
+              textString="Single-machine infinite bus model*")}),
         Icon(coordinateSystem(extent={{-140,-100},{120,100}})),
         experiment(
           StopTime=10,
@@ -762,14 +754,10 @@ package BaseModelsPartial "Partial Models - Cannot be simulated!"
 
     partial model SMIB_Partial "Partial SMIB Model with a fault block"
       extends SMIB_Base(
-        B1(V_0=powerFlow_Data.bus.V1, angle_0=powerFlow_Data.bus.A1),
         B2(
           V_0=powerFlow_Data.bus.V2,
-          angle_0=powerFlow_Data.bus.A2,
-          np=2),
+          angle_0=powerFlow_Data.bus.A2),
         line_2(t1=0.57),
-        B4(nn=2),
-        B3(V_0=powerFlow_Data.bus.V3, angle_0=powerFlow_Data.bus.A3),
         infinite_bus(
           V_0=powerFlow_Data.bus.V3,
           angle_0=powerFlow_Data.bus.A3,
@@ -781,20 +769,20 @@ package BaseModelsPartial "Partial Models - Cannot be simulated!"
         t2=0.57,
         X=1e-5) annotation (Placement(transformation(extent={{-6,-6},{6,6}},
             rotation=270,
-            origin={-20,-36})));
+            origin={-20,-64})));
       OpenIPSL.Electrical.Loads.PSSE.Load_ExtInput load_ExtInput(
         V_0=powerFlow_Data.bus.V4,
         angle_0=powerFlow_Data.bus.A4,
         P_0=powerFlow_Data.loads.PL1,
         Q_0=powerFlow_Data.loads.QL1)
-        annotation (Placement(transformation(extent={{12,-50},{24,-38}})));
+        annotation (Placement(transformation(extent={{16,-76},{28,-64}})));
       PF_Data.PowerFlow_Data powerFlow_Data
         annotation (Placement(transformation(extent={{-120,44},{-100,64}})));
     equation
-      connect(fault.p, B2.p[2])
-        annotation (Line(points={{-20,-29},{-20,0},{-26,0}}, color={0,0,255}));
-      connect(load_ExtInput.p, B4.n[2]) annotation (Line(points={{18,-38},{18,
-              -22},{20,-22}}, color={0,0,255}));
+      connect(fault.p, B2.p)
+        annotation (Line(points={{-20,-57},{-20,0},{-30,0}}, color={0,0,255}));
+      connect(load_ExtInput.p, line_2.n)
+        annotation (Line(points={{22,-64},{22,-40},{15.1,-40}}, color={0,0,255}));
     end SMIB_Partial;
   end BaseNetwork;
 end BaseModelsPartial;

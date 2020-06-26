@@ -1,3 +1,4 @@
+within SMIBPS_IdControl.PF_Data;
 record Loads_Template
 
 parameter Real PL1;

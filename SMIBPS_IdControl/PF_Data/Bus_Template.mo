@@ -1,3 +1,4 @@
+within SMIBPS_IdControl.PF_Data;
 record Bus_Template
 
 parameter Real V1;
