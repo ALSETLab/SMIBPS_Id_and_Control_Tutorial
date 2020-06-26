@@ -1438,6 +1438,9 @@ They have to be rearranged based on the order provided by the linearization func
       end PerturbPm;
     end PerturbationAnalysis;
 
+    package LinearizeAfterDisturbance
+      extends Modelica.Icons.ExamplesPackage;
+    end LinearizeAfterDisturbance;
   end LinearAnalysis;
 
 end Analysis;
