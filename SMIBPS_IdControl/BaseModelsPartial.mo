@@ -752,6 +752,33 @@ package BaseModelsPartial "Partial Models - Cannot be simulated!"
 </html>"));
     end SMIB_Base;
 
+    partial model SMIB_BaseWithPF "Partial SMIB Model with a fault block"
+      extends SMIB_Base(
+        B2(
+          V_0=powerFlow_Data.bus.V2,
+          angle_0=powerFlow_Data.bus.A2),
+        line_2(t1=0.57),
+        infinite_bus(
+          V_0=powerFlow_Data.bus.V3,
+          angle_0=powerFlow_Data.bus.A3,
+          P_0=powerFlow_Data.machines.PG2,
+          Q_0=powerFlow_Data.machines.QG2));
+      OpenIPSL.Electrical.Loads.PSSE.Load_ExtInput load_ExtInput(
+        V_0=powerFlow_Data.bus.V4,
+        angle_0=powerFlow_Data.bus.A4,
+        P_0=powerFlow_Data.loads.PL1,
+        Q_0=powerFlow_Data.loads.QL1,
+        d_P=0,
+        t1=0,
+        d_t=0)
+        annotation (Placement(transformation(extent={{16,-76},{28,-64}})));
+      PF_Data.PowerFlow_Data powerFlow_Data
+        annotation (Placement(transformation(extent={{-120,44},{-100,64}})));
+    equation
+      connect(load_ExtInput.p, line_2.n)
+        annotation (Line(points={{22,-64},{22,-40},{15.1,-40}}, color={0,0,255}));
+    end SMIB_BaseWithPF;
+
     partial model SMIB_Partial "Partial SMIB Model with a fault block"
       extends SMIB_Base(
         B2(

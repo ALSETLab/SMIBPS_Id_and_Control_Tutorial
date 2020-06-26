@@ -8,10 +8,10 @@ package Analysis
       extends Modelica.Icons.Example;
       extends BaseModelsPartial.BaseNetwork.SMIB_Partial(
         powerFlow_Data(
-          redeclare record Bus = PF_Data.Bus_Data.PF_Bus_2,
-          redeclare record Loads = PF_Data.Loads_Data.PF_Loads_2,
-          redeclare record Trafos = PF_Data.Trafos_Data.PF_Trafos_2,
-          redeclare record Machines = PF_Data.Machines_Data.PF_Machines_2),
+          redeclare record Bus = PF_Data.Bus_Data.PF_Bus_5,
+          redeclare record Loads = PF_Data.Loads_Data.PF_Loads_5,
+          redeclare record Trafos = PF_Data.Trafos_Data.PF_Trafos_5,
+          redeclare record Machines = PF_Data.Machines_Data.PF_Machines_5),
         transformer(kT=1),
         load_ExtInput(
           d_P=0,
@@ -36,7 +36,7 @@ package Analysis
       annotation (
         Diagram(coordinateSystem(extent={{-140,-100},{120,100}},
               preserveAspectRatio=false), graphics={Text(
-              extent={{-110,68},{110,48}},
+              extent={{-10,70},{114,46}},
               lineColor={0,0,0},
               lineThickness=1,
               fillPattern=FillPattern.Solid,
@@ -159,12 +159,12 @@ package Analysis
         angle_0=powerFlow_Data.bus.A1)
         annotation (Placement(transformation(extent={{-120,-10},{-100,10}})));
       Modelica.Blocks.Sources.Constant const(k=0)
-        annotation (Placement(transformation(extent={{-2,-48},{6,-40}})));
+        annotation (Placement(transformation(extent={{0,-70},{8,-62}})));
     protected
       parameter Real S_b=SysData.S_b;
     equation
-      connect(const.y, load_ExtInput.u) annotation (Line(points={{6.4,-44},{10,
-              -44},{10,-66.7},{17.14,-66.7}}, color={0,0,127}));
+      connect(const.y, load_ExtInput.u) annotation (Line(points={{8.4,-66},{10,
+              -66},{10,-66.7},{17.14,-66.7}}, color={0,0,127}));
       connect(G1.pwPin, B1.p)
         annotation (Line(points={{-99,0},{-80,0}}, color={0,0,255}));
       annotation (
@@ -212,21 +212,27 @@ package Analysis
     extends Modelica.Icons.ExamplesPackage;
     package Interfaces
       model SMIB_GEN_wInput
-        extends BaseModelsPartial.BaseNetwork.SMIB_Base;
+        extends BaseModelsPartial.BaseNetwork.SMIB_BaseWithPF(powerFlow_Data(
+            redeclare record Bus = PF_Data.Bus_Data.PF_Bus_5,
+            redeclare record Loads = PF_Data.Loads_Data.PF_Loads_5,
+            redeclare record Trafos = PF_Data.Trafos_Data.PF_Trafos_5,
+            redeclare record Machines = PF_Data.Machines_Data.PF_Machines_5));
           extends
           SMIBPS_IdControl.Analysis.LinearAnalysis.Interfaces.OutputsInterface;
 
         import Modelica.Constants.pi;
         BaseModelsPartial.BasePlants.Generator_wInputs G1(
-          V_0=1,
-          P_0=0.899999999997135*S_b,
-          Q_0=0.436002238696658*S_b,
-          angle_0=0.494677176989155*180/pi)
-          annotation (Placement(transformation(extent={{-108,-12},{-84,12}})));
+          V_0=powerFlow_Data.bus.V1,
+          P_0=powerFlow_Data.machines.PG1,
+          Q_0=powerFlow_Data.machines.QG1,
+          angle_0=powerFlow_Data.bus.A1)
+          annotation (Placement(transformation(extent={{-120,-12},{-96,12}})));
         Modelica.Blocks.Interfaces.RealInput uEfd
           annotation (Placement(transformation(extent={{-180,20},{-140,60}})));
         Modelica.Blocks.Interfaces.RealInput uPm
           annotation (Placement(transformation(extent={{-180,-60},{-140,-20}})));
+        Modelica.Blocks.Interfaces.RealInput uPload annotation (Placement(
+              transformation(extent={{-180,-120},{-140,-80}})));
       protected
         parameter Real S_b=SysData.S_b;
       equation
@@ -235,14 +241,14 @@ package Analysis
         Vt = G1.machine.v;
         P = G1.machine.P;
         Q = G1.machine.Q;
-        connect(G1.pm, uPm) annotation (Line(points={{-110.4,-7.2},{-136,-7.2},
-                {-136,-40},{-160,-40}},
-                             color={0,0,127}));
-        connect(G1.efd, uEfd) annotation (Line(points={{-110.4,7.2},{-136,7.2},
-                {-136,40},{-160,40}},
-                            color={0,0,127}));
-        connect(bus.p, G1.pwPin)
-          annotation (Line(points={{-62,0},{-82.8,0}}, color={0,0,255}));
+        connect(G1.pm, uPm) annotation (Line(points={{-122.4,-7.2},{-136,-7.2},{-136,-40},
+                {-160,-40}}, color={0,0,127}));
+        connect(G1.efd, uEfd) annotation (Line(points={{-122.4,7.2},{-136,7.2},{-136,40},
+                {-160,40}}, color={0,0,127}));
+        connect(G1.pwPin, B1.p) annotation (Line(points={{-94.8,0},{-88,0},{-88,0},{-80,
+                0}}, color={0,0,255}));
+        connect(uPload, load_ExtInput.u) annotation (Line(points={{-160,-100},{
+                -72,-100},{-72,-66.7},{17.14,-66.7}}, color={0,0,127}));
         annotation (
           Diagram(coordinateSystem(extent={{-140,-140},{140,140}}),
                                             graphics={Text(
@@ -251,13 +257,7 @@ package Analysis
                 lineThickness=1,
                 fontSize=15,
                 textStyle={TextStyle.Bold},
-                textString="(Generator + input for Bode plots)"),
-                                                            Text(
-                extent={{-114,-58},{2,-80}},
-                lineColor={28,108,200},
-                textString="Output value set is B1.V.
-Output variable can be redifined in the text layer.",
-                horizontalAlignment=TextAlignment.Left)}),
+                textString="(Generator + input for Bode plots)")}),
           Icon(coordinateSystem(extent={{-140,-140},{140,140}}), graphics={
               Rectangle(extent={{-140,140},{140,-140}}, lineColor={28,108,200}),
               Text(
@@ -304,7 +304,11 @@ Generator
       end SMIB_GEN_wInput;
       extends Modelica.Icons.InterfacesPackage;
       model SMIB_AVR_wInput
-        extends BaseModelsPartial.BaseNetwork.SMIB_Base;
+        extends BaseModelsPartial.BaseNetwork.SMIB_BaseWithPF(powerFlow_Data(
+            redeclare record Bus = PF_Data.Bus_Data.PF_Bus_5,
+            redeclare record Loads = PF_Data.Loads_Data.PF_Loads_5,
+            redeclare record Trafos = PF_Data.Trafos_Data.PF_Trafos_5,
+            redeclare record Machines = PF_Data.Machines_Data.PF_Machines_5));
           extends
           SMIBPS_IdControl.Analysis.LinearAnalysis.Interfaces.OutputsInterface;
 
@@ -333,8 +337,8 @@ Generator
         connect(G1.pm, uPm) annotation (Line(points={{-126.4,-7.2},{-134,-7.2},
                 {-134,-40},{-160,-40}},
                              color={0,0,127}));
-        connect(bus.p, G1.pwPin)
-          annotation (Line(points={{-62,0},{-98.8,0}}, color={0,0,255}));
+        connect(G1.pwPin, B1.p)
+          annotation (Line(points={{-98.8,0},{-80,0}}, color={0,0,255}));
         annotation (
           Diagram(coordinateSystem(extent={{-140,-140},{140,140}}),
                                             graphics={Text(
@@ -344,12 +348,7 @@ Generator
                 fontSize=15,
                 textStyle={TextStyle.Bold},
                 textString="(AVR
- + input for Bode plots)"),                                 Text(
-                extent={{-114,-58},{2,-80}},
-                lineColor={28,108,200},
-                textString="Output value set is B1.V.
-Output variable can be redifined in the text layer.",
-                horizontalAlignment=TextAlignment.Left)}),
+ + input for Bode plots)")}),
           Icon(coordinateSystem(extent={{-140,-140},{140,140}}), graphics={
               Rectangle(extent={{-140,140},{140,-140}}, lineColor={28,108,200}),
               Text(
@@ -396,7 +395,11 @@ with AVR
       end SMIB_AVR_wInput;
 
       model SMIB_AVR_PSS_wInput
-        extends BaseModelsPartial.BaseNetwork.SMIB_Base;
+        extends BaseModelsPartial.BaseNetwork.SMIB_BaseWithPF(powerFlow_Data(
+            redeclare record Bus = PF_Data.Bus_Data.PF_Bus_5,
+            redeclare record Loads = PF_Data.Loads_Data.PF_Loads_5,
+            redeclare record Trafos = PF_Data.Trafos_Data.PF_Trafos_5,
+            redeclare record Machines = PF_Data.Machines_Data.PF_Machines_5));
         extends
           SMIBPS_IdControl.Analysis.LinearAnalysis.Interfaces.OutputsInterface;
         import Modelica.Constants.pi;
@@ -424,8 +427,8 @@ with AVR
         connect(uPm, G1.pm) annotation (Line(points={{-160,-40},{-130,-40},{
                 -130,-6},{-120,-6}},
                            color={0,0,127}));
-        connect(G1.pwPin, bus.p)
-          annotation (Line(points={{-97,0},{-62,0}}, color={0,0,255}));
+        connect(G1.pwPin, B1.p)
+          annotation (Line(points={{-97,0},{-80,0}}, color={0,0,255}));
         annotation (
           Diagram(coordinateSystem(extent={{-140,-140},{140,140}}),
                                             graphics={Text(
@@ -434,12 +437,7 @@ with AVR
                 lineThickness=1,
                 fontSize=15,
                 textStyle={TextStyle.Bold},
-                textString="(AVR + PSS + input for Bode plots)"), Text(
-                extent={{-114,-58},{2,-80}},
-                lineColor={28,108,200},
-                horizontalAlignment=TextAlignment.Left,
-                textString="Output value set is G1.w, the generator speed.
-Output variable can be redifined in the text layer.")}),
+                textString="(AVR + PSS + input for Bode plots)")}),
           Icon(coordinateSystem(extent={{-140,-140},{140,140}}), graphics={
               Rectangle(extent={{-140,140},{140,-140}}, lineColor={28,108,200}),
               Text(
