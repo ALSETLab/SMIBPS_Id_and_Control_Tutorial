@@ -25,12 +25,12 @@ package Analysis
         angle_0=powerFlow_Data.bus.A1)
         annotation (Placement(transformation(extent={{-122,-10},{-102,10}})));
       Modelica.Blocks.Sources.Constant const(k=0)
-        annotation (Placement(transformation(extent={{-2,-70},{6,-62}})));
+        annotation (Placement(transformation(extent={{-2,-72},{6,-64}})));
     protected
       parameter Real S_b=SysData.S_b;
     equation
-      connect(const.y, load_ExtInput.u) annotation (Line(points={{6.4,-66},{10,
-              -66},{10,-66.7},{17.14,-66.7}}, color={0,0,127}));
+      connect(const.y, load_ExtInput.u) annotation (Line(points={{6.4,-68},{10,
+              -68},{10,-66.7},{17.14,-66.7}}, color={0,0,127}));
       connect(G1.pwPin, B1.p)
         annotation (Line(points={{-101,0},{-80,0}}, color={0,0,255}));
       annotation (
@@ -92,12 +92,12 @@ package Analysis
         angle_0=powerFlow_Data.bus.A1)
         annotation (Placement(transformation(extent={{-120,-10},{-100,10}})));
       Modelica.Blocks.Sources.Constant const(k=0)
-        annotation (Placement(transformation(extent={{-2,-46},{6,-38}})));
+        annotation (Placement(transformation(extent={{0,-72},{8,-64}})));
     protected
       parameter Real S_b=SysData.S_b;
     equation
-      connect(const.y, load_ExtInput.u) annotation (Line(points={{6.4,-42},{10,
-              -42},{10,-66.7},{17.14,-66.7}}, color={0,0,127}));
+      connect(const.y, load_ExtInput.u) annotation (Line(points={{8.4,-68},{10,
+              -68},{10,-66.7},{17.14,-66.7}}, color={0,0,127}));
       connect(G1.pwPin, B1.p)
         annotation (Line(points={{-99,0},{-80,0}}, color={0,0,255}));
       annotation (
@@ -314,15 +314,17 @@ Generator
 
         import Modelica.Constants.pi;
         BaseModelsPartial.BasePlants.Generator_AVR_wInputs G1(
-          V_0=1,
-          P_0=0.899999999997135*S_b,
-          Q_0=0.436002238696658*S_b,
-          angle_0=0.494677176989155*180/pi)
-          annotation (Placement(transformation(extent={{-124,-12},{-100,12}})));
+          V_0=powerFlow_Data.bus.V1,
+          P_0=powerFlow_Data.machines.PG1,
+          Q_0=powerFlow_Data.machines.QG1,
+          angle_0=powerFlow_Data.bus.A1)
+          annotation (Placement(transformation(extent={{-116,-12},{-92,12}})));
         Modelica.Blocks.Interfaces.RealInput uVref
           annotation (Placement(transformation(extent={{-180,20},{-140,60}})));
         Modelica.Blocks.Interfaces.RealInput uPm
           annotation (Placement(transformation(extent={{-180,-60},{-140,-20}})));
+        Modelica.Blocks.Interfaces.RealInput uPload annotation (Placement(
+              transformation(extent={{-180,-120},{-140,-80}})));
       protected
         parameter Real S_b=SysData.S_b;
       equation
@@ -332,13 +334,15 @@ Generator
         P = G1.machine.P;
         Q = G1.machine.Q;
         connect(uVref, G1.uVs) annotation (Line(points={{-160,40},{-134,40},{
-                -134,7.2},{-126.64,7.2}},
+                -134,7.2},{-118.64,7.2}},
                                 color={0,0,127}));
-        connect(G1.pm, uPm) annotation (Line(points={{-126.4,-7.2},{-134,-7.2},
+        connect(G1.pm, uPm) annotation (Line(points={{-118.4,-7.2},{-134,-7.2},
                 {-134,-40},{-160,-40}},
                              color={0,0,127}));
         connect(G1.pwPin, B1.p)
-          annotation (Line(points={{-98.8,0},{-80,0}}, color={0,0,255}));
+          annotation (Line(points={{-90.8,0},{-80,0}}, color={0,0,255}));
+        connect(uPload, load_ExtInput.u) annotation (Line(points={{-160,-100},{
+                -72,-100},{-72,-66.7},{17.14,-66.7}}, color={0,0,127}));
         annotation (
           Diagram(coordinateSystem(extent={{-140,-140},{140,140}}),
                                             graphics={Text(
@@ -404,15 +408,17 @@ with AVR
           SMIBPS_IdControl.Analysis.LinearAnalysis.Interfaces.OutputsInterface;
         import Modelica.Constants.pi;
         BaseModelsPartial.BasePlants.Generator_AVR_PSS_wInputs G1(
-          V_0=1,
-          P_0=0.899999999997135*S_b,
-          Q_0=0.436002238696658*S_b,
-          angle_0=0.494677176989155*180/pi)
-          annotation (Placement(transformation(extent={{-118,-10},{-98,10}})));
+          V_0=powerFlow_Data.bus.V1,
+          P_0=powerFlow_Data.machines.PG1,
+          Q_0=powerFlow_Data.machines.QG1,
+          angle_0=powerFlow_Data.bus.A1)
+          annotation (Placement(transformation(extent={{-120,-10},{-100,10}})));
         Modelica.Blocks.Interfaces.RealInput uPSS
           annotation (Placement(transformation(extent={{-180,20},{-140,60}})));
         Modelica.Blocks.Interfaces.RealInput uPm
           annotation (Placement(transformation(extent={{-180,-60},{-140,-20}})));
+        Modelica.Blocks.Interfaces.RealInput uPload annotation (Placement(
+              transformation(extent={{-180,-120},{-140,-80}})));
       protected
         parameter Real S_b=SysData.S_b;
       equation
@@ -421,18 +427,20 @@ with AVR
         Vt = G1.machine.v;
         P = G1.machine.P;
         Q = G1.machine.Q;
-        connect(G1.uPSS, uPSS) annotation (Line(points={{-120,6},{-128,6},{-128,
+        connect(G1.uPSS, uPSS) annotation (Line(points={{-122,6},{-128,6},{-128,
                 40},{-160,40}},
                       color={0,0,127}));
         connect(uPm, G1.pm) annotation (Line(points={{-160,-40},{-130,-40},{
-                -130,-6},{-120,-6}},
+                -130,-6},{-122,-6}},
                            color={0,0,127}));
         connect(G1.pwPin, B1.p)
-          annotation (Line(points={{-97,0},{-80,0}}, color={0,0,255}));
+          annotation (Line(points={{-99,0},{-80,0}}, color={0,0,255}));
+        connect(load_ExtInput.u, uPload) annotation (Line(points={{17.14,-66.7},
+                {-18,-66.7},{-18,-100},{-160,-100}}, color={0,0,127}));
         annotation (
           Diagram(coordinateSystem(extent={{-140,-140},{140,140}}),
                                             graphics={Text(
-                extent={{-118,140},{102,120}},
+                extent={{-78,100},{142,80}},
                 lineColor={0,0,0},
                 lineThickness=1,
                 fontSize=15,
@@ -610,40 +618,44 @@ AVR+PSS
         extends
           SMIBPS_IdControl.Analysis.LinearAnalysis.Interfaces.OutputsInterface;
         Modelica.Blocks.Sources.Step stepEfd(height=0.01, startTime=1)
-          annotation (Placement(transformation(extent={{-120,22},{-100,42}})));
+          annotation (Placement(transformation(extent={{-124,22},{-104,42}})));
         inner Modelica_LinearSystems2.Controller.SampleClock sampleClock
           annotation (Placement(transformation(extent={{72,70},{92,90}})));
-        Modelica.Blocks.Routing.Multiplex2 multiplex2_1(n1=1, n2=1)
+        Modelica.Blocks.Routing.Multiplex3 multiplex3_1(n1=1, n2=1)
           annotation (Placement(transformation(extent={{-80,-10},{-60,10}})));
         Modelica_LinearSystems2.Controller.StateSpace stateSpace(system(
-            A=[0.0,376.99111838914104,0.0,0.0,0.0,0.0; -0.15935012502522555,
-                0.0,0.0,0.0,-0.1730203086974122,0.06000759113665713; -0.225786591276862,
+            A=[0.0,376.99111838914104,0.0,0.0,0.0,0.0; -0.15935012502522555,0.0,
+                0.0,0.0,-0.1730203086974122,0.06000759113665713; -0.225786591276862,
                 0.0,-0.12499999999582975,0.0,-0.2668898899908987,-0.0011041056183099536;
                 0.46107962381245693,0.0,0.0,-1.0000000000758573,
                 0.006336424569356028,-1.4894289460374501; -2.9728307608838804,
                 0.0,33.33333333222127,0.0,-36.84735279230479,-0.014537265192078836;
                 2.6215590291419555,0.0,0.0,14.285714286797962,
                 0.0360269902464371,-22.754155959037135],
-            B=[0.0,0.0; 0.0,0.14285715467719587; 0.12500001034254637,0.0; 0.0,
-                0.0; 0.0,0.0; 0.0,0.0],
-            C=[-0.13790996444876555,0.0,0.0,0.0,0.5004542799003135,
-                0.438830511745594; 0.314162109372547,0.0,0.0,0.0,
-                1.6774953338447993,0.6769042375621069; 1.107819258076765,0.0,
-                0.0,0.0,1.2032592305120056,-0.4169392158037044; 0.0,
-                0.999999999889562,0.0,0.0,0.0,0.0; 0.9999999999701366,0.0,0.0,
+            B=[0.0,0.0,0.0; 0.0,0.14285715467720342,-0.031538676432360496;
+                0.12500001034254637,0.0,-0.04074007797782997; 0.0,0.0,
+                0.09771200515373835; 0.0,0.0,-0.5364063360158156; 0.0,0.0,
+                0.5555611526375515],
+            C=[-0.13790065289076472,0.0,0.0,0.0,0.4364388135635919,
+                0.4994401309217214; 0.3122089845885527,0.0,0.0,0.0,
+                1.4657741561523794,0.7706076485898833; 1.2147747709609267,0.0,
+                0.0,0.0,1.371465981949742,-0.3580020102583231; 0.0,
+                0.999999999889562,0.0,0.0,0.0,0.0; 0.9999999998632589,0.0,0.0,
                 0.0,0.0,0.0],
-            D=[0.0,0.0; 0.0,0.0; 0.0,0.0; 0.0,0.0; 0.0,0.0],
+            D=[0.0,0.0,-0.015863310665054087; 0.0,0.0,0.02177458213736827; 0.0,
+                0.0,0.21947843542591272; 0.0,0.0,0.0; 0.0,0.0,0.0],
             yNames={"Vt","Q","P","w","delta"},
             xNames={"G1.machine.delta","G1.machine.w","G1.machine.e1q",
                 "G1.machine.e1d","G1.machine.e2q","G1.machine.e2d"},
-            uNames={"uEfd","uPm"}), blockType=Modelica_LinearSystems2.Controller.Types.BlockTypeWithGlobalDefault.Continuous)
+            uNames={"uEfd","uPm","uPload"}),
+                                    blockType=Modelica_LinearSystems2.Controller.Types.BlockTypeWithGlobalDefault.Continuous)
           annotation (Placement(transformation(extent={{-36,-10},{-16,10}})));
         Modelica.Blocks.Routing.DeMultiplex5 demultiplex2_2
           annotation (Placement(transformation(extent={{60,-20},{100,20}})));
         Modelica.Blocks.Math.Add addy[5]
           annotation (Placement(transformation(extent={{6,-16},{26,4}})));
         Modelica.Blocks.Sources.Constant Pmchange(k=0)
-          annotation (Placement(transformation(extent={{-120,-40},{-100,-20}})));
+          annotation (Placement(transformation(extent={{-124,-10},{-104,10}})));
         Modelica.Blocks.Routing.Multiplex5 multiplex5_1 annotation (Placement(
               transformation(
               extent={{-14,-14},{14,14}},
@@ -677,10 +689,13 @@ AVR+PSS
               extent={{-10,-10},{10,10}},
               rotation=90,
               origin={80,-90})));
+        Modelica.Blocks.Sources.Constant Ploadchange(k=0) annotation (Placement(
+              transformation(extent={{-126,-42},{-106,-22}})));
       equation
-        connect(multiplex2_1.u1[1], stepEfd.y) annotation (Line(points={{-82,6},{-90,6},
-                {-90,32},{-99,32}}, color={0,0,127}));
-        connect(multiplex2_1.y, stateSpace.u)
+        connect(multiplex3_1.u1[1], stepEfd.y) annotation (Line(points={{-82,7},
+                {-90,7},{-90,32},{-103,32}},
+                                    color={0,0,127}));
+        connect(multiplex3_1.y, stateSpace.u)
           annotation (Line(points={{-59,0},{-38,0}}, color={0,0,127}));
         connect(demultiplex2_2.y1[1], Vt) annotation (Line(points={{102,16},{108,16},{
                 108,79},{150,79}},
@@ -693,8 +708,8 @@ AVR+PSS
           annotation (Line(points={{27,-6},{28,-6},{28,0},{56,0}}, color={0,0,127}));
         connect(stateSpace.y, addy.u1)
           annotation (Line(points={{-15,0},{4,0}}, color={0,0,127}));
-        connect(Pmchange.y, multiplex2_1.u2[1]) annotation (Line(points={{-99,-30},{-90,
-                -30},{-90,-6},{-82,-6}}, color={0,0,127}));
+        connect(Pmchange.y,multiplex3_1. u2[1]) annotation (Line(points={{-103,0},
+                {-82,0}},                color={0,0,127}));
         connect(multiplex5_1.y, addy.u2)
           annotation (Line(points={{2,-22.6},{2,-12},{4,-12}}, color={0,0,127}));
         connect(multiplex5_1.u1[1], y0_Vt.y) annotation (Line(points={{-12,-54.8},{-80,
@@ -711,6 +726,8 @@ AVR+PSS
                 122,0},{122,41},{150,41}}, color={0,0,127}));
         connect(Q, demultiplex2_2.y2[1]) annotation (Line(points={{150,1},{
                 126,1},{126,8},{102,8}}, color={0,0,127}));
+        connect(Ploadchange.y, multiplex3_1.u3[1]) annotation (Line(points={{
+                -105,-32},{-96,-32},{-96,-7},{-82,-7}}, color={0,0,127}));
         annotation (
           Icon(coordinateSystem(preserveAspectRatio=false)),
           Diagram(coordinateSystem(preserveAspectRatio=false), graphics={
@@ -1052,9 +1069,16 @@ They have to be rearranged based on the order provided by the linearization func
               transformation(
               extent={{-10,-10},{10,10}},
               rotation=0,
-              origin={-70,-20})));
+              origin={-72,-20})));
         Modelica.Blocks.Sources.Constant Pmchange(k=0) annotation (Placement(
-              transformation(extent={{-118,-30},{-98,-10}})));
+              transformation(extent={{-120,-30},{-100,-10}})));
+        Modelica.Blocks.Sources.Constant Ploadchange(k=0)
+          annotation (Placement(transformation(extent={{-118,-70},{-98,-50}})));
+        Modelica.Blocks.Math.Gain uPloadInputGain(k=1) annotation (Placement(
+              transformation(
+              extent={{-10,-10},{10,10}},
+              rotation=0,
+              origin={-70,-60})));
       equation
         connect(Vt, PS_ConstantEfd.Vt) annotation (Line(points={{150,79},{98,79},
                 {98,22.5714},{42.8571,22.5714}},
@@ -1073,12 +1097,17 @@ They have to be rearranged based on the order provided by the linearization func
                                                    color={0,0,127}));
         connect(efdInputGain.u, stepEfd.y)
           annotation (Line(points={{-82,20},{-99,20}}, color={0,0,127}));
-        connect(pmInputGain.y, PS_ConstantEfd.uPm) annotation (Line(points={{-59,-20},
+        connect(pmInputGain.y, PS_ConstantEfd.uPm) annotation (Line(points={{-61,-20},
                 {-54,-20},{-54,-11.4286},{-45.7143,-11.4286}}, color={0,0,127}));
         connect(efdInputGain.y, PS_ConstantEfd.uEfd) annotation (Line(points={{-59,20},
                 {-52,20},{-52,11.4286},{-45.7143,11.4286}}, color={0,0,127}));
         connect(Pmchange.y, pmInputGain.u)
-          annotation (Line(points={{-97,-20},{-82,-20}}, color={0,0,127}));
+          annotation (Line(points={{-99,-20},{-84,-20}}, color={0,0,127}));
+        connect(Ploadchange.y, uPloadInputGain.u)
+          annotation (Line(points={{-97,-60},{-82,-60}}, color={0,0,127}));
+        connect(uPloadInputGain.y, PS_ConstantEfd.uPload) annotation (Line(
+              points={{-59,-60},{-56,-60},{-56,-28.5714},{-45.7143,-28.5714}},
+              color={0,0,127}));
         annotation (
           Icon(coordinateSystem(preserveAspectRatio=false)),
           Diagram(coordinateSystem(preserveAspectRatio=false)),
@@ -1109,6 +1138,13 @@ They have to be rearranged based on the order provided by the linearization func
               origin={-70,-20})));
         Modelica.Blocks.Sources.Constant Pmchange(k=0) annotation (Placement(
               transformation(extent={{-120,-30},{-100,-10}})));
+        Modelica.Blocks.Sources.Constant Ploadchange(k=0) annotation (Placement(
+              transformation(extent={{-122,-70},{-102,-50}})));
+        Modelica.Blocks.Math.Gain uPloadInputGain(k=1) annotation (Placement(
+              transformation(
+              extent={{-10,-10},{10,10}},
+              rotation=0,
+              origin={-74,-60})));
       equation
         connect(Vt, PS_wAVR.Vt) annotation (Line(points={{150,79},{98,79},{98,
                 22.5714},{42.8571,22.5714}},
@@ -1135,6 +1171,11 @@ They have to be rearranged based on the order provided by the linearization func
                                                      color={0,0,127}));
         connect(Pmchange.y, pmInputGain.u)
           annotation (Line(points={{-99,-20},{-82,-20}}, color={0,0,127}));
+        connect(Ploadchange.y, uPloadInputGain.u)
+          annotation (Line(points={{-101,-60},{-86,-60}}, color={0,0,127}));
+        connect(uPloadInputGain.y, PS_wAVR.uPload) annotation (Line(points={{
+                -63,-60},{-56,-60},{-56,-28.5714},{-45.7143,-28.5714}}, color={
+                0,0,127}));
         annotation (
           Icon(coordinateSystem(preserveAspectRatio=false)),
           Diagram(coordinateSystem(preserveAspectRatio=false)),
@@ -1165,6 +1206,13 @@ They have to be rearranged based on the order provided by the linearization func
               origin={-70,-20})));
         Modelica.Blocks.Sources.Constant Pmchange(k=0) annotation (Placement(
               transformation(extent={{-120,-30},{-100,-10}})));
+        Modelica.Blocks.Sources.Constant Ploadchange(k=0) annotation (Placement(
+              transformation(extent={{-120,-70},{-100,-50}})));
+        Modelica.Blocks.Math.Gain uPloadInputGain(k=1) annotation (Placement(
+              transformation(
+              extent={{-10,-10},{10,10}},
+              rotation=0,
+              origin={-72,-60})));
       equation
         connect(Vt, PS_wPSS.Vt) annotation (Line(points={{150,79},{98,79},{98,
                 22.5714},{42.8571,22.5714}},
@@ -1191,6 +1239,11 @@ They have to be rearranged based on the order provided by the linearization func
                                                        color={0,0,127}));
         connect(Pmchange.y, pmInputGain.u)
           annotation (Line(points={{-99,-20},{-82,-20}}, color={0,0,127}));
+        connect(Ploadchange.y, uPloadInputGain.u)
+          annotation (Line(points={{-99,-60},{-84,-60}}, color={0,0,127}));
+        connect(uPloadInputGain.y, PS_wPSS.uPload) annotation (Line(points={{
+                -61,-60},{-60,-60},{-60,-28.5714},{-45.7143,-28.5714}}, color={
+                0,0,127}));
         annotation (
           Icon(coordinateSystem(preserveAspectRatio=false)),
           Diagram(coordinateSystem(preserveAspectRatio=false)),
@@ -1228,6 +1281,13 @@ They have to be rearranged based on the order provided by the linearization func
         Modelica.Blocks.Sources.Step     Pmchange(height=0.01, startTime=1)
                                                        annotation (Placement(
               transformation(extent={{-118,-30},{-98,-10}})));
+        Modelica.Blocks.Sources.Constant Ploadchange(k=0) annotation (Placement(
+              transformation(extent={{-120,-70},{-100,-50}})));
+        Modelica.Blocks.Math.Gain uPloadInputGain(k=1) annotation (Placement(
+              transformation(
+              extent={{-10,-10},{10,10}},
+              rotation=0,
+              origin={-72,-60})));
       equation
         connect(Vt, PS_ConstantPm.Vt) annotation (Line(points={{150,79},{98,79},
                 {98,22.5714},{42.8571,22.5714}}, color={0,0,127}));
@@ -1241,14 +1301,19 @@ They have to be rearranged based on the order provided by the linearization func
                 {92,-81},{92,-23.1429},{42.8571,-23.1429}}, color={0,0,127}));
         connect(efdInputGain.u, constEfd.y)
           annotation (Line(points={{-82,20},{-99,20}}, color={0,0,127}));
-        connect(pmInputGain.y, PS_ConstantPm.uPm) annotation (Line(points={{-59,
-                -20},{-54,-20},{-54,-11.4286},{-45.7143,-11.4286}}, color={0,0,
+        connect(pmInputGain.y, PS_ConstantPm.uPm) annotation (Line(points={{-59,-20},
+                {-54,-20},{-54,-11.4286},{-45.7143,-11.4286}},      color={0,0,
                 127}));
-        connect(efdInputGain.y, PS_ConstantPm.uEfd) annotation (Line(points={{
-                -59,20},{-52,20},{-52,11.4286},{-45.7143,11.4286}}, color={0,0,
+        connect(efdInputGain.y, PS_ConstantPm.uEfd) annotation (Line(points={{-59,20},
+                {-52,20},{-52,11.4286},{-45.7143,11.4286}},         color={0,0,
                 127}));
         connect(Pmchange.y, pmInputGain.u)
           annotation (Line(points={{-97,-20},{-82,-20}}, color={0,0,127}));
+        connect(Ploadchange.y, uPloadInputGain.u)
+          annotation (Line(points={{-99,-60},{-84,-60}}, color={0,0,127}));
+        connect(uPloadInputGain.y, PS_ConstantPm.uPload) annotation (Line(
+              points={{-61,-60},{-56,-60},{-56,-28.5714},{-45.7143,-28.5714}},
+              color={0,0,127}));
         annotation (
           Icon(coordinateSystem(preserveAspectRatio=false)),
           Diagram(coordinateSystem(preserveAspectRatio=false)),
