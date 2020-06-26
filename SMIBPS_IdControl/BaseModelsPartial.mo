@@ -757,7 +757,6 @@ package BaseModelsPartial "Partial Models - Cannot be simulated!"
         B2(
           V_0=powerFlow_Data.bus.V2,
           angle_0=powerFlow_Data.bus.A2),
-        line_2(t1=0.57),
         infinite_bus(
           V_0=powerFlow_Data.bus.V3,
           angle_0=powerFlow_Data.bus.A3,

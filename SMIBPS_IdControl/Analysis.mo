@@ -216,7 +216,8 @@ package Analysis
             redeclare record Bus = PF_Data.Bus_Data.PF_Bus_5,
             redeclare record Loads = PF_Data.Loads_Data.PF_Loads_5,
             redeclare record Trafos = PF_Data.Trafos_Data.PF_Trafos_5,
-            redeclare record Machines = PF_Data.Machines_Data.PF_Machines_5));
+            redeclare record Machines = PF_Data.Machines_Data.PF_Machines_5),
+            line_2(t1=Modelica.Constants.inf));
           extends
           SMIBPS_IdControl.Analysis.LinearAnalysis.Interfaces.OutputsInterface;
 
@@ -817,9 +818,9 @@ This is visible in the Text layer only."),
         // Case A: with no controls - i.e. constant Efd and Pm
         // input String pathToNonlinearPlantModel = "SMIBPS_IdControl.Analysis.LinearAnalysis.Interfaces.SMIB_GEN_wInput" "Nonlinear plant model";
         // Case B: with AVR only
-        input String pathToNonlinearPlantModel = "SMIBPS_IdControl.Analysis.LinearAnalysis.Interfaces.SMIB_AVR_wInput" "Nonlinear model";
+        // input String pathToNonlinearPlantModel = "SMIBPS_IdControl.Analysis.LinearAnalysis.Interfaces.SMIB_AVR_wInput" "Nonlinear model";
         // Case C: with AVR+PSS
-        // input String pathToNonlinearPlantModel = "SMIBPS_IdControl.Analysis.LinearAnalysis.Interfaces.SMIB_AVR_PSS_wInput" "Nonlinear plant model";
+         input String pathToNonlinearPlantModel = "SMIBPS_IdControl.Analysis.LinearAnalysis.Interfaces.SMIB_AVR_PSS_wInput" "Nonlinear plant model";
         //
         //
         // 2) NONLINEAR EXPERIMENT: this is a model which applies a change to the input of the nonlinear model.
@@ -828,9 +829,9 @@ This is visible in the Text layer only."),
         // Case A: with no controls - constant Efd and Pm
         // input String pathToNonlinearExperiment= "SMIBPS_IdControl.Analysis.LinearAnalysis.PerturbationAnalysis.PerturbGen" "Nonlinear experiment model";
         // Case B: with AVR only
-        input String pathToNonlinearExperiment= "SMIBPS_IdControl.Analysis.LinearAnalysis.PerturbationAnalysis.PerturbAVR" "Nonlinear experiment model";
+        // input String pathToNonlinearExperiment= "SMIBPS_IdControl.Analysis.LinearAnalysis.PerturbationAnalysis.PerturbAVR" "Nonlinear experiment model";
         // Case C: with AVR+PSS
-        // input String pathToNonlinearExperiment= "SMIBPS_IdControl.Analysis.LinearAnalysis.PerturbationAnalysis.PerturbPSS" "Nonlinear experiment model";
+         input String pathToNonlinearExperiment= "SMIBPS_IdControl.Analysis.LinearAnalysis.PerturbationAnalysis.PerturbPSS" "Nonlinear experiment model";
         //
         //
         // 3) LINEAR EXPERIMENT: this is a template that can be used for all three cases, so it is not necessary to create other cases here
@@ -936,14 +937,14 @@ This is visible in the Text layer only."),
           annotation (Placement(transformation(extent={{-120,22},{-100,42}})));
         inner Modelica_LinearSystems2.Controller.SampleClock sampleClock
           annotation (Placement(transformation(extent={{60,60},{80,80}})));
-        Modelica.Blocks.Routing.Multiplex2 multiplex2_1(n1=1, n2=1)
+        Modelica.Blocks.Routing.Multiplex3 multiplex3_1(n1=1, n2=1)
           annotation (Placement(transformation(extent={{-80,-10},{-60,10}})));
         Modelica.Blocks.Routing.DeMultiplex5 demultiplex2_2
           annotation (Placement(transformation(extent={{60,-20},{100,20}})));
         Modelica.Blocks.Math.Add addy[ny]
           annotation (Placement(transformation(extent={{6,-16},{26,4}})));
         Modelica.Blocks.Sources.Constant Pmchange(k=0)
-          annotation (Placement(transformation(extent={{-120,-40},{-100,-20}})));
+          annotation (Placement(transformation(extent={{-122,-10},{-102,10}})));
         Modelica.Blocks.Sources.Constant y0_initial[ny](k=y0)      annotation (
             Placement(transformation(
               extent={{-10,-10},{10,10}},
@@ -951,9 +952,11 @@ This is visible in the Text layer only."),
               origin={0,-32})));
         Modelica_LinearSystems2.Controller.StateSpace stateSpace(system=ss)
           annotation (Placement(transformation(extent={{-40,-10},{-20,10}})));
+        Modelica.Blocks.Sources.Constant Ploadchange(k=0) annotation (Placement(
+              transformation(extent={{-122,-50},{-102,-30}})));
       equation
-        connect(multiplex2_1.u1[1], step_voltage_input.y) annotation (Line(
-              points={{-82,6},{-90,6},{-90,32},{-99,32}}, color={0,0,127}));
+        connect(multiplex3_1.u1[1], step_voltage_input.y) annotation (Line(
+              points={{-82,7},{-90,7},{-90,32},{-99,32}}, color={0,0,127}));
         connect(demultiplex2_2.y1[1], Vt) annotation (Line(points={{102,16},{108,16},{
                 108,79},{150,79}},
                                color={0,0,127}));
@@ -963,18 +966,20 @@ This is visible in the Text layer only."),
                 {108,-81},{150,-81}}, color={0,0,127}));
         connect(addy.y, demultiplex2_2.u)
           annotation (Line(points={{27,-6},{28,-6},{28,0},{56,0}}, color={0,0,127}));
-        connect(Pmchange.y, multiplex2_1.u2[1]) annotation (Line(points={{-99,-30},{-90,
-                -30},{-90,-6},{-82,-6}}, color={0,0,127}));
+        connect(Pmchange.y,multiplex3_1. u2[1]) annotation (Line(points={{-101,0},
+                {-82,0}},                color={0,0,127}));
         connect(demultiplex2_2.y3[1], P) annotation (Line(points={{102,0},{122,0},{122,
                 41},{150,41}}, color={0,0,127}));
         connect(Q, demultiplex2_2.y2[1]) annotation (Line(points={{150,1},{126,1},{126,
                 8},{102,8}}, color={0,0,127}));
         connect(y0_initial.y, addy.u2)
           annotation (Line(points={{0,-21},{0,-12},{4,-12}}, color={0,0,127}));
-        connect(multiplex2_1.y, stateSpace.u)
+        connect(multiplex3_1.y, stateSpace.u)
           annotation (Line(points={{-59,0},{-42,0}}, color={0,0,127}));
         connect(stateSpace.y, addy.u1)
           annotation (Line(points={{-19,0},{4,0}}, color={0,0,127}));
+        connect(Ploadchange.y, multiplex3_1.u3[1]) annotation (Line(points={{
+                -101,-40},{-94,-40},{-94,-7},{-82,-7}}, color={0,0,127}));
         annotation (
           Icon(coordinateSystem(preserveAspectRatio=false)),
           Diagram(coordinateSystem(preserveAspectRatio=false), graphics={
@@ -1173,8 +1178,8 @@ They have to be rearranged based on the order provided by the linearization func
           annotation (Line(points={{-99,-20},{-82,-20}}, color={0,0,127}));
         connect(Ploadchange.y, uPloadInputGain.u)
           annotation (Line(points={{-101,-60},{-86,-60}}, color={0,0,127}));
-        connect(uPloadInputGain.y, PS_wAVR.uPload) annotation (Line(points={{
-                -63,-60},{-56,-60},{-56,-28.5714},{-45.7143,-28.5714}}, color={
+        connect(uPloadInputGain.y, PS_wAVR.uPload) annotation (Line(points={{-63,-60},
+                {-56,-60},{-56,-28.5714},{-45.7143,-28.5714}},          color={
                 0,0,127}));
         annotation (
           Icon(coordinateSystem(preserveAspectRatio=false)),
@@ -1241,8 +1246,8 @@ They have to be rearranged based on the order provided by the linearization func
           annotation (Line(points={{-99,-20},{-82,-20}}, color={0,0,127}));
         connect(Ploadchange.y, uPloadInputGain.u)
           annotation (Line(points={{-99,-60},{-84,-60}}, color={0,0,127}));
-        connect(uPloadInputGain.y, PS_wPSS.uPload) annotation (Line(points={{
-                -61,-60},{-60,-60},{-60,-28.5714},{-45.7143,-28.5714}}, color={
+        connect(uPloadInputGain.y, PS_wPSS.uPload) annotation (Line(points={{-61,-60},
+                {-60,-60},{-60,-28.5714},{-45.7143,-28.5714}},          color={
                 0,0,127}));
         annotation (
           Icon(coordinateSystem(preserveAspectRatio=false)),
