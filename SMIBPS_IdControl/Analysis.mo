@@ -503,10 +503,11 @@ AVR+PSS
             X=X,
             t1=t1,
             t2=t2),
-          line_2(
+          line_3(
             t1=t1_line,
             t2=t2_line,
-            opening=opening_line));
+            opening=opening_line),
+          line_2(t1=Modelica.Constants.inf));
         extends SMIBPS_IdControl.Analysis.LinearAnalysis.Interfaces.OutputsInterface;
         import Modelica.Constants.pi;
         BaseModelsPartial.BasePlants.Generator_AVR_PSS_wInputs G1(
@@ -1440,6 +1441,10 @@ They have to be rearranged based on the order provided by the linearization func
 
     package LinearizeAfterDisturbance
       extends Modelica.Icons.ExamplesPackage;
+      model test
+        annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
+              coordinateSystem(preserveAspectRatio=false)));
+      end test;
     end LinearizeAfterDisturbance;
   end LinearAnalysis;
 
