@@ -517,9 +517,9 @@ AVR+PSS
           angle_0=powerFlow_Data.bus.A1)
           annotation (Placement(transformation(extent={{-120,-10},{-100,10}})));
         Modelica.Blocks.Interfaces.RealInput uPSS
-          annotation (Placement(transformation(extent={{-180,20},{-140,60}})));
+          annotation (Placement(transformation(extent={{-184,80},{-144,120}})));
         Modelica.Blocks.Interfaces.RealInput uPm
-          annotation (Placement(transformation(extent={{-180,-60},{-140,-20}})));
+          annotation (Placement(transformation(extent={{-180,-20},{-140,20}})));
         Modelica.Blocks.Interfaces.RealInput uPload annotation (Placement(
               transformation(extent={{-180,-120},{-140,-80}})));
         parameter Real R=0 "Resistance (pu)"
@@ -547,11 +547,10 @@ AVR+PSS
         connect(load_ExtInput.u, uPload) annotation (Line(points={{17.14,-66.7},{-2,-66.7},
                 {-2,-100},{-160,-100}},              color={0,0,127}));
         connect(G1.uPSS, uPSS) annotation (Line(points={{-122,6},{-128,6},{-128,
-                40},{-160,40}},
+                100},{-164,100}},
                       color={0,0,127}));
-        connect(uPm, G1.pm) annotation (Line(points={{-160,-40},{-130,-40},{
-                -130,-6},{-122,-6}},
-                           color={0,0,127}));
+        connect(uPm, G1.pm) annotation (Line(points={{-160,0},{-130,0},{-130,-6},
+                {-122,-6}},color={0,0,127}));
         connect(G1.pwPin, B1.p)
           annotation (Line(points={{-99,0},{-80,0}}, color={0,0,255}));
         annotation (
@@ -1443,6 +1442,7 @@ They have to be rearranged based on the order provided by the linearization func
       extends Modelica.Icons.ExamplesPackage;
       model NonlinModel_for_Simulation
         "Model that includes a line removal at 5 seconds for linearization at initialization and after the line removal"
+        extends Modelica.Icons.Example;
         Modelica.Blocks.Interfaces.RealOutput Vt
           annotation (Placement(transformation(extent={{118,68},{138,90}})));
       public
@@ -1484,7 +1484,7 @@ They have to be rearranged based on the order provided by the linearization func
           t1_line=0.5,
           t2_line=Modelica.Constants.inf,
           opening_line=1)
-          annotation (Placement(transformation(extent={{-22,-8},{6,20}})));
+          annotation (Placement(transformation(extent={{-20,-20},{36,36}})));
       equation
         connect(efdInputGain.u,constEfd. y)
           annotation (Line(points={{-104,40},{-121,40}},
@@ -1495,27 +1495,471 @@ They have to be rearranged based on the order provided by the linearization func
           annotation (Line(points={{-121,-40},{-106,-40}},
                                                          color={0,0,127}));
         connect(efdInputGain.y,sMIB_AVR_PSS_wInput_wFault. uPSS) annotation (Line(
-              points={{-81,40},{-34,40},{-34,10},{-24,10}},
+              points={{-81,40},{-34,40},{-34,28},{-24.8,28}},
                                                          color={0,0,127}));
         connect(pmInputGain.y,sMIB_AVR_PSS_wInput_wFault. uPm)
-          annotation (Line(points={{-81,0},{-52,0},{-52,2},{-24,2}},
+          annotation (Line(points={{-81,0},{-52,0},{-52,8},{-24,8}},
                                                     color={0,0,127}));
         connect(uPloadInputGain.y,sMIB_AVR_PSS_wInput_wFault. uPload) annotation (
-            Line(points={{-83,-40},{-36,-40},{-36,-4},{-24,-4}},color={0,0,127}));
-        connect(sMIB_AVR_PSS_wInput_wFault.Vt,Vt)  annotation (Line(points={{7,13.9},
-                {64.5,13.9},{64.5,79},{128,79}},       color={0,0,127}));
-        connect(sMIB_AVR_PSS_wInput_wFault.P,P)  annotation (Line(points={{7,10.1},
-                {94,10.1},{94,41},{128,41}},       color={0,0,127}));
-        connect(sMIB_AVR_PSS_wInput_wFault.Q,Q)  annotation (Line(points={{7,6.1},
-                {128,6.1},{128,1}},      color={0,0,127}));
-        connect(sMIB_AVR_PSS_wInput_wFault.w,w)  annotation (Line(points={{7,2.1},
-                {63.5,2.1},{63.5,-39},{128,-39}},      color={0,0,127}));
+            Line(points={{-83,-40},{-36,-40},{-36,-12},{-24,-12}},
+                                                                color={0,0,127}));
+        connect(sMIB_AVR_PSS_wInput_wFault.Vt,Vt)  annotation (Line(points={{38,23.8},
+                {64.5,23.8},{64.5,79},{128,79}},       color={0,0,127}));
+        connect(sMIB_AVR_PSS_wInput_wFault.P,P)  annotation (Line(points={{38,16.2},
+                {94,16.2},{94,41},{128,41}},       color={0,0,127}));
+        connect(sMIB_AVR_PSS_wInput_wFault.w,w)  annotation (Line(points={{38,0.2},
+                {63.5,0.2},{63.5,-39},{128,-39}},      color={0,0,127}));
         connect(sMIB_AVR_PSS_wInput_wFault.delta,delta)  annotation (Line(
-              points={{7,-2.1},{38.5,-2.1},{38.5,-81},{128,-81}},  color={0,0,
+              points={{38,-8.2},{38.5,-8.2},{38.5,-81},{128,-81}}, color={0,0,
                 127}));
+        connect(sMIB_AVR_PSS_wInput_wFault.Q, Q) annotation (Line(points={{38,
+                8.2},{81,8.2},{81,1},{128,1}}, color={0,0,127}));
+        annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{
+                  -160,-100},{120,100}})),                             Diagram(
+              coordinateSystem(preserveAspectRatio=false, extent={{-160,-100},{
+                  120,100}})),
+          experiment(
+            StopTime=20,
+            __Dymola_NumberOfIntervals=5000,
+            Tolerance=1e-06,
+            __Dymola_fixedstepsize=0.001,
+            __Dymola_Algorithm="Dassl"));
+      end NonlinModel_for_Simulation;
+
+      model NonlinModel_for_Linearization
+        extends Modelica.Icons.Example;
+        Modelica.Blocks.Interfaces.RealOutput Vt
+          annotation (Placement(transformation(extent={{98,68},{118,90}})));
+      public
+        Modelica.Blocks.Interfaces.RealOutput Q
+          annotation (Placement(transformation(extent={{98,-10},{118,12}})));
+        Modelica.Blocks.Interfaces.RealOutput P
+          annotation (Placement(transformation(extent={{98,30},{118,52}})));
+        Modelica.Blocks.Interfaces.RealOutput w
+          annotation (Placement(transformation(extent={{98,-50},{118,-28}})));
+        Modelica.Blocks.Interfaces.RealOutput delta
+          annotation (Placement(transformation(extent={{98,-92},{118,-70}})));
+        Interfaces.SMIB_AVR_PSS_wInput_wFault
+          sMIB_AVR_PSS_wInput_wFault(
+          R=0,
+          X=1e-3,
+          t1=Modelica.Constants.inf,
+          t2=Modelica.Constants.inf,
+          t1_line=0.5,
+          t2_line=Modelica.Constants.inf,
+          opening_line=1)
+          annotation (Placement(transformation(extent={{-40,-40},{40,40}})));
+        Modelica.Blocks.Interfaces.RealInput uPSS
+          annotation (Placement(transformation(extent={{-140,40},{-100,80}})));
+        Modelica.Blocks.Interfaces.RealInput uPm
+          annotation (Placement(transformation(extent={{-140,-20},{-100,20}})));
+        Modelica.Blocks.Interfaces.RealInput uPload annotation (Placement(
+              transformation(extent={{-140,-80},{-100,-40}})));
+      equation
+        connect(uPSS, sMIB_AVR_PSS_wInput_wFault.uPSS) annotation (Line(points={{-120,60},
+                {-84,60},{-84,28.5714},{-46.8571,28.5714}},     color={0,0,127}));
+        connect(uPm, sMIB_AVR_PSS_wInput_wFault.uPm)
+          annotation (Line(points={{-120,0},{-45.7143,0}}, color={0,0,127}));
+        connect(uPload, sMIB_AVR_PSS_wInput_wFault.uPload) annotation (Line(points={{-120,
+                -60},{-80,-60},{-80,-28.5714},{-45.7143,-28.5714}}, color={0,0,127}));
+        connect(sMIB_AVR_PSS_wInput_wFault.Vt, Vt) annotation (Line(points={{42.8571,
+                22.5714},{68,22.5714},{68,79},{108,79}},
+                                                color={0,0,127}));
+        connect(sMIB_AVR_PSS_wInput_wFault.P, P) annotation (Line(points={{42.8571,
+                11.7143},{82,11.7143},{82,41},{108,41}},
+                                                color={0,0,127}));
+        connect(sMIB_AVR_PSS_wInput_wFault.Q, Q) annotation (Line(points={{42.8571,
+                0.285714},{72.4286,0.285714},{72.4286,1},{108,1}},
+                                                         color={0,0,127}));
+        connect(sMIB_AVR_PSS_wInput_wFault.w, w) annotation (Line(points={{42.8571,
+                -11.1429},{84,-11.1429},{84,-39},{108,-39}},
+                                                   color={0,0,127}));
+        connect(sMIB_AVR_PSS_wInput_wFault.delta, delta) annotation (Line(points={{42.8571,
+                -23.1429},{60,-23.1429},{60,-81},{108,-81}}, color={0,0,127}));
         annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
               coordinateSystem(preserveAspectRatio=false)));
-      end NonlinModel_for_Simulation;
+      end NonlinModel_for_Linearization;
+
+      model NonlinModel_for_NonlinExperiment
+        extends Modelica.Icons.Example;
+        Modelica.Blocks.Interfaces.RealOutput Vt
+          annotation (Placement(transformation(extent={{98,68},{118,90}})));
+      public
+        Modelica.Blocks.Interfaces.RealOutput Q
+          annotation (Placement(transformation(extent={{98,-10},{118,12}})));
+        Modelica.Blocks.Interfaces.RealOutput P
+          annotation (Placement(transformation(extent={{98,30},{118,52}})));
+        Modelica.Blocks.Interfaces.RealOutput w
+          annotation (Placement(transformation(extent={{98,-50},{118,-28}})));
+        Modelica.Blocks.Interfaces.RealOutput delta
+          annotation (Placement(transformation(extent={{98,-92},{118,-70}})));
+        Interfaces.SMIB_AVR_PSS_wInput_wFault
+          sMIB_AVR_PSS_wInput_wFault(
+          R=0,
+          X=1e-3,
+          t1=Modelica.Constants.inf,
+          t2=Modelica.Constants.inf,
+          t1_line=0.5,
+          t2_line=Modelica.Constants.inf,
+          opening_line=1)
+          annotation (Placement(transformation(extent={{-40,-40},{40,40}})));
+        Modelica.Blocks.Interfaces.RealInput uPSS
+          annotation (Placement(transformation(extent={{-140,40},{-100,80}})));
+        Modelica.Blocks.Interfaces.RealInput uPm
+          annotation (Placement(transformation(extent={{-140,-20},{-100,20}})));
+        Modelica.Blocks.Interfaces.RealInput uPload annotation (Placement(
+              transformation(extent={{-140,-80},{-100,-40}})));
+      equation
+        connect(uPSS, sMIB_AVR_PSS_wInput_wFault.uPSS) annotation (Line(points={{-120,60},
+                {-84,60},{-84,28.5714},{-46.8571,28.5714}},     color={0,0,127}));
+        connect(uPm, sMIB_AVR_PSS_wInput_wFault.uPm)
+          annotation (Line(points={{-120,0},{-45.7143,0}}, color={0,0,127}));
+        connect(uPload, sMIB_AVR_PSS_wInput_wFault.uPload) annotation (Line(points={{-120,
+                -60},{-80,-60},{-80,-28.5714},{-45.7143,-28.5714}}, color={0,0,127}));
+        connect(sMIB_AVR_PSS_wInput_wFault.Vt, Vt) annotation (Line(points={{42.8571,
+                22.5714},{68,22.5714},{68,79},{108,79}},
+                                                color={0,0,127}));
+        connect(sMIB_AVR_PSS_wInput_wFault.P, P) annotation (Line(points={{42.8571,
+                11.7143},{82,11.7143},{82,41},{108,41}},
+                                                color={0,0,127}));
+        connect(sMIB_AVR_PSS_wInput_wFault.Q, Q) annotation (Line(points={{42.8571,
+                0.285714},{72.4286,0.285714},{72.4286,1},{108,1}},
+                                                         color={0,0,127}));
+        connect(sMIB_AVR_PSS_wInput_wFault.w, w) annotation (Line(points={{42.8571,
+                -11.1429},{84,-11.1429},{84,-39},{108,-39}},
+                                                   color={0,0,127}));
+        connect(sMIB_AVR_PSS_wInput_wFault.delta, delta) annotation (Line(points={{42.8571,
+                -23.1429},{60,-23.1429},{60,-81},{108,-81}}, color={0,0,127}));
+        annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
+              coordinateSystem(preserveAspectRatio=false)));
+      end NonlinModel_for_NonlinExperiment;
+
+      model LinearModelExperiment "Simulate the linearized model"
+        extends Modelica.Icons.Example;
+        extends
+          SMIBPS_IdControl.Analysis.LinearAnalysis.Interfaces.OutputsInterface;
+        Modelica.Blocks.Sources.Step stepEfd(height=0.01, startTime=1)
+          annotation (Placement(transformation(extent={{-124,22},{-104,42}})));
+        inner Modelica_LinearSystems2.Controller.SampleClock sampleClock
+          annotation (Placement(transformation(extent={{72,70},{92,90}})));
+        Modelica.Blocks.Routing.Multiplex3 multiplex3_1(n1=1, n2=1)
+          annotation (Placement(transformation(extent={{-80,-10},{-60,10}})));
+        Modelica_LinearSystems2.Controller.StateSpace stateSpace(system(
+            A=[0.0,376.99111838914104,0.0,0.0,0.0,0.0; -0.15935012502522555,0.0,
+                0.0,0.0,-0.1730203086974122,0.06000759113665713; -0.225786591276862,
+                0.0,-0.12499999999582975,0.0,-0.2668898899908987,-0.0011041056183099536;
+                0.46107962381245693,0.0,0.0,-1.0000000000758573,
+                0.006336424569356028,-1.4894289460374501; -2.9728307608838804,
+                0.0,33.33333333222127,0.0,-36.84735279230479,-0.014537265192078836;
+                2.6215590291419555,0.0,0.0,14.285714286797962,
+                0.0360269902464371,-22.754155959037135],
+            B=[0.0,0.0,0.0; 0.0,0.14285715467720342,-0.031538676432360496;
+                0.12500001034254637,0.0,-0.04074007797782997; 0.0,0.0,
+                0.09771200515373835; 0.0,0.0,-0.5364063360158156; 0.0,0.0,
+                0.5555611526375515],
+            C=[-0.13790065289076472,0.0,0.0,0.0,0.4364388135635919,
+                0.4994401309217214; 0.3122089845885527,0.0,0.0,0.0,
+                1.4657741561523794,0.7706076485898833; 1.2147747709609267,0.0,
+                0.0,0.0,1.371465981949742,-0.3580020102583231; 0.0,
+                0.999999999889562,0.0,0.0,0.0,0.0; 0.9999999998632589,0.0,0.0,
+                0.0,0.0,0.0],
+            D=[0.0,0.0,-0.015863310665054087; 0.0,0.0,0.02177458213736827; 0.0,
+                0.0,0.21947843542591272; 0.0,0.0,0.0; 0.0,0.0,0.0],
+            yNames={"Vt","Q","P","w","delta"},
+            xNames={"G1.machine.delta","G1.machine.w","G1.machine.e1q",
+                "G1.machine.e1d","G1.machine.e2q","G1.machine.e2d"},
+            uNames={"uEfd","uPm","uPload"}),
+                                    blockType=Modelica_LinearSystems2.Controller.Types.BlockTypeWithGlobalDefault.Continuous)
+          annotation (Placement(transformation(extent={{-36,-10},{-16,10}})));
+        Modelica.Blocks.Routing.DeMultiplex5 demultiplex2_2
+          annotation (Placement(transformation(extent={{60,-20},{100,20}})));
+        Modelica.Blocks.Math.Add addy[5]
+          annotation (Placement(transformation(extent={{6,-16},{26,4}})));
+        Modelica.Blocks.Sources.Constant Pmchange(k=0)
+          annotation (Placement(transformation(extent={{-124,-10},{-104,10}})));
+        Modelica.Blocks.Routing.Multiplex5 multiplex5_1 annotation (Placement(
+              transformation(
+              extent={{-14,-14},{14,14}},
+              rotation=90,
+              origin={2,-38})));
+        Modelica.Blocks.Sources.Constant y0_Vt(k=1) annotation (Placement(
+              transformation(
+              extent={{-10,-10},{10,10}},
+              rotation=90,
+              origin={-80,-90})));
+        Modelica.Blocks.Sources.Constant y0_Q(k=0.4360022246837616)
+                                                          annotation (Placement(
+              transformation(
+              extent={{-10,-10},{10,10}},
+              rotation=90,
+              origin={-40,-90})));
+        Modelica.Blocks.Sources.Constant y0_P(k=0.8999999761581421)
+                                                     annotation (Placement(
+              transformation(
+              extent={{-10,-10},{10,10}},
+              rotation=90,
+              origin={0,-90})));
+        Modelica.Blocks.Sources.Constant y0_w(k=1) annotation (Placement(
+              transformation(
+              extent={{-10,-10},{10,10}},
+              rotation=90,
+              origin={40,-90})));
+        Modelica.Blocks.Sources.Constant y0_delta(k=1.2242474555969238)
+                                                             annotation (Placement(
+              transformation(
+              extent={{-10,-10},{10,10}},
+              rotation=90,
+              origin={80,-90})));
+        Modelica.Blocks.Sources.Constant Ploadchange(k=0) annotation (Placement(
+              transformation(extent={{-126,-42},{-106,-22}})));
+      equation
+        connect(multiplex3_1.u1[1], stepEfd.y) annotation (Line(points={{-82,7},
+                {-90,7},{-90,32},{-103,32}},
+                                    color={0,0,127}));
+        connect(multiplex3_1.y, stateSpace.u)
+          annotation (Line(points={{-59,0},{-38,0}}, color={0,0,127}));
+        connect(demultiplex2_2.y1[1], Vt) annotation (Line(points={{102,16},{108,16},{
+                108,79},{150,79}},
+                               color={0,0,127}));
+        connect(demultiplex2_2.y4[1], w) annotation (Line(points={{102,-8},{110,-8},{110,
+                -39},{150,-39}}, color={0,0,127}));
+        connect(demultiplex2_2.y5[1], delta) annotation (Line(points={{102,-16},{108,-16},
+                {108,-81},{150,-81}}, color={0,0,127}));
+        connect(addy.y, demultiplex2_2.u)
+          annotation (Line(points={{27,-6},{28,-6},{28,0},{56,0}}, color={0,0,127}));
+        connect(stateSpace.y, addy.u1)
+          annotation (Line(points={{-15,0},{4,0}}, color={0,0,127}));
+        connect(Pmchange.y,multiplex3_1. u2[1]) annotation (Line(points={{-103,0},
+                {-82,0}},                color={0,0,127}));
+        connect(multiplex5_1.y, addy.u2)
+          annotation (Line(points={{2,-22.6},{2,-12},{4,-12}}, color={0,0,127}));
+        connect(multiplex5_1.u1[1], y0_Vt.y) annotation (Line(points={{-12,-54.8},{-80,
+                -54.8},{-80,-79}}, color={0,0,127}));
+        connect(y0_Q.y, multiplex5_1.u2[1]) annotation (Line(points={{-40,-79},{-40,-64},
+                {-5,-64},{-5,-54.8}}, color={0,0,127}));
+        connect(y0_P.y, multiplex5_1.u3[1])
+          annotation (Line(points={{0,-79},{2,-79},{2,-54.8}}, color={0,0,127}));
+        connect(y0_w.y, multiplex5_1.u4[1]) annotation (Line(points={{40,-79},{40,-64},
+                {9,-64},{9,-54.8}}, color={0,0,127}));
+        connect(y0_delta.y, multiplex5_1.u5[1]) annotation (Line(points={{80,-79},{80,
+                -54.8},{16,-54.8}}, color={0,0,127}));
+        connect(demultiplex2_2.y3[1], P) annotation (Line(points={{102,0},{
+                122,0},{122,41},{150,41}}, color={0,0,127}));
+        connect(Q, demultiplex2_2.y2[1]) annotation (Line(points={{150,1},{
+                126,1},{126,8},{102,8}}, color={0,0,127}));
+        connect(Ploadchange.y, multiplex3_1.u3[1]) annotation (Line(points={{
+                -105,-32},{-96,-32},{-96,-7},{-82,-7}}, color={0,0,127}));
+        annotation (
+          Icon(coordinateSystem(preserveAspectRatio=false)),
+          Diagram(coordinateSystem(preserveAspectRatio=false), graphics={
+              Text(
+                extent={{-58,24},{-44,4}},
+                lineColor={238,46,47},
+                fillPattern=FillPattern.VerticalCylinder,
+                fillColor={255,0,0},
+                textString="du",
+                fontSize=24),
+              Text(
+                extent={{-38,-18},{-22,-38}},
+                lineColor={238,46,47},
+                fillPattern=FillPattern.VerticalCylinder,
+                fillColor={255,0,0},
+                textString="y0",
+                fontSize=24),
+              Text(
+                extent={{40,20},{50,4}},
+                lineColor={238,46,47},
+                fillPattern=FillPattern.VerticalCylinder,
+                fillColor={255,0,0},
+                fontSize=24,
+                textString="y"),
+              Text(
+                extent={{-12,22},{2,6}},
+                lineColor={238,46,47},
+                fillPattern=FillPattern.VerticalCylinder,
+                fillColor={255,0,0},
+                fontSize=24,
+                textString="dy"),
+              Text(
+                extent={{-80,80},{0,60}},
+                lineColor={85,170,255},
+                fillPattern=FillPattern.HorizontalCylinder,
+                fillColor={28,108,200},
+                horizontalAlignment=TextAlignment.Left,
+                textString="Note: the addy[] and y0_initial[] blocks 
+are defined with ny, where ny is 
+an integer of the size of the output matrix. 
+This is visible in the Text layer only."),
+              Line(
+                points={{-4,64},{24,44},{18,14}},
+                color={0,0,255},
+                thickness=0.5,
+                arrow={Arrow.None,Arrow.Filled},
+                smooth=Smooth.Bezier)}),
+          experiment(
+            StopTime=15,
+            __Dymola_NumberOfIntervals=10000,
+            __Dymola_fixedstepsize=0.01,
+            __Dymola_Algorithm="Rkfix4"));
+      end LinearModelExperiment;
+
+      function LinearizeAfterDisturbance
+        "Linearizes the model at initialization and after a disturbance at a given time"
+        // See the Documentation for an explanation of the goals.
+        // IMPORTING FUNCTIONS
+        // Import things needed for the calculations
+        import Modelica_LinearSystems2.StateSpace; // to create and manipulate state space objects
+        // OUTPUTS OF THEFUNCTION - FOR DISPLAY
+        // Declare outputs to display
+        output Real A[:,:] "A-matrix";
+        output Real B[:,:] "B-matrix";
+        output Real C[:,:] "C-matrix";
+        output Real D[:,:] "D-matrix";
+        output String inputNames[:] "Modelica names of inputs";
+        output String outputNames[:] "Modelica names of outputs";
+        output String stateNames[:] "Modelica names of states";
+        output Real y0out[:] "Initial value of the output variables";
+        // INPUTS TO THE FUNCTION
+        // Declare reconfigurable simulation parameters
+        input Modelica.SIunits.Time tlin = 0 "t for model linearization";
+        input Modelica.SIunits.Time tsim = 20 "Simulation time";
+        input Real numberOfIntervalsin=10000 "No. of intervals";
+        // Use this for Case A
+        //input String method = "Rkfix4" "Solver";
+        input String methodin = "DASSL" "Solver";
+        input Real fixedstepsizein= 1e-6 "Time step - needed only for fixed time step solvers";
+        //
+        // DEFINING THE NONLINEAR PLANT, NONLINEAR EXPERIMENT, AND LINEAR EXPERIMENT MODELS
+        //
+        // 1) NONLINEAR PLANT: this is a model with input and outputs definde and under the .Analysis.LinearAnalysis.Interfaces sub-package
+        // This is the model that will be linearized, i.e. the nonlinear plant model
+         input String pathToNonlinearPlantModel = "SMIBPS_IdControl.Analysis.LinearAnalysis.LinearizeAfterDisturbance.NonlinModel_for_Linearization" "Nonlinear plant model";
+        //
+        //
+        // 2) NONLINEAR EXPERIMENT: this is a model which applies a change to the input of the nonlinear model.
+        // It must match the nonlinar plant above. These models are under .Analysis.LinearAnalysis.PerturbationAnalysis
+        // This model will be simulated, and the simulation results will be compared to the simulation of the corresponding linearized model.
+        // Case A: with no controls - constant Efd and Pm
+        // input String pathToNonlinearExperiment= "SMIBPS_IdControl.Analysis.LinearAnalysis.PerturbationAnalysis.PerturbGen" "Nonlinear experiment model";
+        // Case B: with AVR only
+        // input String pathToNonlinearExperiment= "SMIBPS_IdControl.Analysis.LinearAnalysis.PerturbationAnalysis.PerturbAVR" "Nonlinear experiment model";
+        // Case C: with AVR+PSS
+         input String pathToNonlinearExperiment= "SMIBPS_IdControl.Analysis.LinearAnalysis.PerturbationAnalysis.PerturbPSS" "Nonlinear experiment model";
+        //
+        //
+        // 3) LINEAR EXPERIMENT: this is a template that can be used for all three cases, so it is not necessary to create other cases here
+        input String pathToLinearExperiment = "SMIBPS_IdControl.Analysis.LinearAnalysis.LinearizeAfterDisturbance.LinearModelExperiment";
+
+      algorithm
+        // Compute and display the ABCD matrices, etc
+        (A,B,C,D,inputNames,outputNames,stateNames) :=
+          Modelica_LinearSystems2.Utilities.Import.linearize(
+          pathToNonlinearPlantModel,tlin);
+        // LINEARIZE plant model at t_lin
+        // This is the same as above, however, it stores it in a StateSpace object
+        ss := Modelica_LinearSystems2.ModelAnalysis.Linearize(
+          pathToNonlinearPlantModel, simulationSetup=
+          Modelica_LinearSystems2.Records.SimulationOptionsForLinearization(
+          linearizeAtInitial=false, t_linearize=tlin));
+        // PRINT linear system
+        Modelica.Utilities.Streams.print(String(ss));
+        // SAVE the data in a mat file
+        DataFiles.writeMATmatrix(
+          "MyData.mat",
+          "ABCD",
+          [ss.A, ss.B; ss.C, ss.D],
+          append=false);
+        nx := size(ss.A, 1);
+        DataFiles.writeMATmatrix(
+          "MyData.mat",
+          "nx",
+          [nx],
+          append=true);
+        Modelica.Utilities.Streams.print("Simulating nonlinear model");
+        simulateModel(
+          pathToNonlinearExperiment,
+          stopTime=tsim,
+          numberOfIntervals=numberOfIntervalsin, method = methodin, fixedstepsize=fixedstepsizein,
+          resultFile="res_nl");
+         ny := size(ss.C, 1);
+         y0 := DymolaCommands.Trajectories.readTrajectory(
+           "res_nl.mat",
+           {ss.yNames[i] for i in 1:ny},
+           DymolaCommands.Trajectories.readTrajectorySize("res_nl.mat"));
+          // {"PS_ConstantEfd." + ss.yNames[i] for i in 1:ny},
+         DataFiles.writeMATmatrix(
+           "MyData.mat",
+           "y0",
+           [y0[1:ny,1]],
+           append=true);
+        // Print y0's first values which is needed for the linear response model
+        y0out := y0[:,1]; // we only want the first few elements
+        Modelica.Utilities.Streams.print("y0 =");
+        Modelica.Math.Vectors.toString(y0out);
+        //
+        // We now simulate the linear model, which requires y0
+        Modelica.Utilities.Streams.print("Simulating linear model");
+        simulateModel(
+          pathToLinearExperiment,
+          stopTime=tsim,
+          numberOfIntervals=numberOfIntervalsin, method = methodin, fixedstepsize=fixedstepsizein,
+          resultFile="res_lin");
+        annotation(__Dymola_interactive=true, Documentation(info="<html>
+<p>This function linearizes the model at two different times, initialization and at a user provided time.</p>
+</html>"));
+      end LinearizeAfterDisturbance;
+
+      function LinearizeAtZero
+        // Import things needed for the calculations
+        import Modelica_LinearSystems2.StateSpace; // to create and manipulate state space objects
+        // Declare outputs to display
+        output Real A[:,:] "A-matrix";
+        output Real B[:,:] "B-matrix";
+        output Real C[:,:] "C-matrix";
+        output Real D[:,:] "D-matrix";
+        output String inputNames[:] "Modelica names of inputs";
+        output String outputNames[:] "Modelica names of outputs";
+        output String stateNames[:] "Modelica names of states";
+        // Declare reconfigurable inputs
+        input Modelica.SIunits.Time tlin = 0 "t for model linearization";
+        input Modelica.SIunits.Time tsim = 20 "Simulation time";
+        input String pathToNonlinearPlantModel = "SMIBPS_IdControl.Analysis.LinearAnalysis.LinearizeAfterDisturbance.NonlinModel_for_Linearization";
+        input String pathToNonlinearExperiment=
+            "SMIBPS_IdControl.Analysis.LinearAnalysis.LinearizeAfterDisturbance.NonlinModel_for_NonlinExperiment";
+        input String pathToLinearExperiment = "SMIBPS_IdControl.Analysis.LinearAnalysis.LinearizeAfterDisturbance.LinearModelExperiment";
+
+      algorithm
+        // Compute and display the ABCD matrices, etc
+        Modelica.Utilities.Streams.print("Linearized Model");
+        (A,B,C,D,inputNames,outputNames,stateNames) :=
+          Modelica_LinearSystems2.Utilities.Import.linearize(
+          pathToNonlinearPlantModel,tlin);
+        nx := size(A, 1); //number of states
+        Modelica.Utilities.Streams.print("Number of states" + String(nx));
+        // Now we want to extract the initial value of the outputs to use it in our
+        // linear model response
+        Modelica.Utilities.Streams.print("Simulating nonlinear model");
+        simulateModel(
+          pathToNonlinearExperiment,
+          stopTime=tsim,
+          numberOfIntervals=1000,
+          resultFile="res_nl");
+         ny := size(C, 1);
+         y0 := DymolaCommands.Trajectories.readTrajectory(
+           "res_nl.mat",
+           {outputNames[i] for i in 1:ny},
+           DymolaCommands.Trajectories.readTrajectorySize("res_nl.mat"));
+         DataFiles.writeMATmatrix(
+           "MyData.mat",
+           "y0",
+           [y0[1:ny,1]],
+           append=true);
+        // Print y0's first values which is needed for the linear response model
+        y0out := y0[:,1]; // we only want the first few elements
+        Modelica.Utilities.Streams.print("y0 =");
+        Modelica.Math.Vectors.toString(y0out);
+        annotation(__Dymola_interactive=true);
+      end LinearizeAtZero;
     end LinearizeAfterDisturbance;
   end LinearAnalysis;
 
