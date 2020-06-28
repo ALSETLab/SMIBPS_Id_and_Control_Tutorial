@@ -1634,8 +1634,8 @@ They have to be rearranged based on the order provided by the linearization func
                 color={0,0,127}));
           connect(Pmchange.y, sMIB_AVR_PSS_wInput_wFault.uPm)
             annotation (Line(points={{-79,0},{-45.7143,0}}, color={0,0,127}));
-          connect(Ploadchange.y, sMIB_AVR_PSS_wInput_wFault.uPload) annotation
-            (Line(points={{-79,-30},{-64,-30},{-64,-28.5714},{-45.7143,-28.5714}},
+          connect(Ploadchange.y, sMIB_AVR_PSS_wInput_wFault.uPload) annotation (
+             Line(points={{-79,-30},{-64,-30},{-64,-28.5714},{-45.7143,-28.5714}},
                 color={0,0,127}));
           annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
                 coordinateSystem(preserveAspectRatio=false)));
@@ -1669,7 +1669,6 @@ They have to be rearranged based on the order provided by the linearization func
                   0.0,-0.009499999998119004; 0.0,0.009499999998119004,0.0,0.0,
                   0.0,0.0,0.0,0.0,0.0,0.0,-0.001,-0.009499999998119004; 0.0,
                   0.7092198580777036,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,-0.7092198580777036],
-
               B=[0.0,0.0,0.0; 0.0,0.14285715467719018,-0.031538565410071266;
                   0.0,0.0,-0.04074002246667874; 0.0,0.0,0.09771145004222603;
                   0.0,0.0,-0.5364056421264252; 0.0,0.0,0.5555579805717668; 0.0,
@@ -1699,10 +1698,10 @@ They have to be rearranged based on the order provided by the linearization func
                   "sMIB_AVR_PSS_wInput_wFault.G1.pss.imLeadLag.TF.x_scaled[1]",
                   "sMIB_AVR_PSS_wInput_wFault.G1.pss.imLeadLag1.TF.x_scaled[1]",
                   "sMIB_AVR_PSS_wInput_wFault.G1.pss.derivativeLag.TF.x_scaled[1]"},
-
               uNames={"uPSS","uPm","uPload"}),
                                       blockType=Modelica_LinearSystems2.Controller.Types.BlockTypeWithGlobalDefault.Continuous)
             annotation (Placement(transformation(extent={{-36,-10},{-16,10}})));
+
           Modelica.Blocks.Routing.DeMultiplex5 demultiplex2_2
             annotation (Placement(transformation(extent={{60,-20},{100,20}})));
           Modelica.Blocks.Math.Add addy[5]
@@ -2232,8 +2231,8 @@ They have to be rearranged based on the order provided by the linearization func
           connect(Pmchange.y, sMIB_AVR_PSS_wInput_wFault.uPm)
             annotation (Line(points={{-79,0},{-62,0},{-62,-2},{-45.7143,-2}},
                                                             color={0,0,127}));
-          connect(Ploadchange.y, sMIB_AVR_PSS_wInput_wFault.uPload) annotation
-            (Line(points={{-79,-32},{-64,-32},{-64,-30.5714},{-45.7143,-30.5714}},
+          connect(Ploadchange.y, sMIB_AVR_PSS_wInput_wFault.uPload) annotation (
+             Line(points={{-79,-32},{-64,-32},{-64,-30.5714},{-45.7143,-30.5714}},
                 color={0,0,127}));
           annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
                 coordinateSystem(preserveAspectRatio=false)));
@@ -2270,7 +2269,6 @@ They have to be rearranged based on the order provided by the linearization func
                   0.0,-0.009499999999921729; 0.0,0.009500000000645967,0.0,0.0,
                   0.0,0.0,0.0,0.0,0.0,0.0,-0.0010000000000000007,-0.009499999999921729;
                   0.0,0.7092198582125331,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,-0.7092198581708853],
-
               B=[0.0,0.0,0.0; 0.0,0.14285715467719584,-0.08487555103187104; 0.0,
                   0.0,-0.09261674760452365; 0.0,0.0,0.33888530870385125; 0.0,
                   0.0,-1.2194430650443628; 0.0,0.0,1.9267991963849742; 0.0,0.0,
@@ -2300,10 +2298,10 @@ They have to be rearranged based on the order provided by the linearization func
                   "sMIB_AVR_PSS_wInput_wFault.G1.pss.imLeadLag.TF.x_scaled[1]",
                   "sMIB_AVR_PSS_wInput_wFault.G1.pss.imLeadLag1.TF.x_scaled[1]",
                   "sMIB_AVR_PSS_wInput_wFault.G1.pss.derivativeLag.TF.x_scaled[1]"},
-
               uNames={"uPSS","uPm","uPload"}),
                                       blockType=Modelica_LinearSystems2.Controller.Types.BlockTypeWithGlobalDefault.Continuous)
             annotation (Placement(transformation(extent={{-36,-10},{-16,10}})));
+
           Modelica.Blocks.Routing.DeMultiplex5 demultiplex2_2
             annotation (Placement(transformation(extent={{60,-20},{100,20}})));
           Modelica.Blocks.Math.Add addy[5]
