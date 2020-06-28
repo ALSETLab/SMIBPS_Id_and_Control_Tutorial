@@ -1603,19 +1603,13 @@ They have to be rearranged based on the order provided by the linearization func
           t2_line=Modelica.Constants.inf,
           opening_line=1)
           annotation (Placement(transformation(extent={{-40,-40},{40,40}})));
-        Modelica.Blocks.Interfaces.RealInput uPSS
-          annotation (Placement(transformation(extent={{-140,40},{-100,80}})));
-        Modelica.Blocks.Interfaces.RealInput uPm
-          annotation (Placement(transformation(extent={{-140,-20},{-100,20}})));
-        Modelica.Blocks.Interfaces.RealInput uPload annotation (Placement(
-              transformation(extent={{-140,-80},{-100,-40}})));
+        Modelica.Blocks.Sources.Constant PSSchange(k=0)
+          annotation (Placement(transformation(extent={{-100,20},{-80,40}})));
+        Modelica.Blocks.Sources.Constant Pmchange(k=0)
+          annotation (Placement(transformation(extent={{-100,-10},{-80,10}})));
+        Modelica.Blocks.Sources.Constant Ploadchange(k=0) annotation (Placement(
+              transformation(extent={{-100,-40},{-80,-20}})));
       equation
-        connect(uPSS, sMIB_AVR_PSS_wInput_wFault.uPSS) annotation (Line(points={{-120,60},
-                {-84,60},{-84,28.5714},{-46.8571,28.5714}},     color={0,0,127}));
-        connect(uPm, sMIB_AVR_PSS_wInput_wFault.uPm)
-          annotation (Line(points={{-120,0},{-45.7143,0}}, color={0,0,127}));
-        connect(uPload, sMIB_AVR_PSS_wInput_wFault.uPload) annotation (Line(points={{-120,
-                -60},{-80,-60},{-80,-28.5714},{-45.7143,-28.5714}}, color={0,0,127}));
         connect(sMIB_AVR_PSS_wInput_wFault.Vt, Vt) annotation (Line(points={{42.8571,
                 22.5714},{68,22.5714},{68,79},{108,79}},
                                                 color={0,0,127}));
@@ -1630,6 +1624,14 @@ They have to be rearranged based on the order provided by the linearization func
                                                    color={0,0,127}));
         connect(sMIB_AVR_PSS_wInput_wFault.delta, delta) annotation (Line(points={{42.8571,
                 -23.1429},{60,-23.1429},{60,-81},{108,-81}}, color={0,0,127}));
+        connect(PSSchange.y, sMIB_AVR_PSS_wInput_wFault.uPSS) annotation (Line(
+              points={{-79,30},{-60,30},{-60,28.5714},{-46.8571,28.5714}},
+              color={0,0,127}));
+        connect(Pmchange.y, sMIB_AVR_PSS_wInput_wFault.uPm)
+          annotation (Line(points={{-79,0},{-45.7143,0}}, color={0,0,127}));
+        connect(Ploadchange.y, sMIB_AVR_PSS_wInput_wFault.uPload) annotation (
+            Line(points={{-79,-30},{-64,-30},{-64,-28.5714},{-45.7143,-28.5714}},
+              color={0,0,127}));
         annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
               coordinateSystem(preserveAspectRatio=false)));
       end NonlinModel_for_NonlinExperiment;
@@ -1638,7 +1640,8 @@ They have to be rearranged based on the order provided by the linearization func
         extends Modelica.Icons.Example;
         extends
           SMIBPS_IdControl.Analysis.LinearAnalysis.Interfaces.OutputsInterface;
-        Modelica.Blocks.Sources.Step stepEfd(height=0.01, startTime=1)
+        Modelica.Blocks.Sources.Constant
+                                     const(k=0)
           annotation (Placement(transformation(extent={{-124,22},{-104,42}})));
         inner Modelica_LinearSystems2.Controller.SampleClock sampleClock
           annotation (Placement(transformation(extent={{72,70},{92,90}})));
@@ -1711,11 +1714,10 @@ They have to be rearranged based on the order provided by the linearization func
               rotation=90,
               origin={80,-90})));
         Modelica.Blocks.Sources.Constant Ploadchange(k=0) annotation (Placement(
-              transformation(extent={{-126,-42},{-106,-22}})));
+              transformation(extent={{-124,-42},{-104,-22}})));
       equation
-        connect(multiplex3_1.u1[1], stepEfd.y) annotation (Line(points={{-82,7},
-                {-90,7},{-90,32},{-103,32}},
-                                    color={0,0,127}));
+        connect(multiplex3_1.u1[1], const.y) annotation (Line(points={{-82,7},{
+                -90,7},{-90,32},{-103,32}}, color={0,0,127}));
         connect(multiplex3_1.y, stateSpace.u)
           annotation (Line(points={{-59,0},{-38,0}}, color={0,0,127}));
         connect(demultiplex2_2.y1[1], Vt) annotation (Line(points={{102,16},{108,16},{
@@ -1747,8 +1749,8 @@ They have to be rearranged based on the order provided by the linearization func
                 122,0},{122,41},{150,41}}, color={0,0,127}));
         connect(Q, demultiplex2_2.y2[1]) annotation (Line(points={{150,1},{
                 126,1},{126,8},{102,8}}, color={0,0,127}));
-        connect(Ploadchange.y, multiplex3_1.u3[1]) annotation (Line(points={{
-                -105,-32},{-96,-32},{-96,-7},{-82,-7}}, color={0,0,127}));
+        connect(Ploadchange.y, multiplex3_1.u3[1]) annotation (Line(points={{-103,
+                -32},{-96,-32},{-96,-7},{-82,-7}},      color={0,0,127}));
         annotation (
           Icon(coordinateSystem(preserveAspectRatio=false)),
           Diagram(coordinateSystem(preserveAspectRatio=false), graphics={
@@ -1831,20 +1833,15 @@ This is visible in the Text layer only."),
         //
         // DEFINING THE NONLINEAR PLANT, NONLINEAR EXPERIMENT, AND LINEAR EXPERIMENT MODELS
         //
-        // 1) NONLINEAR PLANT: this is a model with input and outputs definde and under the .Analysis.LinearAnalysis.Interfaces sub-package
+        // 1) NONLINEAR PLANT:
         // This is the model that will be linearized, i.e. the nonlinear plant model
          input String pathToNonlinearPlantModel = "SMIBPS_IdControl.Analysis.LinearAnalysis.LinearizeAfterDisturbance.NonlinModel_for_Linearization" "Nonlinear plant model";
         //
         //
         // 2) NONLINEAR EXPERIMENT: this is a model which applies a change to the input of the nonlinear model.
-        // It must match the nonlinar plant above. These models are under .Analysis.LinearAnalysis.PerturbationAnalysis
+        // It must match the nonlinar plant above.
         // This model will be simulated, and the simulation results will be compared to the simulation of the corresponding linearized model.
-        // Case A: with no controls - constant Efd and Pm
-        // input String pathToNonlinearExperiment= "SMIBPS_IdControl.Analysis.LinearAnalysis.PerturbationAnalysis.PerturbGen" "Nonlinear experiment model";
-        // Case B: with AVR only
-        // input String pathToNonlinearExperiment= "SMIBPS_IdControl.Analysis.LinearAnalysis.PerturbationAnalysis.PerturbAVR" "Nonlinear experiment model";
-        // Case C: with AVR+PSS
-         input String pathToNonlinearExperiment= "SMIBPS_IdControl.Analysis.LinearAnalysis.PerturbationAnalysis.PerturbPSS" "Nonlinear experiment model";
+        input String pathToNonlinearExperiment= "SMIBPS_IdControl.Analysis.LinearAnalysis.LinearizeAfterDisturbance.NonlinModel_for_NonlinExperiment" "Nonlinear experiment model";
         //
         //
         // 3) LINEAR EXPERIMENT: this is a template that can be used for all three cases, so it is not necessary to create other cases here
