@@ -2486,6 +2486,20 @@ This is visible in the Text layer only."),
             fixedstepsize=fixedstepsizein,
             resultFile="res_lin");
 
+        removePlots(false);
+        createPlot(id=1, position={0, 0, 1311, 963}, y={"Vt"}, range={0.0, 30.0, 0.985, 1.01}, grid=true, filename="res_nl.mat", colors={{28,108,200}}, displayUnits={"1"});
+        createPlot(id=1, position={0, 0, 1311, 963}, y={"Q"}, range={0.0, 30.0, 0.15000000000000002, 0.4}, grid=true, subPlot=102, colors={{28,108,200}}, displayUnits={"1"});
+        createPlot(id=1, position={0, 0, 1311, 963}, y={"P"}, range={0.0, 30.0, 0.7000000000000001, 1.1}, grid=true, subPlot=103, colors={{28,108,200}}, displayUnits={"1"});
+        createPlot(id=1, position={0, 0, 1311, 963}, y={"w"}, range={0.0, 30.0, 0.97, 1.01}, grid=true, subPlot=104, colors={{28,108,200}}, displayUnits={"1"});
+        createPlot(id=1, position={0, 0, 1311, 963}, y={"delta"}, range={0.0, 30.0, 0.8, 1.6}, grid=true, subPlot=105, colors={{28,108,200}}, displayUnits={"rad"});
+        createPlot(id=1, position={0, 0, 1311, 963}, y={"Vt"}, range={0.0, 30.0, 0.985, 1.01}, erase=false, grid=true, filename="res_lin.mat", colors={{238,46,47}});
+        createPlot(id=1, position={0, 0, 1311, 963}, y={"Q"}, range={0.0, 30.0, 0.15000000000000002, 0.4}, erase=false, grid=true, subPlot=102, colors={{238,46,47}});
+        createPlot(id=1, position={0, 0, 1311, 963}, y={"P"}, range={0.0, 30.0, 0.7000000000000001, 1.1}, erase=false, grid=true, subPlot=103, colors={{238,46,47}});
+        createPlot(id=1, position={0, 0, 1311, 963}, y={"w"}, range={0.0, 30.0, 0.97, 1.01}, erase=false, grid=true, subPlot=104, colors={{238,46,47}});
+        createPlot(id=1, position={0, 0, 1311, 963}, y={"delta"}, range={0.0, 30.0, 0.8, 1.6}, erase=false, grid=true, subPlot=105, colors={{238,46,47}});
+
+
+
           annotation(__Dymola_interactive=true, Documentation(info="<html>
 <p>This function linearizes the model at two different times, initialization and at a user provided time.</p>
 </html>"));
