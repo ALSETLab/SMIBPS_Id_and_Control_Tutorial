@@ -553,16 +553,16 @@ package BaseModelsPartial "Partial Models - Cannot be simulated!"
     equation
       connect(machine.p, pwPin) annotation (Line(points={{74,0},{78.5,0},{78.5,0},{
               110,0}},           color={0,0,255}));
-      connect(avr.vf, machine.vf) annotation (Line(points={{-10.3333,16},{2,
-              16},{2,15},{8,15}},
+      connect(avr.vf, machine.vf) annotation (Line(points={{-10.3333,16},{2,16},
+              {2,15},{8,15}},
                        color={0,0,127}));
       connect(machine.v, avr.v) annotation (Line(points={{77,9},{98,9},{98,54},
               {-50.3333,54},{-50.3333,26}},
                              color={0,0,127}));
       connect(pss.vs, avr.vs)
         annotation (Line(points={{-55,6},{-50.3333,6}},    color={0,0,127}));
-      connect(machine.vf0, avr.vf0) annotation (Line(points={{20,33},{-6,33},
-              {-6,44},{-32,44},{-32,34.3333}},
+      connect(machine.vf0, avr.vf0) annotation (Line(points={{20,33},{-6,33},{
+              -6,44},{-32,44},{-32,34.3333}},
                                        color={0,0,127}));
       connect(uPSS, feedback.u1) annotation (Line(points={{-120,60},{-110,60},
               {-110,6},{-98,6}}, color={0,0,127}));
@@ -616,7 +616,10 @@ package BaseModelsPartial "Partial Models - Cannot be simulated!"
 <td><p><a href=\"mailto:luigiv@kth.se\">luigiv@kth.se</a></p></td>
 </tr>
 </table>
-</html>"));
+</html>"),
+        __Dymola_Commands(file=
+              "MosScripts/nonlinear_simulation_line_removal_gen_output.mos"
+            "genoutput", file="MosScripts/genoutput.mos" "genoutput"));
     end Generator_AVR_PSS_wInputs;
   annotation (Documentation(info="<html>
 <table cellspacing=\"1\" cellpadding=\"1\" border=\"1\">
@@ -761,7 +764,10 @@ package BaseModelsPartial "Partial Models - Cannot be simulated!"
           V_0=powerFlow_Data.bus.V3,
           angle_0=powerFlow_Data.bus.A3,
           P_0=powerFlow_Data.machines.PG2,
-          Q_0=powerFlow_Data.machines.QG2));
+          Q_0=powerFlow_Data.machines.QG2),
+        B1(V_0=powerFlow_Data.bus.V1, angle_0=powerFlow_Data.bus.A1),
+        B3(V_0=powerFlow_Data.bus.V3, angle_0=powerFlow_Data.bus.A3),
+        B4(V_0=powerFlow_Data.bus.V4, angle_0=powerFlow_Data.bus.A4));
       OpenIPSL.Electrical.Loads.PSSE.Load_ExtInput load_ExtInput(
         V_0=powerFlow_Data.bus.V4,
         angle_0=powerFlow_Data.bus.A4,
@@ -788,7 +794,10 @@ package BaseModelsPartial "Partial Models - Cannot be simulated!"
           V_0=powerFlow_Data.bus.V3,
           angle_0=powerFlow_Data.bus.A3,
           P_0=powerFlow_Data.machines.PG2,
-          Q_0=powerFlow_Data.machines.QG2));
+          Q_0=powerFlow_Data.machines.QG2),
+        B1(V_0=powerFlow_Data.bus.V1, angle_0=powerFlow_Data.bus.A1),
+        B3(V_0=powerFlow_Data.bus.V3, angle_0=powerFlow_Data.bus.A3),
+        B4(V_0=powerFlow_Data.bus.V4, angle_0=powerFlow_Data.bus.A4));
       OpenIPSL.Electrical.Events.PwFault fault(
         R=0,
         t1=0.5,

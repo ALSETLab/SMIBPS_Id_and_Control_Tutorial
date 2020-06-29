@@ -548,21 +548,13 @@ AVR+PSS
 </html>"));
       end SMIB_AVR_PSS_wInput;
 
-      model SMIB_AVR_PSS_wInput_wFault
+      model SMIB_AVR_PSS_wInput_wLineRmoval
         extends BaseModelsPartial.BaseNetwork.SMIB_Partial(powerFlow_Data(
             redeclare record Bus = PF_Data.Bus_Data.PF_Bus_5,
             redeclare record Loads = PF_Data.Loads_Data.PF_Loads_5,
             redeclare record Trafos = PF_Data.Trafos_Data.PF_Trafos_5,
             redeclare record Machines = PF_Data.Machines_Data.PF_Machines_5),
-          fault(
-            R=R,
-            X=X,
-            t1=t1,
-            t2=t2),
-          line_3(
-            t1=t1_line,
-            t2=t2_line,
-            opening=opening_line),
+          line_1(X=1.2497500000000001),
           line_2(t1=Modelica.Constants.inf));
         extends SMIBPS_IdControl.Analysis.LinearAnalysis.Interfaces.OutputsInterface;
         import Modelica.Constants.pi;
@@ -578,20 +570,22 @@ AVR+PSS
           annotation (Placement(transformation(extent={{-180,-20},{-140,20}})));
         Modelica.Blocks.Interfaces.RealInput uPload annotation (Placement(
               transformation(extent={{-180,-120},{-140,-80}})));
-        parameter Real R=0 "Resistance (pu)"
-          annotation (Dialog(group="Fault Parameters"));
-        parameter Real X=1e-5 "Reactance (pu)"
-          annotation (Dialog(group="Fault Parameters"));
-        parameter Real t1=0.5 "Start time of the fault (s)"
-          annotation (Dialog(group="Fault Parameters"));
-        parameter Real t2=0.57 "End time of the fault (s)"
-          annotation (Dialog(group="Fault Parameters"));
-        parameter Modelica.SIunits.Time t1_line=0.57
-          annotation (Dialog(group="Line Opening Parameters"));
-        parameter Modelica.SIunits.Time t2_line=Modelica.Constants.inf
-          annotation (Dialog(group="Line Opening Parameters"));
-        parameter Integer opening_line=1
-          annotation (Dialog(group="Line Opening Parameters"));
+
+        OpenIPSL.Electrical.Branches.PwLine line_4(
+          R=0,
+          G=0,
+          B=0,
+          X=0.8334444814938313,
+          t1=t1,
+          t2=t2,
+          opening=opening)
+                 annotation (Placement(transformation(extent={{22,0},{40,12}})));
+        parameter Modelica.SIunits.Time t1=Modelica.Constants.inf "Time of line removal"
+          annotation (Dialog(group="Line Removal Parameters"));
+        parameter Modelica.SIunits.Time t2=Modelica.Constants.inf
+          "Line re-insertion time"     annotation (Dialog(group="Line Removal Parameters"));
+        parameter Integer opening=1
+          "Type of opening (1: removes both ends at same time, 2: removes sending end, 3: removes receiving end)"     annotation (Dialog(group="Line Removal Parameters"));
       protected
         parameter Real S_b=SysData.S_b;
       equation
@@ -609,8 +603,18 @@ AVR+PSS
                 {-122,-6}},color={0,0,127}));
         connect(G1.pwPin, B1.p)
           annotation (Line(points={{-99,0},{-80,0}}, color={0,0,255}));
+        connect(line_4.n, line_1.n)
+          annotation (Line(points={{39.1,6},{39.1,20}}, color={0,0,255}));
+        connect(line_4.p, line_1.p)
+          annotation (Line(points={{22.9,6},{22.9,20}}, color={0,0,255}));
         annotation (
-          Diagram(coordinateSystem(extent={{-140,-140},{140,140}})),
+          Diagram(coordinateSystem(extent={{-140,-140},{140,140}}), graphics={
+                Rectangle(
+                extent={{12,28},{54,0}},
+                lineColor={238,46,47},
+                fillColor={244,125,35},
+                fillPattern=FillPattern.None,
+                lineThickness=1)}),
           Icon(coordinateSystem(extent={{-140,-140},{140,140}}), graphics={
               Rectangle(extent={{-140,140},{140,-140}}, lineColor={28,108,200}),
               Text(
@@ -629,7 +633,7 @@ AVR+PSS
                 fillPattern=FillPattern.Solid,
                 textString="%name
 ")}),     experiment(
-            StopTime=10,
+            StopTime=20,
             Interval=0.0001,
             Tolerance=1e-06,
             __Dymola_fixedstepsize=0.0001,
@@ -655,7 +659,7 @@ AVR+PSS
 </tr>
 </table>
 </html>"));
-      end SMIB_AVR_PSS_wInput_wFault;
+      end SMIB_AVR_PSS_wInput_wLineRmoval;
 
       partial model OutputsInterface
         Modelica.Blocks.Interfaces.RealOutput Vt
@@ -1531,15 +1535,8 @@ They have to be rearranged based on the order provided by the linearization func
               extent={{-10,-10},{10,10}},
               rotation=0,
               origin={-94,-40})));
-        Interfaces.SMIB_AVR_PSS_wInput_wFault
-          sMIB_AVR_PSS_wInput_wFault(
-          R=0,
-          X=1e-3,
-          t1=Modelica.Constants.inf,
-          t2=Modelica.Constants.inf,
-          t1_line=0.5,
-          t2_line=Modelica.Constants.inf,
-          opening_line=1)
+        Interfaces.SMIB_AVR_PSS_wInput_wLineRmoval sMIB_AVR_PSS_wInput_wFault(
+            t1=0.5)
           annotation (Placement(transformation(extent={{-20,-20},{36,36}})));
       equation
         connect(efdInputGain.u,constEfd. y)
@@ -1579,7 +1576,9 @@ They have to be rearranged based on the order provided by the linearization func
             __Dymola_NumberOfIntervals=5000,
             Tolerance=1e-06,
             __Dymola_fixedstepsize=0.001,
-            __Dymola_Algorithm="Dassl"));
+            __Dymola_Algorithm="Dassl"),
+          __Dymola_Commands(file="MosScripts/busvoltages.mos" "busvoltages",
+              file="MosScripts/outputs_lineswitch.mos" "outputs_lineswitch"));
       end NonlinModel_for_Simulation;
 
       package LinAtZero
@@ -1597,15 +1596,8 @@ They have to be rearranged based on the order provided by the linearization func
             annotation (Placement(transformation(extent={{98,-50},{118,-28}})));
           Modelica.Blocks.Interfaces.RealOutput delta
             annotation (Placement(transformation(extent={{98,-92},{118,-70}})));
-          Interfaces.SMIB_AVR_PSS_wInput_wFault
-            sMIB_AVR_PSS_wInput_wFault(
-            R=0,
-            X=1e-3,
-            t1=Modelica.Constants.inf,
-            t2=Modelica.Constants.inf,
-            t1_line=0.5,
-            t2_line=Modelica.Constants.inf,
-            opening_line=1)
+          Interfaces.SMIB_AVR_PSS_wInput_wLineRmoval sMIB_AVR_PSS_wInput_wFault(
+              t1=Modelica.Constants.inf, t2=Modelica.Constants.inf)
             annotation (Placement(transformation(extent={{-40,-40},{40,40}})));
           Modelica.Blocks.Interfaces.RealInput uPSS
             annotation (Placement(transformation(extent={{-140,40},{-100,80}})));
@@ -1651,15 +1643,8 @@ They have to be rearranged based on the order provided by the linearization func
             annotation (Placement(transformation(extent={{98,-50},{118,-28}})));
           Modelica.Blocks.Interfaces.RealOutput delta
             annotation (Placement(transformation(extent={{98,-92},{118,-70}})));
-          Interfaces.SMIB_AVR_PSS_wInput_wFault
-            sMIB_AVR_PSS_wInput_wFault(
-            R=0,
-            X=1e-3,
-            t1=Modelica.Constants.inf,
-            t2=Modelica.Constants.inf,
-            t1_line=Modelica.Constants.inf,
-            t2_line=Modelica.Constants.inf,
-            opening_line=1)
+          Interfaces.SMIB_AVR_PSS_wInput_wLineRmoval sMIB_AVR_PSS_wInput_wFault(
+              t1=Modelica.Constants.inf, t2=Modelica.Constants.inf)
             annotation (Placement(transformation(extent={{-40,-40},{40,40}})));
           Modelica.Blocks.Sources.Constant PSSchange(k=0)
             annotation (Placement(transformation(extent={{-100,20},{-80,40}})));
@@ -1905,7 +1890,7 @@ This is visible in the Text layer only."),
           output String outputNames[:] "Modelica names of outputs";
           output String stateNames[:] "Modelica names of states";
           // Declare reconfigurable inputs
-          input Modelica.SIunits.Time tlin = 0 "t for model linearization";
+          input Modelica.SIunits.Time tlin = 20 "t for model linearization";
           input Modelica.SIunits.Time tsim = 20 "Simulation time";
           input String pathToNonlinearPlantModel = "SMIBPS_IdControl.Analysis.LinearAnalysis.LinearizeAfterDisturbance.LinAtZero.NonlinModel_for_Linearization";
           input String pathToNonlinearExperiment = "SMIBPS_IdControl.Analysis.LinearAnalysis.LinearizeAfterDisturbance.LinAtZero.NonlinModel_for_NonlinExperiment";
@@ -2193,8 +2178,7 @@ They have to be rearranged based on the order provided by the linearization func
             annotation (Placement(transformation(extent={{98,-50},{118,-28}})));
           Modelica.Blocks.Interfaces.RealOutput delta
             annotation (Placement(transformation(extent={{98,-92},{118,-70}})));
-          Interfaces.SMIB_AVR_PSS_wInput_wFault
-            sMIB_AVR_PSS_wInput_wFault(
+          Interfaces.SMIB_AVR_PSS_wInput_wLineRmoval sMIB_AVR_PSS_wInput_wFault(
             R=0,
             X=1e-3,
             t1=Modelica.Constants.inf,
@@ -2247,8 +2231,7 @@ They have to be rearranged based on the order provided by the linearization func
             annotation (Placement(transformation(extent={{98,-50},{118,-28}})));
           Modelica.Blocks.Interfaces.RealOutput delta
             annotation (Placement(transformation(extent={{98,-92},{118,-70}})));
-          Interfaces.SMIB_AVR_PSS_wInput_wFault
-            sMIB_AVR_PSS_wInput_wFault(
+          Interfaces.SMIB_AVR_PSS_wInput_wLineRmoval sMIB_AVR_PSS_wInput_wFault(
             R=0,
             X=1e-3,
             t1=Modelica.Constants.inf,
