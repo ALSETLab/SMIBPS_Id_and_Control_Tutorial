@@ -555,7 +555,8 @@ AVR+PSS
             redeclare record Trafos = PF_Data.Trafos_Data.PF_Trafos_5,
             redeclare record Machines = PF_Data.Machines_Data.PF_Machines_5),
           line_1(X=1.2497500000000001),
-          line_2(t1=Modelica.Constants.inf));
+          line_2(t1=Modelica.Constants.inf),
+          fault(t1=Modelica.Constants.inf, t2=Modelica.Constants.inf));
         extends SMIBPS_IdControl.Analysis.LinearAnalysis.Interfaces.OutputsInterface;
         import Modelica.Constants.pi;
         BaseModelsPartial.BasePlants.Generator_AVR_PSS_wInputs G1(
@@ -1644,7 +1645,14 @@ They have to be rearranged based on the order provided by the linearization func
           Modelica.Blocks.Interfaces.RealOutput delta
             annotation (Placement(transformation(extent={{98,-92},{118,-70}})));
           Interfaces.SMIB_AVR_PSS_wInput_wLineRmoval sMIB_AVR_PSS_wInput_wFault(
-              t1=Modelica.Constants.inf, t2=Modelica.Constants.inf)
+              t1=Modelica.Constants.inf, t2=Modelica.Constants.inf,
+            line_2(p(ii(start=0.07094634994424247), ir(start=0.3256611866748383))),
+
+            line_3(p(ii(start=0.06629261665313652), ir(start=
+                      0.29233138229967537))),
+            line_4(p(ii(start=0.0765691307396983), ir(start=0.34479386564307796))),
+
+            transformer(n(ii(start=-0.19857858887980492), ir(start=-0.9003942758211358))))
             annotation (Placement(transformation(extent={{-40,-40},{40,40}})));
           Modelica.Blocks.Sources.Constant PSSchange(k=0)
             annotation (Placement(transformation(extent={{-100,20},{-80,40}})));
