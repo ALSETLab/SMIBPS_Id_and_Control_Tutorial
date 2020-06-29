@@ -16,7 +16,8 @@ package Analysis
         load_ExtInput(
           d_P=0,
           t1=0,
-          d_t=0));
+          d_t=0),
+        fault(t2=0.5 + 5/60));
       import Modelica.Constants.pi;
       BaseModelsPartial.BasePlants.Generator G1(
         V_0=powerFlow_Data.bus.V1,
@@ -83,7 +84,8 @@ package Analysis
           load_ExtInput(
           d_P=0,
           t1=0,
-          d_t=0));
+          d_t=0),
+        fault(t2=0.5 + 5/60));
       import Modelica.Constants.pi;
       BaseModelsPartial.BasePlants.Generator_AVR G1(
         V_0=powerFlow_Data.bus.V1,
@@ -150,7 +152,8 @@ package Analysis
           load_ExtInput(
           d_P=0,
           t1=0,
-          d_t=0));
+          d_t=0),
+        fault(t2=0.5 + 5/60));
       import Modelica.Constants.pi;
       BaseModelsPartial.BasePlants.Generator_AVR_PSS G1(
         V_0=powerFlow_Data.bus.V1,
@@ -206,6 +209,59 @@ package Analysis
 </table>
 </html>"));
     end SMIB_AVR_PSS;
+
+    function RunAndCompare
+      "Runs the three simulation cases and compares their variables"
+      // INPUTS TO THE FUNCTION
+      // Declare reconfigurable simulation parameters
+      input Modelica.SIunits.Time tsim = 10 "Simulation time";
+      input Integer numberOfIntervalsin=10000 "No. of intervals";
+      //input String methodin = "Rkfix4" "Solver";
+      input String methodin = "Dassl" "Solver";
+      input Real fixedstepsizein= 1e-3 "Time step - needed only for fixed time step solvers";
+      //
+      // MODELS TO SIMULATE
+      input String modela="SMIBPS_IdControl.Analysis.Simulation.SMIB";
+      input String modelb="SMIBPS_IdControl.Analysis.Simulation.SMIB_AVR";
+      input String modelc="SMIBPS_IdControl.Analysis.Simulation.SMIB_AVR_PSS";
+
+    algorithm
+      simulateModel(
+        modela,
+        stopTime=tsim,
+        numberOfIntervals=numberOfIntervalsin,
+        method = methodin,
+        fixedstepsize=fixedstepsizein,
+        resultFile="res_casea");
+      simulateModel(
+        modelb,
+        stopTime=tsim,
+        numberOfIntervals=numberOfIntervalsin,
+        method = methodin,
+        fixedstepsize=fixedstepsizein,
+        resultFile="res_caseb");
+    simulateModel(
+        modelc,
+        stopTime=tsim,
+        numberOfIntervals=numberOfIntervalsin,
+        method = methodin,
+        fixedstepsize=fixedstepsizein,
+        resultFile="res_casec");
+
+    removePlots(true);
+    Advanced.FilesToKeep :=10;
+    createPlot(id=1, position={15, 15, 678, 703}, y={"B1.V"}, range={0.0, 10.0, 0.4, 1.4}, grid=true, filename="res_casea.mat", colors={{28,108,200}}, displayUnits={"1"});
+    createPlot(id=1, position={15, 15, 678, 703}, y={"G1.machine.P"}, range={0.0, 10.0, -1.5, 2.0}, grid=true, subPlot=102, colors={{28,108,200}}, displayUnits={"1"});
+    createPlot(id=1, position={15, 15, 678, 703}, y={"G1.machine.Q"}, range={0.0, 10.0, -0.5, 2.0}, grid=true, subPlot=103, colors={{28,108,200}}, displayUnits={"1"});
+    createPlot(id=1, position={15, 15, 678, 703}, y={"B1.V"}, range={0.0, 10.0, 0.4, 1.4}, erase=false, grid=true, filename="res_caseb.mat", colors={{238,46,47}}, displayUnits={"1"});
+    createPlot(id=1, position={15, 15, 678, 703}, y={"G1.machine.P"}, range={0.0, 10.0, -1.5, 2.0}, erase=false, grid=true, subPlot=102, colors={{238,46,47}}, displayUnits={"1"});
+    createPlot(id=1, position={15, 15, 678, 703}, y={"G1.machine.Q"}, range={0.0, 10.0, -0.5, 2.0}, erase=false, grid=true, subPlot=103, colors={{238,46,47}}, displayUnits={"1"});
+    createPlot(id=1, position={15, 15, 678, 703}, y={"B1.V"}, range={0.0, 10.0, 0.4, 1.4}, erase=false, grid=true, filename="res_casec.mat", colors={{0,140,72}}, displayUnits={"1"});
+    createPlot(id=1, position={15, 15, 678, 703}, y={"G1.machine.P"}, range={0.0, 10.0, -1.5, 2.0}, erase=false, grid=true, subPlot=102, colors={{0,140,72}}, displayUnits={"1"});
+    createPlot(id=1, position={15, 15, 678, 703}, y={"G1.machine.Q"}, range={0.0, 10.0, -0.5, 2.0}, erase=false, grid=true, subPlot=103, colors={{0,140,72}}, displayUnits={"1"});
+
+
+    end RunAndCompare;
   end Simulation;
 
   package LinearAnalysis
