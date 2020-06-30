@@ -554,7 +554,7 @@ AVR+PSS
             redeclare record Loads = PF_Data.Loads_Data.PF_Loads_5,
             redeclare record Trafos = PF_Data.Trafos_Data.PF_Trafos_5,
             redeclare record Machines = PF_Data.Machines_Data.PF_Machines_5),
-          line_1(X=3.531325),
+          line_1(X=3.25),
           line_2(t1=Modelica.Constants.inf),
           fault(t1=Modelica.Constants.inf, t2=Modelica.Constants.inf));
         extends SMIBPS_IdControl.Analysis.LinearAnalysis.Interfaces.OutputsInterface;
@@ -576,7 +576,7 @@ AVR+PSS
           R=0,
           G=0,
           B=0,
-          X=0.582472186255186,
+          X=3.25/5.5,
           t1=t1,
           t2=t2,
           opening=opening)
@@ -1536,9 +1536,9 @@ They have to be rearranged based on the order provided by the linearization func
               extent={{-10,-10},{10,10}},
               rotation=0,
               origin={-94,-40})));
-        Interfaces.SMIB_AVR_PSS_wInput_wLineRmoval sMIB_AVR_PSS_wInput_wFault(
-            t1=0.5)
-          annotation (Placement(transformation(extent={{-20,-20},{36,36}})));
+        Interfaces.SMIB_AVR_PSS_wInput_wLineRmoval
+          sMIB_AVR_PSS_wInput_wLineRmoval(t1=0.5)
+          annotation (Placement(transformation(extent={{-40,-60},{80,60}})));
       equation
         connect(efdInputGain.u,constEfd. y)
           annotation (Line(points={{-104,40},{-121,40}},
@@ -1548,26 +1548,29 @@ They have to be rearranged based on the order provided by the linearization func
         connect(Ploadchange.y,uPloadInputGain. u)
           annotation (Line(points={{-121,-40},{-106,-40}},
                                                          color={0,0,127}));
-        connect(efdInputGain.y,sMIB_AVR_PSS_wInput_wFault. uPSS) annotation (Line(
-              points={{-81,40},{-34,40},{-34,28},{-24.8,28}},
-                                                         color={0,0,127}));
-        connect(pmInputGain.y,sMIB_AVR_PSS_wInput_wFault. uPm)
-          annotation (Line(points={{-81,0},{-52,0},{-52,8},{-24,8}},
-                                                    color={0,0,127}));
-        connect(uPloadInputGain.y,sMIB_AVR_PSS_wInput_wFault. uPload) annotation (
-            Line(points={{-83,-40},{-36,-40},{-36,-12},{-24,-12}},
-                                                                color={0,0,127}));
-        connect(sMIB_AVR_PSS_wInput_wFault.Vt,Vt)  annotation (Line(points={{38,23.8},
-                {64.5,23.8},{64.5,79},{128,79}},       color={0,0,127}));
-        connect(sMIB_AVR_PSS_wInput_wFault.P,P)  annotation (Line(points={{38,16.2},
-                {94,16.2},{94,41},{128,41}},       color={0,0,127}));
-        connect(sMIB_AVR_PSS_wInput_wFault.w,w)  annotation (Line(points={{38,0.2},
-                {63.5,0.2},{63.5,-39},{128,-39}},      color={0,0,127}));
-        connect(sMIB_AVR_PSS_wInput_wFault.delta,delta)  annotation (Line(
-              points={{38,-8.2},{38.5,-8.2},{38.5,-81},{128,-81}}, color={0,0,
+        connect(sMIB_AVR_PSS_wInput_wLineRmoval.uPSS, efdInputGain.y)
+          annotation (Line(points={{-50.2857,42.8571},{-65.1428,42.8571},{
+                -65.1428,40},{-81,40}}, color={0,0,127}));
+        connect(sMIB_AVR_PSS_wInput_wLineRmoval.uPm, pmInputGain.y)
+          annotation (Line(points={{-48.5714,0},{-81,0}}, color={0,0,127}));
+        connect(sMIB_AVR_PSS_wInput_wLineRmoval.uPload, uPloadInputGain.y)
+          annotation (Line(points={{-48.5714,-42.8571},{-65.2857,-42.8571},{
+                -65.2857,-40},{-83,-40}}, color={0,0,127}));
+        connect(sMIB_AVR_PSS_wInput_wLineRmoval.Vt, Vt) annotation (Line(points
+              ={{84.2857,33.8571},{84.2857,55.9286},{128,55.9286},{128,79}},
+              color={0,0,127}));
+        connect(P, sMIB_AVR_PSS_wInput_wLineRmoval.P) annotation (Line(points={
+                {128,41},{100,41},{100,17.5714},{84.2857,17.5714}}, color={0,0,
                 127}));
-        connect(sMIB_AVR_PSS_wInput_wFault.Q, Q) annotation (Line(points={{38,
-                8.2},{81,8.2},{81,1},{128,1}}, color={0,0,127}));
+        connect(Q, sMIB_AVR_PSS_wInput_wLineRmoval.Q) annotation (Line(points={
+                {128,1},{105,1},{105,0.428571},{84.2857,0.428571}}, color={0,0,
+                127}));
+        connect(w, sMIB_AVR_PSS_wInput_wLineRmoval.w) annotation (Line(points={
+                {128,-39},{100,-39},{100,-16.7143},{84.2857,-16.7143}}, color={
+                0,0,127}));
+        connect(delta, sMIB_AVR_PSS_wInput_wLineRmoval.delta) annotation (Line(
+              points={{128,-81},{92,-81},{92,-34.7143},{84.2857,-34.7143}},
+              color={0,0,127}));
         annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{
                   -160,-100},{120,100}})),                             Diagram(
               coordinateSystem(preserveAspectRatio=false, extent={{-160,-100},{
@@ -1575,10 +1578,11 @@ They have to be rearranged based on the order provided by the linearization func
           experiment(
             StopTime=30,
             __Dymola_NumberOfIntervals=10000,
-            Tolerance=1e-06,
             __Dymola_Algorithm="Dassl"),
           __Dymola_Commands(file="MosScripts/busvoltages.mos" "busvoltages",
-              file="MosScripts/outputs_lineswitch.mos" "outputs_lineswitch"));
+              file="MosScripts/outputs_lineswitch.mos" "outputs_lineswitch",
+            file="MosScripts/generator_and_controls.mos"
+              "generator_and_controls"));
       end NonlinModel_for_Simulation;
 
       package LinAtZero
@@ -2205,26 +2209,31 @@ They have to be rearranged based on the order provided by the linearization func
                 transformation(extent={{-140,-80},{-100,-40}})));
           Interfaces.SMIB_AVR_PSS_wInput_wLineRmoval
             sMIB_AVR_PSS_wInput_wLineRmoval(t1=0.5)
-            annotation (Placement(transformation(extent={{-26,-14},{2,14}})));
+            annotation (Placement(transformation(extent={{-40,-40},{40,40}})));
         equation
-          connect(uPSS, sMIB_AVR_PSS_wInput_wLineRmoval.uPSS) annotation (Line(
-                points={{-120,60},{-74,60},{-74,10},{-28.4,10}}, color={0,0,127}));
-          connect(uPm, sMIB_AVR_PSS_wInput_wLineRmoval.uPm)
-            annotation (Line(points={{-120,0},{-28,0}}, color={0,0,127}));
-          connect(uPload, sMIB_AVR_PSS_wInput_wLineRmoval.uPload) annotation (
-              Line(points={{-120,-60},{-76,-60},{-76,-10},{-28,-10}}, color={0,
-                  0,127}));
+          connect(sMIB_AVR_PSS_wInput_wLineRmoval.uPSS, uPSS) annotation (Line(
+                points={{-46.8571,28.5714},{-79.4286,28.5714},{-79.4286,60},{
+                  -120,60}}, color={0,0,127}));
+          connect(sMIB_AVR_PSS_wInput_wLineRmoval.uPm, uPm)
+            annotation (Line(points={{-45.7143,0},{-120,0}}, color={0,0,127}));
+          connect(sMIB_AVR_PSS_wInput_wLineRmoval.uPload, uPload) annotation (
+              Line(points={{-45.7143,-28.5714},{-78.8572,-28.5714},{-78.8572,
+                  -60},{-120,-60}}, color={0,0,127}));
           connect(sMIB_AVR_PSS_wInput_wLineRmoval.Vt, Vt) annotation (Line(
-                points={{3,7.9},{51.5,7.9},{51.5,79},{108,79}}, color={0,0,127}));
+                points={{42.8571,22.5714},{72.4286,22.5714},{72.4286,79},{108,
+                  79}}, color={0,0,127}));
           connect(sMIB_AVR_PSS_wInput_wLineRmoval.P, P) annotation (Line(points
-                ={{3,4.1},{52.5,4.1},{52.5,41},{108,41}}, color={0,0,127}));
-          connect(sMIB_AVR_PSS_wInput_wLineRmoval.Q, Q) annotation (Line(points
-                ={{3,0.1},{54.5,0.1},{54.5,1},{108,1}}, color={0,0,127}));
-          connect(sMIB_AVR_PSS_wInput_wLineRmoval.w, w) annotation (Line(points
-                ={{3,-3.9},{51.5,-3.9},{51.5,-39},{108,-39}}, color={0,0,127}));
-          connect(sMIB_AVR_PSS_wInput_wLineRmoval.delta, delta) annotation (
-              Line(points={{3,-8.1},{51.5,-8.1},{51.5,-81},{108,-81}}, color={0,
-                  0,127}));
+                ={{42.8571,11.7143},{86,11.7143},{86,41},{108,41}}, color={0,0,
+                  127}));
+          connect(Q, sMIB_AVR_PSS_wInput_wLineRmoval.Q) annotation (Line(points
+                ={{108,1},{76,1},{76,0.285714},{42.8571,0.285714}}, color={0,0,
+                  127}));
+          connect(w, sMIB_AVR_PSS_wInput_wLineRmoval.w) annotation (Line(points
+                ={{108,-39},{84,-39},{84,-11.1429},{42.8571,-11.1429}}, color={
+                  0,0,127}));
+          connect(delta, sMIB_AVR_PSS_wInput_wLineRmoval.delta) annotation (
+              Line(points={{108,-81},{68,-81},{68,-23.1429},{42.8571,-23.1429}},
+                color={0,0,127}));
           annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
                 coordinateSystem(preserveAspectRatio=false)));
         end NonlinModel_for_Linearization;
@@ -2242,9 +2251,6 @@ They have to be rearranged based on the order provided by the linearization func
             annotation (Placement(transformation(extent={{98,-50},{118,-28}})));
           Modelica.Blocks.Interfaces.RealOutput delta
             annotation (Placement(transformation(extent={{98,-92},{118,-70}})));
-          Interfaces.SMIB_AVR_PSS_wInput_wLineRmoval sMIB_AVR_PSS_wInput_wFault(t1=0.5,
-            t2=Modelica.Constants.inf)
-            annotation (Placement(transformation(extent={{-40,-42},{40,38}})));
           Modelica.Blocks.Sources.Constant PSSchange(k=0)
             annotation (Placement(transformation(extent={{-100,20},{-80,40}})));
           Modelica.Blocks.Sources.Constant Pmchange(k=0)
@@ -2252,34 +2258,41 @@ They have to be rearranged based on the order provided by the linearization func
           Modelica.Blocks.Sources.Step     Ploadchange(
             height=0.05,
             offset=0,
-            startTime=20.5)                                 annotation (Placement(
+            startTime=30.5)                                 annotation (Placement(
                 transformation(extent={{-100,-42},{-80,-22}})));
+          Interfaces.SMIB_AVR_PSS_wInput_wLineRmoval
+            sMIB_AVR_PSS_wInput_wLineRmoval(t1=0.5)
+            annotation (Placement(transformation(extent={{-40,-40},{40,40}})));
         equation
-          connect(sMIB_AVR_PSS_wInput_wFault.Vt, Vt) annotation (Line(points={{42.8571,
-                  20.5714},{68,20.5714},{68,79},{108,79}},
-                                                  color={0,0,127}));
-          connect(sMIB_AVR_PSS_wInput_wFault.P, P) annotation (Line(points={{42.8571,
-                  9.71429},{82,9.71429},{82,41},{108,41}},
-                                                  color={0,0,127}));
-          connect(sMIB_AVR_PSS_wInput_wFault.Q, Q) annotation (Line(points={{42.8571,
-                  -1.71429},{72.4286,-1.71429},{72.4286,1},{108,1}},
-                                                           color={0,0,127}));
-          connect(sMIB_AVR_PSS_wInput_wFault.w, w) annotation (Line(points={{42.8571,
-                  -13.1429},{84,-13.1429},{84,-39},{108,-39}},
-                                                     color={0,0,127}));
-          connect(sMIB_AVR_PSS_wInput_wFault.delta, delta) annotation (Line(points={{42.8571,
-                  -25.1429},{60,-25.1429},{60,-81},{108,-81}}, color={0,0,127}));
-          connect(PSSchange.y, sMIB_AVR_PSS_wInput_wFault.uPSS) annotation (Line(
-                points={{-79,30},{-60,30},{-60,26.5714},{-46.8571,26.5714}},
+          connect(sMIB_AVR_PSS_wInput_wLineRmoval.uPSS, PSSchange.y)
+            annotation (Line(points={{-46.8571,28.5714},{-62.4286,28.5714},{
+                  -62.4286,30},{-79,30}}, color={0,0,127}));
+          connect(sMIB_AVR_PSS_wInput_wLineRmoval.uPm, Pmchange.y)
+            annotation (Line(points={{-45.7143,0},{-79,0}}, color={0,0,127}));
+          connect(sMIB_AVR_PSS_wInput_wLineRmoval.uPload, Ploadchange.y)
+            annotation (Line(points={{-45.7143,-28.5714},{-62.8572,-28.5714},{
+                  -62.8572,-32},{-79,-32}}, color={0,0,127}));
+          connect(sMIB_AVR_PSS_wInput_wLineRmoval.Vt, Vt) annotation (Line(
+                points={{42.8571,22.5714},{42.8571,24},{64,24},{64,79},{108,79}},
                 color={0,0,127}));
-          connect(Pmchange.y, sMIB_AVR_PSS_wInput_wFault.uPm)
-            annotation (Line(points={{-79,0},{-62,0},{-62,-2},{-45.7143,-2}},
-                                                            color={0,0,127}));
-          connect(Ploadchange.y, sMIB_AVR_PSS_wInput_wFault.uPload) annotation (
-             Line(points={{-79,-32},{-64,-32},{-64,-30.5714},{-45.7143,-30.5714}},
+          connect(P, sMIB_AVR_PSS_wInput_wLineRmoval.P) annotation (Line(points
+                ={{108,41},{68,41},{68,11.7143},{42.8571,11.7143}}, color={0,0,
+                  127}));
+          connect(Q, sMIB_AVR_PSS_wInput_wLineRmoval.Q) annotation (Line(points
+                ={{108,1},{76,1},{76,0.285714},{42.8571,0.285714}}, color={0,0,
+                  127}));
+          connect(w, sMIB_AVR_PSS_wInput_wLineRmoval.w) annotation (Line(points
+                ={{108,-39},{80,-39},{80,-11.1429},{42.8571,-11.1429}}, color={
+                  0,0,127}));
+          connect(delta, sMIB_AVR_PSS_wInput_wLineRmoval.delta) annotation (
+              Line(points={{108,-81},{60,-81},{60,-23.1429},{42.8571,-23.1429}},
                 color={0,0,127}));
           annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
-                coordinateSystem(preserveAspectRatio=false)));
+                coordinateSystem(preserveAspectRatio=false)),
+            experiment(
+              StopTime=40,
+              __Dymola_NumberOfIntervals=1000,
+              __Dymola_Algorithm="Dassl"));
         end NonlinModel_for_NonlinExperiment;
 
         model LinearModelExperiment "Simulate the linearized model"
@@ -2294,41 +2307,42 @@ They have to be rearranged based on the order provided by the linearization func
           Modelica.Blocks.Routing.Multiplex3 multiplex3_1(n1=1, n2=1)
             annotation (Placement(transformation(extent={{-80,-10},{-60,10}})));
           Modelica_LinearSystems2.Controller.StateSpace stateSpace(system(
-              A=[0.0,376.9911184608106,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0;
-                  -0.12324605225841194,0.0,0.0,0.0,-0.163440553796113,
-                  0.02162438701783512,0.0,0.0,0.0,0.0,0.0,0.0; -0.21219255041804597,
-                  0.0,-0.1249999999580813,0.0,-0.21288042148990358,-0.0013680675599648574,
-                  0.0,0.0,0.1250000000076102,0.0,0.0,0.0; 0.17623055679033187,
-                  0.0,0.0,-1.0000000000353078,0.012188165598172153,-1.205477672669465,
-                  0.0,0.0,0.0,0.0,0.0,0.0; -2.7938441236330394,0.0,
-                  33.33333332999551,0.0,-36.136234348612966,-0.018012731997358068,
-                  0.0,0.0,0.0,0.0,0.0,0.0; 1.0019935462686163,0.0,0.0,
-                  14.285714286218683,0.06929821622411289,-21.139695059192498,
-                  0.0,0.0,0.0,0.0,0.0,0.0; -10.044241452053852,0.0,0.0,0.0,
-                  33.749197392269075,35.10053247290774,-66.66666667139577,0.0,
+              A=[0.0,376.99111838900376,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0;
+                  -0.06866172157436483,0.0,0.0,0.0,-0.13089553805695955,-0.007996158813506517,
+                  0.0,0.0,0.0,0.0,0.0,0.0; -0.17084367956584362,0.0,-0.12499999999370072,
+                  0.0,-0.17040348889278564,-0.0005205012335237335,0.0,0.0,
+                  0.12500000001264727,0.0,0.0,0.0; -0.054929009666219,0.0,0.0,-1.0000000000918718,
+                  0.006479547985583815,-0.9628997952694285,0.0,0.0,0.0,0.0,0.0,
+                  0.0; -2.2494220893758543,0.0,33.33333333165353,0.0,-35.57695963015827,
+                  -0.0068532061489849395,0.0,0.0,0.0,0.0,0.0,0.0; -0.31230970471005864,
+                  0.0,0.0,14.28571428702674,0.0368407467393937,-19.76047075622232,
+                  0.0,0.0,0.0,0.0,0.0,0.0; -11.01505344351068,0.0,0.0,0.0,
+                  39.131006300072514,34.81062225999472,-66.6666666604358,0.0,
                   0.0,0.0,0.0,0.0; 0.0,0.0,0.0,0.0,0.0,0.0,0.0,-1.0,0.0,0.0,0.0,
-                  0.0; 0.0,19000000.001291934,0.0,0.0,0.0,0.0,-2000000.000141873,
-                  10000.00082740371,-10000.000000608816,0.0,0.0,-18999999.99984346;
-                  0.0,0.009500000000645967,0.0,0.0,0.0,0.0,0.0,0.0,0.0,-0.0010000000000000007,
-                  0.0,-0.009499999999921729; 0.0,0.009500000000645967,0.0,0.0,
-                  0.0,0.0,0.0,0.0,0.0,0.0,-0.0010000000000000007,-0.009499999999921729;
-                  0.0,0.7092198582125331,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,-0.7092198581708853],
-              B=[0.0,0.0,0.0; 0.0,0.14285715467719584,-0.08487555103187104; 0.0,
-                  0.0,-0.09261674760452365; 0.0,0.0,0.33888530870385125; 0.0,
-                  0.0,-1.2194430650443628; 0.0,0.0,1.9267991963849742; 0.0,0.0,
-                  -1.4717116414431057; 0.0,0.0,0.0; 19000001.57206705,0.0,0.0;
-                  0.009500000786033524,0.0,0.0; 0.009500000786033524,0.0,0.0;
-                  0.709219838097921,0.0,0.0],
-              C=[-0.15066362178080778,0.0,0.0,0.0,0.506237960884036,
-                  0.526507987093616,0.0,0.0,0.0,0.0,0.0,0.0;
-                  0.41780799296094867,0.0,0.0,0.0,1.3915831199685333,
-                  0.5198880323747255,0.0,0.0,0.0,0.0,0.0,0.0;
-                  0.8565983041014822,0.0,0.0,0.0,1.1383197063841153,-0.1486266791310306,
-                  0.0,0.0,0.0,0.0,0.0,0.0; 0.0,1.0000000000796714,0.0,0.0,0.0,
-                  0.0,0.0,0.0,0.0,0.0,0.0,0.0; 0.9999999999553499,0.0,0.0,0.0,
-                  0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],
-              D=[0.0,0.0,-0.022075674621646613; 0.0,0.0,-0.020085100249644938;
-                  0.0,0.0,0.5908514788544039; 0.0,0.0,0.0; 0.0,0.0,0.0],
+                  0.0; 0.0,18999999.99623109,0.0,0.0,0.0,0.0,-1999999.9998130735,
+                  10000.00082740371,-10000.000001011782,0.0,0.0,-18999999.99978613;
+                  0.0,0.009499999998115545,0.0,0.0,0.0,0.0,0.0,0.0,0.0,-0.001,
+                  0.0,-0.009499999999893066; 0.0,0.009499999998115545,0.0,0.0,
+                  0.0,0.0,0.0,0.0,0.0,0.0,-0.001,-0.009499999999893066; 0.0,
+                  0.7092198580774454,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,-0.7092198580776647],
+
+              B=[0.0,0.0,0.0; 0.0,0.14285715467719584,-0.04316848465992149; 0.0,
+                  0.0,-0.06524164541943378; 0.0,0.0,0.11073453265453281; 0.0,
+                  0.0,-0.8590077723210262; 0.0,0.0,0.6296031156744724; 0.0,0.0,
+                  -2.8629173106272297; 0.0,0.0,0.0; 19000001.57206705,0.0,0.0;
+                  0.009500000786033526,0.0,0.0; 0.009500000786033526,0.0,0.0;
+                  0.7092199168371426,0.0,0.0],
+              C=[-0.1652258016526602,0.0,0.0,0.0,0.5869650945010877,
+                  0.5221593338999209,0.0,0.0,0.0,0.0,0.0,0.0;
+                  0.5205641319797044,0.0,0.0,0.0,1.3973765860221798,
+                  0.30371677737740654,0.0,0.0,0.0,0.0,0.0,0.0;
+                  0.4757286783602097,0.0,0.0,0.0,0.9112481248640445,
+                  0.057999429135694204,0.0,0.0,0.0,0.0,0.0,0.0; 0.0,
+                  0.999999999889198,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0;
+                  0.9999999998823222,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,
+                  0.0],
+              D=[0.0,0.0,-0.04294375965940844; 0.0,0.0,0.10523959481645306; 0.0,
+                  0.0,0.300027558353122; 0.0,0.0,0.0; 0.0,0.0,0.0],
               yNames={"Vt","Q","P","w","delta"},
               xNames={"sMIB_AVR_PSS_wInput_wFault.G1.machine.delta",
                   "sMIB_AVR_PSS_wInput_wFault.G1.machine.w",
@@ -2342,6 +2356,7 @@ They have to be rearranged based on the order provided by the linearization func
                   "sMIB_AVR_PSS_wInput_wFault.G1.pss.imLeadLag.TF.x_scaled[1]",
                   "sMIB_AVR_PSS_wInput_wFault.G1.pss.imLeadLag1.TF.x_scaled[1]",
                   "sMIB_AVR_PSS_wInput_wFault.G1.pss.derivativeLag.TF.x_scaled[1]"},
+
               uNames={"uPSS","uPm","uPload"}),
                                       blockType=Modelica_LinearSystems2.Controller.Types.BlockTypeWithGlobalDefault.Continuous)
             annotation (Placement(transformation(extent={{-36,-10},{-16,10}})));
@@ -2355,10 +2370,11 @@ They have to be rearranged based on the order provided by the linearization func
           Modelica.Blocks.Sources.Step     Ploadchange(
             height=0.05,
             offset=0,
-            startTime=20.5)                                 annotation (Placement(
+            startTime=30.5)                                 annotation (Placement(
                 transformation(extent={{-124,-42},{-104,-22}})));
-          Modelica.Blocks.Sources.Constant y0_initial[5](k={0.999999582767487,
-                0.200358852744102,0.899999976158142,1,1.29897093772888})
+          Modelica.Blocks.Sources.Constant y0_initial[5](k={0.998570621013641,
+                0.427906930446625,0.89956396818161,0.999999940395355,
+                1.62256383895874})
             annotation (Placement(transformation(
                 extent={{-10,-10},{10,10}},
                 rotation=90,
@@ -2456,11 +2472,10 @@ This is visible in the Text layer only."),
           output String outputNames[:] "Modelica names of outputs";
           output String stateNames[:] "Modelica names of states";
           // Declare reconfigurable inputs
-          input Modelica.SIunits.Time tlin = 20 "t for model linearization";
-          input Modelica.SIunits.Time tsim = 20 "Simulation time";
+          input Modelica.SIunits.Time tlin = 30 "t for model linearization";
+          input Modelica.SIunits.Time tsim = 30 "Simulation time";
           input String pathToNonlinearPlantModel = "SMIBPS_IdControl.Analysis.LinearAnalysis.LinearizeAfterDisturbance.LinAfterDisturbance.NonlinModel_for_Linearization";
           input String pathToNonlinearExperiment = "SMIBPS_IdControl.Analysis.LinearAnalysis.LinearizeAfterDisturbance.LinAfterDisturbance.NonlinModel_for_NonlinExperiment";
-
         algorithm
           // Compute and display the ABCD matrices, etc
           Modelica.Utilities.Streams.print("Linearized Model");
@@ -2468,30 +2483,29 @@ This is visible in the Text layer only."),
             Modelica_LinearSystems2.Utilities.Import.linearize(
             pathToNonlinearPlantModel,tlin);
           nx := size(A, 1); //number of states
-          Modelica.Utilities.Streams.print("Number of states" + String(nx));
+          Modelica.Utilities.Streams.print("Number of states: " + String(nx));
           // Now we want to extract the initial value of the outputs to use it in our
           // linear model response
           Modelica.Utilities.Streams.print("Simulating nonlinear model");
           simulateModel(
             pathToNonlinearExperiment,
             stopTime=tsim,
-            numberOfIntervals=1000,
+            numberOfIntervals=1000, tolerance = 1e-6,
             resultFile="res_nl");
+           ylen :=DymolaCommands.Trajectories.readTrajectorySize("res_nl.mat");
            ny := size(C, 1);
            y0 := DymolaCommands.Trajectories.readTrajectory(
              "res_nl.mat",
              {outputNames[i] for i in 1:ny},
-           DymolaCommands.Trajectories.readTrajectorySize("res_nl.mat"));
-           ylen := DymolaCommands.Trajectories.readTrajectorySize("res_nl.mat");
+             DymolaCommands.Trajectories.readTrajectorySize("res_nl.mat"));
            DataFiles.writeMATmatrix(
              "MyData.mat",
              "y0",
              [y0[1:ny,ylen]],
-             append=true); // compared to the previous case, have used ylen, which is the number of points in the trajectory file
-          Modelica.Utilities.Streams.print(String(ylen) + " number of points in the trajectory file");
-          // Print y0's first values which is needed for the linear response model
-          y0out := y0[:,ylen]; // here we want the values at the end
-          Modelica.Utilities.Streams.print("y0 at selected time =");
+             append=true);
+          // Print y0's last values which is needed for the linear response model
+          y0out := y0[:,ylen]; // we only want the last few elements
+          Modelica.Utilities.Streams.print("y0 = ");
           Modelica.Math.Vectors.toString(y0out);
           annotation(__Dymola_interactive=true);
         end LinearizeSimple;
@@ -2499,10 +2513,10 @@ This is visible in the Text layer only."),
         function Compare "Compares the responses"
           // INPUTS TO THE FUNCTION
           // Declare reconfigurable simulation parameters
-          input Modelica.SIunits.Time tsim = 30 "Simulation time";
+          input Modelica.SIunits.Time tsim = 40 "Simulation time";
           input Integer numberOfIntervalsin=10000 "No. of intervals";
-          input String methodin = "Rkfix4" "Solver";
-          //input String methodin = "DASSL" "Solver";
+          //input String methodin = "Rkfix4" "Solver";
+          input String methodin = "DASSL" "Solver";
           input Real fixedstepsizein= 1e-4 "Time step - needed only for fixed time step solvers";
           //
           // DEFINING THE NONLINEAR EXPERIMENT, AND LINEAR EXPERIMENT MODELS
@@ -2515,6 +2529,8 @@ This is visible in the Text layer only."),
           input String pathToLinearExperiment="SMIBPS_IdControl.Analysis.LinearAnalysis.LinearizeAfterDisturbance.LinAfterDisturbance.LinearModelExperiment";
 
         algorithm
+
+
           simulateModel(
             pathToNonlinearExperiment,
             stopTime=tsim,
@@ -2530,18 +2546,30 @@ This is visible in the Text layer only."),
             fixedstepsize=fixedstepsizein,
             resultFile="res_lin");
 
-        removePlots(false);
-        createPlot(id=1, position={0, 0, 1311, 963}, y={"Vt"}, range={0.0, 30.0, 0.985, 1.01}, grid=true, filename="res_nl.mat", colors={{28,108,200}}, displayUnits={"1"});
-        createPlot(id=1, position={0, 0, 1311, 963}, y={"Q"}, range={0.0, 30.0, 0.15000000000000002, 0.4}, grid=true, subPlot=102, colors={{28,108,200}}, displayUnits={"1"});
-        createPlot(id=1, position={0, 0, 1311, 963}, y={"P"}, range={0.0, 30.0, 0.7000000000000001, 1.1}, grid=true, subPlot=103, colors={{28,108,200}}, displayUnits={"1"});
-        createPlot(id=1, position={0, 0, 1311, 963}, y={"w"}, range={0.0, 30.0, 0.97, 1.01}, grid=true, subPlot=104, colors={{28,108,200}}, displayUnits={"1"});
-        createPlot(id=1, position={0, 0, 1311, 963}, y={"delta"}, range={0.0, 30.0, 0.8, 1.6}, grid=true, subPlot=105, colors={{28,108,200}}, displayUnits={"rad"});
-        createPlot(id=1, position={0, 0, 1311, 963}, y={"Vt"}, range={0.0, 30.0, 0.985, 1.01}, erase=false, grid=true, filename="res_lin.mat", colors={{238,46,47}});
-        createPlot(id=1, position={0, 0, 1311, 963}, y={"Q"}, range={0.0, 30.0, 0.15000000000000002, 0.4}, erase=false, grid=true, subPlot=102, colors={{238,46,47}});
-        createPlot(id=1, position={0, 0, 1311, 963}, y={"P"}, range={0.0, 30.0, 0.7000000000000001, 1.1}, erase=false, grid=true, subPlot=103, colors={{238,46,47}});
-        createPlot(id=1, position={0, 0, 1311, 963}, y={"w"}, range={0.0, 30.0, 0.97, 1.01}, erase=false, grid=true, subPlot=104, colors={{238,46,47}});
-        createPlot(id=1, position={0, 0, 1311, 963}, y={"delta"}, range={0.0, 30.0, 0.8, 1.6}, erase=false, grid=true, subPlot=105, colors={{238,46,47}});
+        // plot
 
+        createPlot(id=1, position={0, 2, 622, 900}, y={"Vt"}, range={30.0, 40.0, 0.985, 1.005}, autoscale=false, grid=true, filename="res_nl.mat", colors={{28,108,200}}, range2={0.55, 0.7000000000000001}, displayUnits={"1"});
+        createPlot(id=1, position={0, 2, 622, 900}, y={"Q"}, range={30.0, 40.0, 0.35000000000000003, 0.45000000000000007}, autoscale=false, grid=true, subPlot=102, colors={{28,108,200}}, range2={0.30000000000000004, 0.5}, displayUnits={"1"});
+        createPlot(id=1, position={0, 2, 622, 900}, y={"P"}, range={30.0, 40.0, 0.86, 0.94}, autoscale=false, grid=true, subPlot=103, colors={{28,108,200}}, range2={0.4, 0.8}, displayUnits={"1"});
+        createPlot(id=1, position={0, 2, 622, 900}, y={"w"}, range={30.0, 40.0, 0.9995, 1.0005}, autoscale=false, grid=true, subPlot=104, colors={{28,108,200}}, range2={0.46, 0.54}, displayUnits={"1"});
+        createPlot(id=1, position={0, 2, 622, 900}, y={"delta"}, range={30.0, 40.0, 1.55, 1.6500000000000001}, autoscale=false, grid=true, subPlot=105, colors={{28,108,200}}, range2={0.30000000000000004, 0.45000000000000007}, displayUnits={"rad"});
+        createPlot(id=1, position={0, 2, 622, 900}, y={"Vt"}, range={30.0, 40.0, 0.985, 1.005}, erase=false, autoscale=false, grid=true, filename="res_lin.mat", colors={{238,46,47}}, range2={0.55, 0.7000000000000001});
+        createPlot(id=1, position={0, 2, 622, 900}, y={"Q"}, range={30.0, 40.0, 0.35000000000000003, 0.45000000000000007}, erase=false, autoscale=false, grid=true, subPlot=102, colors={{238,46,47}}, range2={0.30000000000000004, 0.5});
+        createPlot(id=1, position={0, 2, 622, 900}, y={"P"}, range={30.0, 40.0, 0.86, 0.94}, erase=false, autoscale=false, grid=true, subPlot=103, colors={{238,46,47}}, range2={0.4, 0.8});
+        createPlot(id=1, position={0, 2, 622, 900}, y={"w"}, range={30.0, 40.0, 0.9995, 1.0005}, erase=false, autoscale=false, grid=true, subPlot=104, colors={{238,46,47}}, range2={0.46, 0.54});
+        createPlot(id=1, position={0, 2, 622, 900}, y={"delta"}, range={30.0, 40.0, 1.55, 1.6500000000000001}, erase=false, autoscale=false, grid=true, subPlot=105, colors={{238,46,47}}, range2={0.30000000000000004, 0.45000000000000007});
+
+        //removePlots(false);
+        createPlot(id=2, position={308, 10, 734, 889}, y={"Vt"}, range={0.0, 40.0, 0.9, 1.05}, grid=true, filename="res_nl.mat", colors={{28,108,200}}, displayUnits={"1"});
+        createPlot(id=2, position={308, 10, 734, 889}, y={"Q"}, range={0.0, 40.0, 0.0, 1.0}, grid=true, subPlot=102, colors={{28,108,200}}, displayUnits={"1"});
+        createPlot(id=2, position={308, 10, 734, 889}, y={"P"}, range={0.0, 40.0, 0.4, 1.2000000000000002}, grid=true, subPlot=103, colors={{28,108,200}}, displayUnits={"1"});
+        createPlot(id=2, position={308, 10, 734, 889}, y={"w"}, range={0.0, 40.0, 0.99, 1.01}, grid=true, subPlot=104, colors={{28,108,200}}, displayUnits={"1"});
+        createPlot(id=2, position={308, 10, 734, 889}, y={"delta"}, range={0.0, 40.0, 1.0, 2.5}, grid=true, subPlot=105, colors={{28,108,200}}, displayUnits={"rad"});
+        createPlot(id=2, position={308, 10, 734, 889}, y={"Vt"}, range={0.0, 40.0, 0.9, 1.05}, erase=false, grid=true, filename="res_lin.mat", colors={{238,46,47}});
+        createPlot(id=2, position={308, 10, 734, 889}, y={"Q"}, range={0.0, 40.0, 0.0, 1.0}, erase=false, grid=true, subPlot=102, colors={{238,46,47}});
+        createPlot(id=2, position={308, 10, 734, 889}, y={"P"}, range={0.0, 40.0, 0.4, 1.2000000000000002}, erase=false, grid=true, subPlot=103, colors={{238,46,47}});
+        createPlot(id=2, position={308, 10, 734, 889}, y={"w"}, range={0.0, 40.0, 0.99, 1.01}, erase=false, grid=true, subPlot=104, colors={{238,46,47}});
+        createPlot(id=2, position={308, 10, 734, 889}, y={"delta"}, range={0.0, 40.0, 1.0, 2.5}, erase=false, grid=true, subPlot=105, colors={{238,46,47}});
 
 
           annotation(__Dymola_interactive=true, Documentation(info="<html>
