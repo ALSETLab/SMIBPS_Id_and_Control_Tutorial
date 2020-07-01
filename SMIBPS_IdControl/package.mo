@@ -14,8 +14,8 @@ annotation(preferredView = "info",
   Documentation(info="<html>
 <p><br>This package contains examples on using Modelica, OpenIPSL and the Modelica Linear Systems 2 library to carry out typical power system stability and control studies.</p>
 <p>The goal is to illustrate how models need to be defined for linearization when different model variants need to be compared.</p>
-<p>Another goal is to illustrate the use of the MLS2 library for typical power system control design tasks, specifically the so-called Power System Stabilizer.</p>
-<p><br>The analysis examples are developed using the single-machine infinite bus model used in the Example 13.2 of the Kundur&apos;s book as originally implemented in PSAT, and latter on ported to OpenIPSL.</p>
+<p>Another goal is to illustrate the use of the MLS2 library for typical power system control design tasks, specifically the excitation system controller (i.e. automatic voltage regulator) and the so-called Power System Stabilizer.</p>
+<p><br>The analysis examples are developed using the single-machine infinite bus model used in the Example 13.2 of the Kundur&apos;s book, implemented in the OpenIPSL library.</p>
 <p><br>(c) 2020-2050, Luigi Vanfretti, Rensselaer Polytechnic Institute, Troy, NY, USA.</p>
 </html>"),
     Icon(graphics={

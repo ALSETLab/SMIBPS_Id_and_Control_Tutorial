@@ -1556,8 +1556,8 @@ They have to be rearranged based on the order provided by the linearization func
         connect(sMIB_AVR_PSS_wInput_wLineRmoval.uPload, uPloadInputGain.y)
           annotation (Line(points={{-48.5714,-42.8571},{-65.2857,-42.8571},{
                 -65.2857,-40},{-83,-40}}, color={0,0,127}));
-        connect(sMIB_AVR_PSS_wInput_wLineRmoval.Vt, Vt) annotation (Line(points
-              ={{84.2857,33.8571},{84.2857,55.9286},{128,55.9286},{128,79}},
+        connect(sMIB_AVR_PSS_wInput_wLineRmoval.Vt, Vt) annotation (Line(points=
+               {{84.2857,33.8571},{84.2857,55.9286},{128,55.9286},{128,79}},
               color={0,0,127}));
         connect(P, sMIB_AVR_PSS_wInput_wLineRmoval.P) annotation (Line(points={
                 {128,41},{100,41},{100,17.5714},{84.2857,17.5714}}, color={0,0,
@@ -2222,14 +2222,14 @@ They have to be rearranged based on the order provided by the linearization func
           connect(sMIB_AVR_PSS_wInput_wLineRmoval.Vt, Vt) annotation (Line(
                 points={{42.8571,22.5714},{72.4286,22.5714},{72.4286,79},{108,
                   79}}, color={0,0,127}));
-          connect(sMIB_AVR_PSS_wInput_wLineRmoval.P, P) annotation (Line(points
-                ={{42.8571,11.7143},{86,11.7143},{86,41},{108,41}}, color={0,0,
+          connect(sMIB_AVR_PSS_wInput_wLineRmoval.P, P) annotation (Line(points=
+                 {{42.8571,11.7143},{86,11.7143},{86,41},{108,41}}, color={0,0,
                   127}));
-          connect(Q, sMIB_AVR_PSS_wInput_wLineRmoval.Q) annotation (Line(points
-                ={{108,1},{76,1},{76,0.285714},{42.8571,0.285714}}, color={0,0,
+          connect(Q, sMIB_AVR_PSS_wInput_wLineRmoval.Q) annotation (Line(points=
+                 {{108,1},{76,1},{76,0.285714},{42.8571,0.285714}}, color={0,0,
                   127}));
-          connect(w, sMIB_AVR_PSS_wInput_wLineRmoval.w) annotation (Line(points
-                ={{108,-39},{84,-39},{84,-11.1429},{42.8571,-11.1429}}, color={
+          connect(w, sMIB_AVR_PSS_wInput_wLineRmoval.w) annotation (Line(points=
+                 {{108,-39},{84,-39},{84,-11.1429},{42.8571,-11.1429}}, color={
                   0,0,127}));
           connect(delta, sMIB_AVR_PSS_wInput_wLineRmoval.delta) annotation (
               Line(points={{108,-81},{68,-81},{68,-23.1429},{42.8571,-23.1429}},
@@ -2275,14 +2275,14 @@ They have to be rearranged based on the order provided by the linearization func
           connect(sMIB_AVR_PSS_wInput_wLineRmoval.Vt, Vt) annotation (Line(
                 points={{42.8571,22.5714},{42.8571,24},{64,24},{64,79},{108,79}},
                 color={0,0,127}));
-          connect(P, sMIB_AVR_PSS_wInput_wLineRmoval.P) annotation (Line(points
-                ={{108,41},{68,41},{68,11.7143},{42.8571,11.7143}}, color={0,0,
+          connect(P, sMIB_AVR_PSS_wInput_wLineRmoval.P) annotation (Line(points=
+                 {{108,41},{68,41},{68,11.7143},{42.8571,11.7143}}, color={0,0,
                   127}));
-          connect(Q, sMIB_AVR_PSS_wInput_wLineRmoval.Q) annotation (Line(points
-                ={{108,1},{76,1},{76,0.285714},{42.8571,0.285714}}, color={0,0,
+          connect(Q, sMIB_AVR_PSS_wInput_wLineRmoval.Q) annotation (Line(points=
+                 {{108,1},{76,1},{76,0.285714},{42.8571,0.285714}}, color={0,0,
                   127}));
-          connect(w, sMIB_AVR_PSS_wInput_wLineRmoval.w) annotation (Line(points
-                ={{108,-39},{80,-39},{80,-11.1429},{42.8571,-11.1429}}, color={
+          connect(w, sMIB_AVR_PSS_wInput_wLineRmoval.w) annotation (Line(points=
+                 {{108,-39},{80,-39},{80,-11.1429},{42.8571,-11.1429}}, color={
                   0,0,127}));
           connect(delta, sMIB_AVR_PSS_wInput_wLineRmoval.delta) annotation (
               Line(points={{108,-81},{60,-81},{60,-23.1429},{42.8571,-23.1429}},
@@ -2325,7 +2325,6 @@ They have to be rearranged based on the order provided by the linearization func
                   0.0,-0.009499999999893066; 0.0,0.009499999998115545,0.0,0.0,
                   0.0,0.0,0.0,0.0,0.0,0.0,-0.001,-0.009499999999893066; 0.0,
                   0.7092198580774454,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,-0.7092198580776647],
-
               B=[0.0,0.0,0.0; 0.0,0.14285715467719584,-0.04316848465992149; 0.0,
                   0.0,-0.06524164541943378; 0.0,0.0,0.11073453265453281; 0.0,
                   0.0,-0.8590077723210262; 0.0,0.0,0.6296031156744724; 0.0,0.0,
@@ -2356,7 +2355,6 @@ They have to be rearranged based on the order provided by the linearization func
                   "sMIB_AVR_PSS_wInput_wFault.G1.pss.imLeadLag.TF.x_scaled[1]",
                   "sMIB_AVR_PSS_wInput_wFault.G1.pss.imLeadLag1.TF.x_scaled[1]",
                   "sMIB_AVR_PSS_wInput_wFault.G1.pss.derivativeLag.TF.x_scaled[1]"},
-
               uNames={"uPSS","uPm","uPload"}),
                                       blockType=Modelica_LinearSystems2.Controller.Types.BlockTypeWithGlobalDefault.Continuous)
             annotation (Placement(transformation(extent={{-36,-10},{-16,10}})));
