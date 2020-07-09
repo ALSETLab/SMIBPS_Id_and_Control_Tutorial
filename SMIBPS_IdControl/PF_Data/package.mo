@@ -6,9 +6,7 @@ annotation (Icon(graphics={Rectangle(
         lineColor={28,108,200},
         fillColor={215,215,215},
         fillPattern=FillPattern.Solid), Text(
-        extent={{-100,100},{100,-100}},
+        extent={{-82,80},{80,-82}},
         lineColor={28,108,200},
-        textString="Power
-Flow
-Data")}));
+        textString="PFlow")}));
 end PF_Data;

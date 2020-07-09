@@ -18,7 +18,7 @@ package Utilities
                     points={{-28,66},{72,6},{-28,-54},{-28,66}}),
             Text(
               lineColor={0,140,72},
-              extent={{-100,-60},{100,68}},
+              extent={{-80,-60},{80,60}},
               textString="f+m")}), Documentation(info="<html>
 <p><b><span style=\"font-size: 24pt;\">f+m Example</span></b></p>
 <p>DO NOT try to run this model on it&apos;s own! </p>
