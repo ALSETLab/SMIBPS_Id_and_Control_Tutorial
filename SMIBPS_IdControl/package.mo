@@ -9,7 +9,8 @@ annotation(preferredView = "info",
       Modelica_LinearSystems2(version="2.3.5"),
       DataFiles(version="1.0.5"),
     OpenIPSL(version="1.5.0"),
-    DymolaCommands(version="1.9")),
+    DymolaCommands(version="1.9"),
+    LinearAnalysis(version="1.0.1")),
   version="1",
   Documentation(info="<html>
 <p><br>This package contains examples on using Modelica, OpenIPSL and the Modelica Linear Systems 2 library to carry out typical power system stability and control studies.</p>

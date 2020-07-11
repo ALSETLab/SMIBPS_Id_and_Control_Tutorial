@@ -374,7 +374,7 @@ Generator
           P_0=powerFlow_Data.machines.PG1,
           Q_0=powerFlow_Data.machines.QG1,
           angle_0=powerFlow_Data.bus.A1)
-          annotation (Placement(transformation(extent={{-116,-12},{-92,12}})));
+          annotation (Placement(transformation(extent={{-116,-10},{-92,14}})));
         Modelica.Blocks.Interfaces.RealInput uVref
           annotation (Placement(transformation(extent={{-180,60},{-140,100}}),
               iconTransformation(extent={{-180,60},{-140,100}})));
@@ -393,13 +393,14 @@ Generator
         P = G1.machine.P;
         Q = G1.machine.Q;
         connect(uVref, G1.uVs) annotation (Line(points={{-160,80},{-134,80},{
-                -134,7.2},{-118.64,7.2}},
+                -134,9.2},{-118.64,9.2}},
                                 color={0,0,127}));
-        connect(G1.pm, uPm) annotation (Line(points={{-118.4,-7.2},{-134,-7.2},
+        connect(G1.pm, uPm) annotation (Line(points={{-118.4,-5.2},{-134,-5.2},
                 {-134,0},{-160,0}},
                              color={0,0,127}));
         connect(G1.pwPin, B1.p)
-          annotation (Line(points={{-90.8,0},{-80,0}}, color={0,0,255}));
+          annotation (Line(points={{-90.8,2},{-86,2},{-86,0},{-80,0}},
+                                                       color={0,0,255}));
         connect(uPload, load_ExtInput.u) annotation (Line(points={{-160,-80},{
                 -72,-80},{-72,-66.7},{17.14,-66.7}},  color={0,0,127}));
         annotation (
@@ -1673,7 +1674,7 @@ They have to be rearranged based on the order provided by the linearization func
 
     package PerturbationAnalysis
       "Examples that perform perturbations on the input of different model variants for comparison between linear and nonlinear models."
-      extends Modelica.Icons.ExamplesPackage;
+      extends Modelica.Icons.VariantsPackage;
       model PerturbGen
         "Simulates the nonlinear SMIB model with a 1% step in the field voltage input."
         extends Modelica.Icons.Example;
@@ -1769,35 +1770,33 @@ They have to be rearranged based on the order provided by the linearization func
               rotation=0,
               origin={-74,-60})));
       equation
-        connect(Vt, PS_wAVR.Vt) annotation (Line(points={{150,79},{98,79},{98,
-                22.5714},{42.8571,22.5714}},
+        connect(Vt, PS_wAVR.Vt) annotation (Line(points={{150,80},{98,80},{98,
+                22.8571},{42.8571,22.8571}},
                                     color={0,0,127}));
-        connect(P, PS_wAVR.P) annotation (Line(points={{150,41},{112,41},{112,
-                11.7143},{42.8571,11.7143}},
+        connect(P, PS_wAVR.P) annotation (Line(points={{150,40},{112,40},{112,
+                11.4286},{42.8571,11.4286}},
                                     color={0,0,127}));
-        connect(Q, PS_wAVR.Q) annotation (Line(points={{150,1},{96,1},{96,
-                0.285714},{42.8571,0.285714}},
-                            color={0,0,127}));
-        connect(w, PS_wAVR.w) annotation (Line(points={{150,-39},{108,-39},{108,
-                -11.1429},{42.8571,-11.1429}},
+        connect(Q, PS_wAVR.Q) annotation (Line(points={{150,0},{96,0},{96,0},{
+                42.8571,0}},color={0,0,127}));
+        connect(w, PS_wAVR.w) annotation (Line(points={{150,-40},{108,-40},{108,
+                -11.4286},{42.8571,-11.4286}},
                                      color={0,0,127}));
-        connect(delta, PS_wAVR.delta) annotation (Line(points={{150,-81},{92,
-                -81},{92,-23.1429},{42.8571,-23.1429}},
+        connect(delta, PS_wAVR.delta) annotation (Line(points={{150,-80},{92,
+                -80},{92,-22.8571},{42.8571,-22.8571}},
                                                color={0,0,127}));
         connect(vsInputGain.u, stepVs.y)
           annotation (Line(points={{-82,20},{-99,20}}, color={0,0,127}));
         connect(vsInputGain.y, PS_wAVR.uVref) annotation (Line(points={{-59,20},
-                {-54,20},{-54,11.4286},{-45.7143,11.4286}},
+                {-54,20},{-54,22.8571},{-45.7143,22.8571}},
                                                    color={0,0,127}));
         connect(pmInputGain.y, PS_wAVR.uPm) annotation (Line(points={{-59,-20},
-                {-54,-20},{-54,-11.4286},{-45.7143,-11.4286}},
-                                                     color={0,0,127}));
+                {-54,-20},{-54,0},{-45.7143,0}},     color={0,0,127}));
         connect(Pmchange.y, pmInputGain.u)
           annotation (Line(points={{-99,-20},{-82,-20}}, color={0,0,127}));
         connect(Ploadchange.y, uPloadInputGain.u)
           annotation (Line(points={{-101,-60},{-86,-60}}, color={0,0,127}));
         connect(uPloadInputGain.y, PS_wAVR.uPload) annotation (Line(points={{-63,-60},
-                {-56,-60},{-56,-28.5714},{-45.7143,-28.5714}},          color={
+                {-56,-60},{-56,-22.8571},{-45.7143,-22.8571}},          color={
                 0,0,127}));
         annotation (
           Icon(coordinateSystem(preserveAspectRatio=false)),
@@ -1950,7 +1949,7 @@ They have to be rearranged based on the order provided by the linearization func
     end PerturbationAnalysis;
 
     package LinearizeAfterDisturbance
-      extends Modelica.Icons.ExamplesPackage;
+      extends Modelica.Icons.VariantsPackage;
       model NonlinModel_for_Simulation
         "Model that includes a line removal at 5 seconds for linearization at initialization and after the line removal"
         extends Modelica.Icons.Example;
@@ -3051,7 +3050,7 @@ This is visible in the Text layer only."),
     end LinearizeAfterDisturbance;
 
     package LinearizeAfterDisturbanceW4inputsAndManyOutputs
-      extends Modelica.Icons.ExamplesPackage;
+      extends Modelica.Icons.VariantsPackage;
       model NonlinModel_for_Simulation
         "Model that includes a line removal at 5 seconds for linearization at initialization and after the line removal"
         extends Modelica.Icons.Example;
@@ -3529,7 +3528,8 @@ This is visible in the Text layer only."),
 
         model LinearModelExperiment "Simulate the linearized model"
           extends Modelica.Icons.Example;
-          extends SMIBPS_IdControl.Analysis.LinearAnalysis.Interfaces.OutputsInterface;
+          extends
+            SMIBPS_IdControl.Analysis.LinearAnalysis.Interfaces.OutputsInterface;
           inner Modelica_LinearSystems2.Controller.SampleClock sampleClock
             annotation (Placement(transformation(extent={{72,70},{92,90}})));
           Modelica.Blocks.Routing.Multiplex4 multiplex4_1(n1=1, n2=1)
@@ -4495,7 +4495,6 @@ They have to be rearranged based on the order provided by the linearization func
                   0.0,-0.009499999999893358; 0.0,0.009499999999891122,0.0,0.0,
                   0.0,0.0,0.0,0.0,0.0,0.0,-0.0009999999999999983,-0.009499999999893358;
                   0.0,0.7092198580775194,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,-0.7092198580776865],
-
               B=[0.0,0.0,0.0,0.0; 0.0,0.14285715467719584,-0.04316835777729011,
                   0.0; 0.0,0.0,-0.06524164541943378,0.0; 0.0,0.0,
                   0.11073381100956681,0.0; 0.0,0.0,-0.8590073097280992,0.0; 0.0,
@@ -4570,7 +4569,6 @@ They have to be rearranged based on the order provided by the linearization func
                   "sMIB_AVR_PSS_wInput_wLineRmovaland4inputs.G1.pss.imLeadLag.TF.x_scaled[1]",
                   "sMIB_AVR_PSS_wInput_wLineRmovaland4inputs.G1.pss.imLeadLag1.TF.x_scaled[1]",
                   "sMIB_AVR_PSS_wInput_wLineRmovaland4inputs.G1.pss.derivativeLag.TF.x_scaled[1]"},
-
               uNames={"uPSS","uPm","uPload","uvsAVR"}),
                                       blockType=Modelica_LinearSystems2.Controller.Types.BlockTypeWithGlobalDefault.Continuous)
             annotation (Placement(transformation(extent={{-36,-10},{-16,10}})));
@@ -5075,4 +5073,260 @@ They have to be rearranged based on the order provided by the linearization func
     end LinearizeAfterDisturbanceW4inputsAndManyOutputs;
   end LinearAnalysis;
 
+  package ClassicalControlDesign "Control design using"
+    extends Modelica.Icons.ExamplesPackage;
+
+    package Interfaces
+      extends Modelica.Icons.InterfacesPackage;
+      model SMIB_AVR_wLineRmovaland4inputs
+        extends SMIBPS_IdControl.BaseModelsPartial.OutputInterfaces.OutputsInterfaceBusVoltagesBranchPowers_noInfiniteBus;
+        extends SMIBPS_IdControl.BaseModelsPartial.OutputInterfaces.OutputsInterfaceBig;
+        extends BaseModelsPartial.BaseNetwork.SMIB_Partial(powerFlow_Data(
+            redeclare record Bus = PF_Data.Bus_Data.PF_Bus_5,
+            redeclare record Loads = PF_Data.Loads_Data.PF_Loads_5,
+            redeclare record Trafos = PF_Data.Trafos_Data.PF_Trafos_5,
+            redeclare record Machines = PF_Data.Machines_Data.PF_Machines_5),
+          line_1(X=3.25),
+          line_2(t1=Modelica.Constants.inf),
+          fault(t1=Modelica.Constants.inf, t2=Modelica.Constants.inf));
+        import Modelica.Constants.pi;
+        BaseModelsPartial.BasePlants.Generator_AVR_wInputs      G1(
+          V_0=powerFlow_Data.bus.V1,
+          P_0=powerFlow_Data.machines.PG1,
+          Q_0=powerFlow_Data.machines.QG1,
+          angle_0=powerFlow_Data.bus.A1)
+          annotation (Placement(transformation(extent={{-140,-20},{-100,20}})));
+        Modelica.Blocks.Interfaces.RealInput uPm
+          annotation (Placement(transformation(extent={{-240,-20},{-200,20}})));
+        Modelica.Blocks.Interfaces.RealInput uPload annotation (Placement(
+              transformation(extent={{-240,-180},{-200,-140}}),
+              iconTransformation(extent={{-240,-180},{-200,-140}})));
+
+        OpenIPSL.Electrical.Branches.PwLine line_4(
+          R=0,
+          G=0,
+          B=0,
+          X=3.25/5.5,
+          t1=t1,
+          t2=t2,
+          opening=opening)
+                 annotation (Placement(transformation(extent={{22,2},{40,14}})));
+        parameter Modelica.SIunits.Time t1=Modelica.Constants.inf "Time of line removal"
+          annotation (Dialog(group="Line Removal Parameters"));
+        parameter Modelica.SIunits.Time t2=Modelica.Constants.inf
+          "Line re-insertion time"     annotation (Dialog(group="Line Removal Parameters"));
+        parameter Integer opening=1
+          "Type of opening (1: removes both ends at same time, 2: removes sending end, 3: removes receiving end)"     annotation (Dialog(group="Line Removal Parameters"));
+        Modelica.Blocks.Interfaces.RealInput uvsAVR
+          annotation (Placement(transformation(extent={{-240,140},{-200,180}})));
+      protected
+        parameter Real S_b=SysData.S_b;
+      equation
+        w = G1.machine.w;
+        delta = G1.machine.delta;
+        Vt = G1.machine.v;
+        P = G1.machine.P;
+        Q = G1.machine.Q;
+      //   // Assignment of outputs for the network voltages and powers
+         Bvm1 = B1.V;
+         Bva1 = B1.angle;
+         Bvm2 = B2.V;
+         Bva2 = B2.angle;
+         Bvm4 = B4.V;
+         Bva4 = B4.angle;
+         Pline1 = line_1.P12;
+         Qline1 = line_1.Q12;
+         Pline2 = line_2.P12;
+         Qline2 = line_2.Q12;
+         Pline3 = line_3.P12;
+         Qline3 = line_3.Q12;
+         Pline4 = line_4.P12;
+         Qline4 = line_4.Q12;
+         Bvadiff1to2 = B1.angle - B2.angle;
+         Bvadiff1to3 = B1.angle - B3.angle;
+         Bvadiff1to4 = B1.angle - B4.angle;
+        //
+        connect(G1.pwPin, B1.p)
+          annotation (Line(points={{-98,0},{-80,0}}, color={0,0,255}));
+        connect(line_4.n, line_1.n)
+          annotation (Line(points={{39.1,8},{39.1,20}}, color={0,0,255}));
+        connect(line_4.p, line_1.p)
+          annotation (Line(points={{22.9,8},{22.9,20}}, color={0,0,255}));
+        connect(uvsAVR, G1.uVs) annotation (Line(points={{-220,160},{-182,160},{-182,12},
+                {-144.4,12}},color={0,0,127}));
+        connect(uPm, G1.pm) annotation (Line(points={{-220,0},{-182,0},{-182,-12},{-144,
+                -12}},color={0,0,127}));
+        connect(load_ExtInput.u, uPload) annotation (Line(points={{17.14,-66.7},{-194,
+                -66.7},{-194,-160},{-220,-160}}, color={0,0,127}));
+        annotation (
+          Diagram(coordinateSystem(extent={{-200,-200},{200,200}}), graphics={
+                Rectangle(
+                extent={{12,28},{50,0}},
+                lineColor={238,46,47},
+                fillColor={244,125,35},
+                fillPattern=FillPattern.None,
+                lineThickness=1)}),
+          Icon(coordinateSystem(extent={{-200,-200},{200,200}}), graphics={
+              Rectangle(extent={{-200,200},{200,-200}}, lineColor={28,108,200}),
+              Text(
+                extent={{-200,40},{200,-62}},
+                lineColor={28,108,200},
+                fillColor={255,255,255},
+                fillPattern=FillPattern.Solid,
+                textString="Nonlinear
+Model
+with AVR
+
+"),           Text(
+                extent={{-200,180},{200,140}},
+                lineColor={238,46,47},
+                fillColor={255,255,255},
+                fillPattern=FillPattern.Solid,
+                textString="%name
+")}),     experiment(
+            StopTime=20,
+            Interval=0.0001,
+            Tolerance=1e-06,
+            __Dymola_fixedstepsize=0.0001,
+            __Dymola_Algorithm="Dassl"),
+          __Dymola_experimentSetupOutput,
+          Documentation(info="<html>
+</html>"));
+      end SMIB_AVR_wLineRmovaland4inputs;
+    end Interfaces;
+
+    package RootLocus
+      extends Modelica.Icons.ExamplesPackage;
+      package Design
+        extends Modelica.Icons.ExamplesPackage;
+        package ModelVariants
+          extends Modelica.Icons.VariantsPackage;
+          model NonlinearModelforSimulation_AVR
+            extends Modelica.Icons.Example;
+            Modelica.Blocks.Math.Gain pmInputGain(k=1) annotation (Placement(
+                  transformation(
+                  extent={{-10,-10},{10,10}},
+                  rotation=0,
+                  origin={-152,0})));
+            Modelica.Blocks.Sources.Constant Pmchange(k=0) annotation (Placement(
+                  transformation(extent={{-200,-10},{-180,10}})));
+            Modelica.Blocks.Sources.Constant Ploadchange(k=0) annotation (Placement(
+                  transformation(extent={{-200,-120},{-180,-100}})));
+            Modelica.Blocks.Math.Gain uPloadInputGain(k=1) annotation (Placement(
+                  transformation(
+                  extent={{-10,-10},{10,10}},
+                  rotation=0,
+                  origin={-152,-110})));
+            Modelica.Blocks.Sources.Step     AVRvs_change(height=1, startTime=1)
+                                                              annotation (Placement(
+                  transformation(extent={{-200,104},{-180,124}})));
+            Modelica.Blocks.Math.Gain uPloadInputGain1(k=1)
+                                                           annotation (Placement(
+                  transformation(
+                  extent={{-10,-10},{10,10}},
+                  rotation=0,
+                  origin={-152,114})));
+            Interfaces.SMIB_AVR_wLineRmovaland4inputs
+              sMIB_AVR_wLineRmovaland4inputs annotation (Placement(
+                  transformation(extent={{-100,-138},{180,142}})));
+          equation
+            connect(Pmchange.y,pmInputGain. u)
+              annotation (Line(points={{-179,0},{-164,0}},   color={0,0,127}));
+            connect(Ploadchange.y,uPloadInputGain. u)
+              annotation (Line(points={{-179,-110},{-164,-110}},
+                                                             color={0,0,127}));
+            connect(AVRvs_change.y,uPloadInputGain1. u)
+              annotation (Line(points={{-179,114},{-164,114}}, color={0,0,127}));
+            connect(uPloadInputGain1.y, sMIB_AVR_wLineRmovaland4inputs.uvsAVR)
+              annotation (Line(points={{-141,114},{-114,114}}, color={0,0,127}));
+            connect(pmInputGain.y, sMIB_AVR_wLineRmovaland4inputs.uPm)
+              annotation (Line(points={{-141,0},{-134,0},{-134,2},{-114,2}},
+                  color={0,0,127}));
+            connect(uPloadInputGain.y, sMIB_AVR_wLineRmovaland4inputs.uPload)
+              annotation (Line(points={{-141,-110},{-114,-110}}, color={0,0,127}));
+            annotation (Icon(coordinateSystem(extent={{-200,-200},{200,200}})), Diagram(
+                  coordinateSystem(extent={{-200,-200},{200,200}})));
+          end NonlinearModelforSimulation_AVR;
+
+          model NonlinearModelforDesign_AVR
+            extends Modelica.Icons.Example;
+            Modelica.Blocks.Math.Gain pmInputGain(k=1) annotation (Placement(
+                  transformation(
+                  extent={{-10,-10},{10,10}},
+                  rotation=0,
+                  origin={-152,0})));
+            Modelica.Blocks.Sources.Constant Pmchange(k=0) annotation (Placement(
+                  transformation(extent={{-200,-10},{-180,10}})));
+            Modelica.Blocks.Sources.Constant Ploadchange(k=0) annotation (Placement(
+                  transformation(extent={{-200,-120},{-180,-100}})));
+            Modelica.Blocks.Math.Gain uPloadInputGain(k=1) annotation (Placement(
+                  transformation(
+                  extent={{-10,-10},{10,10}},
+                  rotation=0,
+                  origin={-152,-110})));
+            Modelica.Blocks.Math.Gain uAVRInputGain(k=1/100) annotation (
+                Placement(transformation(
+                  extent={{-10,-10},{10,10}},
+                  rotation=0,
+                  origin={-152,114})));
+            Interfaces.SMIB_AVR_wLineRmovaland4inputs
+              sMIB_AVR_wLineRmovaland4inputs annotation (Placement(
+                  transformation(extent={{-100,-138},{180,142}})));
+            Modelica.Blocks.Interfaces.RealInput uVref
+              annotation (Placement(transformation(extent={{-240,94},{-200,134}}),
+                  iconTransformation(extent={{-180,60},{-140,100}})));
+          equation
+            connect(Pmchange.y,pmInputGain. u)
+              annotation (Line(points={{-179,0},{-164,0}},   color={0,0,127}));
+            connect(Ploadchange.y,uPloadInputGain. u)
+              annotation (Line(points={{-179,-110},{-164,-110}},
+                                                             color={0,0,127}));
+            connect(uAVRInputGain.y, sMIB_AVR_wLineRmovaland4inputs.uvsAVR)
+              annotation (Line(points={{-141,114},{-114,114}}, color={0,0,127}));
+            connect(pmInputGain.y, sMIB_AVR_wLineRmovaland4inputs.uPm)
+              annotation (Line(points={{-141,0},{-134,0},{-134,2},{-114,2}},
+                  color={0,0,127}));
+            connect(uPloadInputGain.y, sMIB_AVR_wLineRmovaland4inputs.uPload)
+              annotation (Line(points={{-141,-110},{-114,-110}}, color={0,0,127}));
+            connect(uVref, uAVRInputGain.u) annotation (Line(points={{-220,114},
+                    {-164,114}}, color={0,0,127}));
+            annotation (Icon(coordinateSystem(extent={{-200,-200},{200,200}})), Diagram(
+                  coordinateSystem(extent={{-200,-200},{200,200}}), graphics={
+                  Line(
+                    points={{-124,178},{-194,180},{-152,130}},
+                    color={0,0,255},
+                    thickness=0.5,
+                    arrow={Arrow.None,Arrow.Filled},
+                    smooth=Smooth.Bezier),
+                  Text(
+                    extent={{-118,198},{-40,138}},
+                    lineColor={85,170,255},
+                    fillPattern=FillPattern.HorizontalCylinder,
+                    fillColor={28,108,200},
+                    horizontalAlignment=TextAlignment.Left,
+                    textString="Note: we use this gain to scale the input to the AVR.
+ This allows to apply e.g. a 1% step change when applying a unitary step into the input.
+ This facilitates to use the existing routines of the Modelica.LinearSystems2 library.
+
+If this is not done, then a unitary step signal can be too large and give unintuitive results.
+")}));
+          end NonlinearModelforDesign_AVR;
+        end ModelVariants;
+
+        function RootLocus_AVR
+
+        algorithm
+
+        Modelica_LinearSystems2.Utilities.Plot.rootLocusOfModel(
+        "SMIBPS_IdControl.Analysis.ClassicalControlDesign.RootLocus.Design.ModelVariants.NonlinearModelforDesign_AVR",
+        {Modelica_LinearSystems2.Records.ParameterVariation(Name="sMIB_AVR_wLineRmovaland4inputs.G1.avr.K0",
+        grid=Modelica_LinearSystems2.Utilities.Types.Grid.Equidistant, Value=22, Min=0, Max=900, nPoints=100)});
+
+        end RootLocus_AVR;
+      end Design;
+
+      package TimeDomainVerficationSimulations
+      end TimeDomainVerficationSimulations;
+    end RootLocus;
+  end ClassicalControlDesign;
 end Analysis;

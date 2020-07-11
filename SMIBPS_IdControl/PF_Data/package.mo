@@ -1,12 +1,9 @@
 within SMIBPS_IdControl;
 package PF_Data
+  extends Modelica.Icons.RecordsPackage;
 
-annotation (Icon(graphics={Rectangle(
-        extent={{-100,100},{100,-100}},
-        lineColor={28,108,200},
-        fillColor={215,215,215},
-        fillPattern=FillPattern.Solid), Text(
-        extent={{-82,80},{80,-82}},
+annotation (Icon(graphics={             Text(
+        extent={{-76,148},{86,-14}},
         lineColor={28,108,200},
         textString="PFlow")}));
 end PF_Data;

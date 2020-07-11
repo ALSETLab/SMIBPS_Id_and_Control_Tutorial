@@ -982,4 +982,347 @@ package BaseModelsPartial "Partial Models - Cannot be simulated!"
               -40},{15.1,-40}}, color={0,0,255}));
     end SMIB_Partial;
   end BaseNetwork;
+
+  package OutputInterfaces
+    extends Modelica.Icons.InterfacesPackage;
+    partial model OutputsInterface
+    public
+      Modelica.Blocks.Interfaces.RealOutput Vt
+        annotation (Placement(transformation(extent={{140,70},{160,90}}),
+            iconTransformation(extent={{140,70},{160,90}})));
+      Modelica.Blocks.Interfaces.RealOutput Q
+        annotation (Placement(transformation(extent={{140,-10},{160,10}}),
+            iconTransformation(extent={{140,-10},{160,10}})));
+      Modelica.Blocks.Interfaces.RealOutput P
+        annotation (Placement(transformation(extent={{140,30},{160,50}}),
+            iconTransformation(extent={{140,30},{160,50}})));
+      Modelica.Blocks.Interfaces.RealOutput w
+        annotation (Placement(transformation(extent={{140,-50},{160,-30}}),
+            iconTransformation(extent={{140,-50},{160,-30}})));
+      Modelica.Blocks.Interfaces.RealOutput delta
+        annotation (Placement(transformation(extent={{140,-90},{160,-70}}),
+            iconTransformation(extent={{140,-90},{160,-70}})));
+      annotation (
+        experiment(
+          StopTime=10,
+          Interval=0.0001,
+          Tolerance=1e-06,
+          __Dymola_fixedstepsize=0.0001,
+          __Dymola_Algorithm="Dassl"),
+        __Dymola_experimentSetupOutput,
+        Documentation(info="<html>
+<table cellspacing=\"1\" cellpadding=\"1\" border=\"1\">
+<tr>
+<td><p>Reference</p></td>
+<td><p>SMIB PSAT, d_kundur2.mdl, PSAT</p></td>
+</tr>
+<tr>
+<td><p>Last update</p></td>
+<td>February 2016</td>
+</tr>
+<tr>
+<td><p>Author</p></td>
+<td><p>Maxime Baudette, Ahsan Murad, SmarTS Lab, KTH Royal Institute of Technology</p></td>
+</tr>
+<tr>
+<td><p>Contact</p></td>
+<td><p><a href=\"mailto:luigiv@kth.se\">luigiv@kth.se</a></p></td>
+</tr>
+</table>
+</html>"),
+        Diagram(coordinateSystem(extent={{-140,-140},{140,140}})),
+        Icon(coordinateSystem(extent={{-140,-140},{140,140}})));
+    end OutputsInterface;
+
+    partial model OutputsInterfaceBig
+    public
+      Modelica.Blocks.Interfaces.RealOutput Vt
+        annotation (Placement(transformation(extent={{200,70},{220,90}}),
+            iconTransformation(extent={{200,70},{220,90}})));
+      Modelica.Blocks.Interfaces.RealOutput Q
+        annotation (Placement(transformation(extent={{200,-10},{220,10}}),
+            iconTransformation(extent={{200,-10},{220,10}})));
+      Modelica.Blocks.Interfaces.RealOutput P
+        annotation (Placement(transformation(extent={{200,30},{220,50}}),
+            iconTransformation(extent={{200,30},{220,50}})));
+      Modelica.Blocks.Interfaces.RealOutput w
+        annotation (Placement(transformation(extent={{200,-50},{220,-30}}),
+            iconTransformation(extent={{200,-50},{220,-30}})));
+      Modelica.Blocks.Interfaces.RealOutput delta
+        annotation (Placement(transformation(extent={{200,-90},{220,-70}}),
+            iconTransformation(extent={{200,-90},{220,-70}})));
+      annotation (
+        experiment(
+          StopTime=10,
+          Interval=0.0001,
+          Tolerance=1e-06,
+          __Dymola_fixedstepsize=0.0001,
+          __Dymola_Algorithm="Dassl"),
+        __Dymola_experimentSetupOutput,
+        Documentation(info="<html>
+<table cellspacing=\"1\" cellpadding=\"1\" border=\"1\">
+<tr>
+<td><p>Reference</p></td>
+<td><p>SMIB PSAT, d_kundur2.mdl, PSAT</p></td>
+</tr>
+<tr>
+<td><p>Last update</p></td>
+<td>February 2016</td>
+</tr>
+<tr>
+<td><p>Author</p></td>
+<td><p>Maxime Baudette, Ahsan Murad, SmarTS Lab, KTH Royal Institute of Technology</p></td>
+</tr>
+<tr>
+<td><p>Contact</p></td>
+<td><p><a href=\"mailto:luigiv@kth.se\">luigiv@kth.se</a></p></td>
+</tr>
+</table>
+</html>"),
+        Diagram(coordinateSystem(extent={{-200,-140},{200,140}})),
+        Icon(coordinateSystem(extent={{-200,-140},{200,140}})));
+    end OutputsInterfaceBig;
+
+    partial model OutputsInterfaceBusVoltagesBranchPowers_noInfiniteBus
+      Modelica.Blocks.Interfaces.RealOutput Pline1 annotation (Placement(
+            transformation(
+            extent={{-10,-10},{10,10}},
+            rotation=270,
+            origin={-150,-190}),
+                               iconTransformation(
+            extent={{-10,-10},{10,10}},
+            rotation=270,
+            origin={-20,-210})));
+      Modelica.Blocks.Interfaces.RealOutput Qline1 annotation (Placement(
+            transformation(
+            extent={{-10,-10},{10,10}},
+            rotation=270,
+            origin={-130,-190}),
+                               iconTransformation(
+            extent={{-10,-10},{10,10}},
+            rotation=270,
+            origin={60,-210})));
+      Modelica.Blocks.Interfaces.RealOutput Pline2 annotation (Placement(
+            transformation(
+            extent={{-10,-10},{10,10}},
+            rotation=270,
+            origin={-100,-190}),
+                              iconTransformation(
+            extent={{-10,-10},{10,10}},
+            rotation=270,
+            origin={0,-210})));
+      Modelica.Blocks.Interfaces.RealOutput Qline2 annotation (Placement(
+            transformation(
+            extent={{-10,-10},{10,10}},
+            rotation=270,
+            origin={-80,-190}),
+                              iconTransformation(
+            extent={{-10,-10},{10,10}},
+            rotation=270,
+            origin={80,-210})));
+      Modelica.Blocks.Interfaces.RealOutput Pline3 annotation (Placement(
+            transformation(
+            extent={{-10,-10},{10,10}},
+            rotation=270,
+            origin={-40,-190}),iconTransformation(
+            extent={{-10,-10},{10,10}},
+            rotation=270,
+            origin={20,-210})));
+      Modelica.Blocks.Interfaces.RealOutput Qline3 annotation (Placement(
+            transformation(
+            extent={{-10,-10},{10,10}},
+            rotation=270,
+            origin={-20,-190}),iconTransformation(
+            extent={{-10,-10},{10,10}},
+            rotation=270,
+            origin={100,-210})));
+      Modelica.Blocks.Interfaces.RealOutput Pline4 annotation (Placement(
+            transformation(
+            extent={{-10,-10},{10,10}},
+            rotation=270,
+            origin={20,-190}),iconTransformation(
+            extent={{-10,-10},{10,10}},
+            rotation=270,
+            origin={40,-210})));
+      Modelica.Blocks.Interfaces.RealOutput Qline4 annotation (Placement(
+            transformation(
+            extent={{-10,-10},{10,10}},
+            rotation=270,
+            origin={40,-190}),iconTransformation(
+            extent={{-10,-10},{10,10}},
+            rotation=270,
+            origin={120,-210})));
+      Modelica.Blocks.Interfaces.RealOutput Bvm1 annotation (Placement(
+            transformation(
+            extent={{-10,-10},{10,10}},
+            rotation=270,
+            origin={-150,-150}),
+                              iconTransformation(
+            extent={{-10,-10},{10,10}},
+            rotation=270,
+            origin={-180,-210})));
+      Modelica.Blocks.Interfaces.RealOutput Bva1 annotation (Placement(
+            transformation(
+            extent={{-10,-10},{10,10}},
+            rotation=270,
+            origin={-130,-150}),
+                              iconTransformation(
+            extent={{-10,-10},{10,10}},
+            rotation=270,
+            origin={-100,-210})));
+      Modelica.Blocks.Interfaces.RealOutput Bvm2 annotation (Placement(
+            transformation(
+            extent={{-10,-10},{10,10}},
+            rotation=270,
+            origin={-90,-150}),
+                             iconTransformation(
+            extent={{-10,-10},{10,10}},
+            rotation=270,
+            origin={-160,-210})));
+      Modelica.Blocks.Interfaces.RealOutput Bva2 annotation (Placement(
+            transformation(
+            extent={{-10,-10},{10,10}},
+            rotation=270,
+            origin={-70,-150}),
+                             iconTransformation(
+            extent={{-10,-10},{10,10}},
+            rotation=270,
+            origin={-80,-210})));
+      Modelica.Blocks.Interfaces.RealOutput Bvm4 annotation (Placement(
+            transformation(
+            extent={{-10,-10},{10,10}},
+            rotation=270,
+            origin={-20,-150}),
+                              iconTransformation(
+            extent={{-10,-10},{10,10}},
+            rotation=270,
+            origin={-140,-210})));
+      Modelica.Blocks.Interfaces.RealOutput Bva4 annotation (Placement(
+            transformation(
+            extent={{-10,-10},{10,10}},
+            rotation=270,
+            origin={0,-150}), iconTransformation(
+            extent={{-10,-10},{10,10}},
+            rotation=270,
+            origin={-60,-210})));
+      Modelica.Blocks.Interfaces.RealOutput Bvadiff1to2 annotation (Placement(
+            transformation(
+            extent={{-10,-10},{10,10}},
+            rotation=270,
+            origin={80,-150}),  iconTransformation(
+            extent={{-10,-10},{10,10}},
+            rotation=270,
+            origin={140,-210})));
+      Modelica.Blocks.Interfaces.RealOutput Bvadiff1to3 annotation (Placement(
+            transformation(
+            extent={{-10,-10},{10,10}},
+            rotation=270,
+            origin={102,-150}), iconTransformation(
+            extent={{-10,-10},{10,10}},
+            rotation=270,
+            origin={160,-210})));
+      Modelica.Blocks.Interfaces.RealOutput Bvadiff1to4 annotation (Placement(
+            transformation(
+            extent={{-10,-10},{10,10}},
+            rotation=270,
+            origin={122,-150}), iconTransformation(
+            extent={{-10,-10},{10,10}},
+            rotation=270,
+            origin={180,-210})));
+    equation
+    //   // Assignment of outputs for the network voltages and powers
+    //   Bvm1 = B1.V;
+    //   Bva1 = B1.angle;
+    //   Bvm2 = B2.V;
+    //   Bva2 = B2.angle;
+    //   Bvm3 = B3.V;
+    //   Bva3 = B3.angle;
+    //   Bvm4 = B4.V;
+    //   Bva4 = B4.angle;
+    //   Pline1 = line_1.P12;
+    //   Qline1 = line_1.Q12;
+    //   Pline2 = line_2.P12;
+    //   Qline2 = line_2.Q12;
+    //   Pline3 = line_3.P12;
+    //   Qline3 = line_3.Q12;
+    //   Pline4 = line_4.P12;
+    //   Qline4 = line_4.Q12;
+    //   Bvadiff1to2 = B1.angle - B2.angle;
+    //   Bvadiff1to3 = B1.angle - B3.angle;
+    //   Bvadiff1to4 = B1.angle - B4.angle;
+      annotation (
+        experiment(
+          StopTime=10,
+          Interval=0.0001,
+          Tolerance=1e-06,
+          __Dymola_fixedstepsize=0.0001,
+          __Dymola_Algorithm="Dassl"),
+        __Dymola_experimentSetupOutput,
+        Documentation(info="<html>
+<p>This interface allows to create outputs for the network variables such as voltages, powers and bus voltage angle differences.</p>
+<p>When placed in a model extending from one of the networks in BaseNetwork, the following text should be added:</p>
+<p>Note that in this example there is an additional line that has been added to the SMIBPS_IdControl.BaseModelsPartial.BaseNetwork.SMIB_Partial model, this is to show how the interface has to be extended from this level to add additional variables when the base model is extended with extra components.</p>
+<p>See the example of usage under the interface: SMIBPS_IdControl.Analysis.ClassicalControlDesign.Interfaces.SMIB_AVR_wLineRmovaland4inputs</p>
+<p><span style=\"font-family: Courier New; color: #006400;\">//&nbsp;&nbsp;&nbsp;//&nbsp;Assignment&nbsp;of&nbsp;outputs&nbsp;for&nbsp;the&nbsp;network&nbsp;voltages&nbsp;and&nbsp;powers</span></p>
+<p><span style=\"font-family: Courier New; color: #006400;\">//&nbsp;&nbsp;&nbsp;Bvm1&nbsp;=&nbsp;B1.V;</span></p>
+<p><span style=\"font-family: Courier New; color: #006400;\">//&nbsp;&nbsp;&nbsp;Bva1&nbsp;=&nbsp;B1.angle;</span></p>
+<p><span style=\"font-family: Courier New; color: #006400;\">//&nbsp;&nbsp;&nbsp;Bvm2&nbsp;=&nbsp;B2.V;</span></p>
+<p><span style=\"font-family: Courier New; color: #006400;\">//&nbsp;&nbsp;&nbsp;Bva2&nbsp;=&nbsp;B2.angle;</span></p>
+<p><span style=\"font-family: Courier New; color: #006400;\">//&nbsp;&nbsp;&nbsp;Bvm3&nbsp;=&nbsp;B3.V;</span></p>
+<p><span style=\"font-family: Courier New; color: #006400;\">//&nbsp;&nbsp;&nbsp;Bva3&nbsp;=&nbsp;B3.angle;</span></p>
+<p><span style=\"font-family: Courier New; color: #006400;\">//&nbsp;&nbsp;&nbsp;Bvm4&nbsp;=&nbsp;B4.V;</span></p>
+<p><span style=\"font-family: Courier New; color: #006400;\">//&nbsp;&nbsp;&nbsp;Bva4&nbsp;=&nbsp;B4.angle;</span></p>
+<p><span style=\"font-family: Courier New; color: #006400;\">//&nbsp;&nbsp;&nbsp;Pline1&nbsp;=&nbsp;line_1.P12;</span></p>
+<p><span style=\"font-family: Courier New; color: #006400;\">//&nbsp;&nbsp;&nbsp;Qline1&nbsp;=&nbsp;line_1.Q12;</span></p>
+<p><span style=\"font-family: Courier New; color: #006400;\">//&nbsp;&nbsp;&nbsp;Pline2&nbsp;=&nbsp;line_2.P12;</span></p>
+<p><span style=\"font-family: Courier New; color: #006400;\">//&nbsp;&nbsp;&nbsp;Qline2&nbsp;=&nbsp;line_2.Q12;</span></p>
+<p><span style=\"font-family: Courier New; color: #006400;\">//&nbsp;&nbsp;&nbsp;Pline3&nbsp;=&nbsp;line_3.P12;</span></p>
+<p><span style=\"font-family: Courier New; color: #006400;\">//&nbsp;&nbsp;&nbsp;Qline3&nbsp;=&nbsp;line_3.Q12;</span></p>
+<p><span style=\"font-family: Courier New; color: #006400;\">//&nbsp;&nbsp;&nbsp;Pline4&nbsp;=&nbsp;line_4.P12;</span></p>
+<p><span style=\"font-family: Courier New; color: #006400;\">//&nbsp;&nbsp;&nbsp;Qline4&nbsp;=&nbsp;line_4.Q12;</span></p>
+<p><span style=\"font-family: Courier New; color: #006400;\">//&nbsp;&nbsp;&nbsp;Bvadiff1to2&nbsp;=&nbsp;B1.angle&nbsp;-&nbsp;B2.angle;</span></p>
+<p><span style=\"font-family: Courier New; color: #006400;\">//&nbsp;&nbsp;&nbsp;Bvadiff1to3&nbsp;=&nbsp;B1.angle&nbsp;-&nbsp;B3.angle;</span></p>
+<p><span style=\"font-family: Courier New; color: #006400;\">//&nbsp;&nbsp;&nbsp;Bvadiff1to4&nbsp;=&nbsp;B1.angle&nbsp;-&nbsp;B4.angle;</span></p>
+</html>"),
+        Diagram(coordinateSystem(extent={{-200,-200},{200,140}}),
+                                                                graphics={Rectangle(
+              extent={{-164,-174},{-110,-200}},
+              lineColor={255,0,0},
+              lineThickness=1,
+              fillColor={255,170,213},
+              fillPattern=FillPattern.Solid), Rectangle(
+              extent={{-180,-132},{160,-200}},
+              lineColor={28,108,200},
+              lineThickness=1),
+            Text(
+              extent={{-142,-114},{118,-134}},
+              lineColor={255,0,0},
+              lineThickness=1,
+              fillColor={255,170,213},
+              fillPattern=FillPattern.None,
+              textString="Assignment of Outputs is Should be Done in the Text Layer where this Interface is Placed
+"),                                                                       Rectangle(
+              extent={{10,-180},{64,-200}},
+              lineColor={255,0,0},
+              lineThickness=1,
+              fillColor={255,170,213},
+              fillPattern=FillPattern.Solid)}),
+        Icon(coordinateSystem(extent={{-200,-200},{200,140}}),
+                                                           graphics={
+              Rectangle(
+              extent={{-190,-180},{190,-200}},
+              lineColor={28,108,200},
+              lineThickness=1,
+              fillColor={170,213,255},
+              fillPattern=FillPattern.Solid), Text(
+              extent={{-190,-195},{190,-205}},
+              lineColor={0,0,255},
+              lineThickness=1,
+              fillColor={255,170,213},
+              fillPattern=FillPattern.None,
+              textString="Network Voltages, Line Powers and Bus Angle Differences
+
+")}));
+    end OutputsInterfaceBusVoltagesBranchPowers_noInfiniteBus;
+  end OutputInterfaces;
 end BaseModelsPartial;
