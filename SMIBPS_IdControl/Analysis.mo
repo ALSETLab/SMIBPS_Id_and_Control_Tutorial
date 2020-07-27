@@ -8,10 +8,10 @@ package Analysis
       extends Modelica.Icons.Example;
       extends BaseModelsPartial.BaseNetwork.SMIB_Partial(
         powerFlow_Data(
-          redeclare record Bus = PF_Data.Bus_Data.PF_Bus_5,
-          redeclare record Loads = PF_Data.Loads_Data.PF_Loads_5,
-          redeclare record Trafos = PF_Data.Trafos_Data.PF_Trafos_5,
-          redeclare record Machines = PF_Data.Machines_Data.PF_Machines_5),
+          redeclare record Bus = PF_Data.Bus_Data.PF_Bus_0,
+          redeclare record Loads = PF_Data.Loads_Data.PF_Loads_0,
+          redeclare record Trafos = PF_Data.Trafos_Data.PF_Trafos_0,
+          redeclare record Machines = PF_Data.Machines_Data.PF_Machines_0),
         transformer(kT=1),
         load_ExtInput(
           d_P=0,
@@ -77,10 +77,10 @@ package Analysis
     model SMIB_AVR
         extends Modelica.Icons.Example;
       extends BaseModelsPartial.BaseNetwork.SMIB_Partial(powerFlow_Data(
-          redeclare record Bus = PF_Data.Bus_Data.PF_Bus_3,
-          redeclare record Loads = PF_Data.Loads_Data.PF_Loads_3,
-          redeclare record Trafos = PF_Data.Trafos_Data.PF_Trafos_3,
-          redeclare record Machines = PF_Data.Machines_Data.PF_Machines_3),
+          redeclare record Bus = PF_Data.Bus_Data.PF_Bus_0,
+          redeclare record Loads = PF_Data.Loads_Data.PF_Loads_0,
+          redeclare record Trafos = PF_Data.Trafos_Data.PF_Trafos_0,
+          redeclare record Machines = PF_Data.Machines_Data.PF_Machines_0),
           load_ExtInput(
           d_P=0,
           t1=0,

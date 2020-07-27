@@ -1,10 +1,10 @@
 within SMIBPS_IdControl.PF_Data.Machines_Data;
 record PF_Machines_4
 extends SMIBPS_IdControl.PF_Data.Machines_Template(
-PG1 = 1998.0000000,
-QG1 = 444.4121997,
-PG2 = -1916.0570188,
-QG2 = 428.5150257);
+PG1 = 1314.4736842,
+QG1 = 186.0007284,
+PG2 = -1266.2268823,
+QG2 = 180.3716501);
 
 // MACHINE: 'gen_1'
 // Bus: B1'

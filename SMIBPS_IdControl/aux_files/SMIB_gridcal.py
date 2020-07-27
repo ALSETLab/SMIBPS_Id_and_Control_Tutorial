@@ -23,7 +23,7 @@ def SMIB_gridcal(name = "SMIB", verbose = False):
 
     # Creating generators
     gen1 = Generator("gen_1", voltage_module = 1,
-                    active_power = 0.899999999997135*grid.Sbase)
+                    active_power = 1998.0000000) # Active power of the generator in MW
     slack = Generator("Slack ", voltage_module = 1)
     grid.add_generator(bus_1, gen1)
     grid.add_generator(bus_3, slack)
@@ -47,7 +47,7 @@ def SMIB_gridcal(name = "SMIB", verbose = False):
     grid.add_branch(transformer)
 
     # Creating load
-    load_ext_input = Load('load_ext_input', P = 100, Q = 200);
+    load_ext_input = Load('load_ext_input', P = 73.1156819505195, Q = 0.0452430189276728);
     grid.add_load(bus_4, load_ext_input)
 
     if verbose: # Show graph of the network

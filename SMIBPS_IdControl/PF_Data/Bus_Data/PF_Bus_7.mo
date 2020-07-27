@@ -2,13 +2,13 @@ within SMIBPS_IdControl.PF_Data.Bus_Data;
 record PF_Bus_7
 extends SMIBPS_IdControl.PF_Data.Bus_Template(
 V1 = 1.0000000,
-A1 = 24.9246771,
-V2 = 0.9793450,
-A2 = 17.0013861,
+A1 = 20.1558594,
+V2 = 0.9865023,
+A2 = 13.7460869,
 V3 = 1.0000000,
 A3 = 0.0000000,
-V4 = 0.9787570,
-A4 = 7.8657847);
+V4 = 0.9860886,
+A4 = 6.4580396);
 
 // Bus: 'B1' (PV bus)
 
