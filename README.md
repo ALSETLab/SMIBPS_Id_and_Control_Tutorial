@@ -1,3 +1,4 @@
+[![DOI](https://zenodo.org/badge/260598604.svg)](https://zenodo.org/badge/latestdoi/260598604)
 # SMIBPS_Id_and_Control_Tutorial
 Tutorial and examples on power system equation-based object-oriented modeling for identification and control.
 
