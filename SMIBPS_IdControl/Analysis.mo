@@ -2548,21 +2548,25 @@ This is visible in the Text layer only."),
             startTime=1)                                    annotation (Placement(
                 transformation(extent={{-120,-40},{-100,-20}})));
         equation
-          connect(demultiplex2_2.y1[1], Vt) annotation (Line(points={{102,16},{108,16},{
-                  108,79},{150,79}},
+          connect(demultiplex2_2.y1[1], Vt) annotation (Line(points={{102,16},{
+                  108,16},{108,80},{150,80}},
                                  color={0,0,127}));
-          connect(demultiplex2_2.y4[1], w) annotation (Line(points={{102,-8},{110,-8},{110,
-                  -39},{150,-39}}, color={0,0,127}));
-          connect(demultiplex2_2.y5[1], delta) annotation (Line(points={{102,-16},{108,-16},
-                  {108,-81},{150,-81}}, color={0,0,127}));
+          connect(demultiplex2_2.y4[1], w) annotation (Line(points={{102,-8},{
+                  110,-8},{110,-40},{150,-40}},
+                                   color={0,0,127}));
+          connect(demultiplex2_2.y5[1], delta) annotation (Line(points={{102,-16},
+                  {108,-16},{108,-80},{150,-80}},
+                                        color={0,0,127}));
           connect(addy.y, demultiplex2_2.u)
             annotation (Line(points={{27,-6},{28,-6},{28,0},{56,0}}, color={0,0,127}));
           connect(Pmchange.y,multiplex3_1. u2[1]) annotation (Line(points={{-101,0},
                   {-82,0}},                color={0,0,127}));
-          connect(demultiplex2_2.y3[1], P) annotation (Line(points={{102,0},{122,0},{122,
-                  41},{150,41}}, color={0,0,127}));
-          connect(Q, demultiplex2_2.y2[1]) annotation (Line(points={{150,1},{126,1},{126,
-                  8},{102,8}}, color={0,0,127}));
+          connect(demultiplex2_2.y3[1], P) annotation (Line(points={{102,0},{
+                  122,0},{122,40},{150,40}},
+                                 color={0,0,127}));
+          connect(Q, demultiplex2_2.y2[1]) annotation (Line(points={{150,0},{
+                  126,0},{126,8},{102,8}},
+                               color={0,0,127}));
           connect(y0_initial.y, addy.u2)
             annotation (Line(points={{0,-21},{0,-12},{4,-12}}, color={0,0,127}));
           connect(multiplex3_1.y, stateSpace.u)
@@ -2673,7 +2677,7 @@ They have to be rearranged based on the order provided by the linearization func
           Modelica.Blocks.Interfaces.RealInput uPload annotation (Placement(
                 transformation(extent={{-140,-80},{-100,-40}})));
           Interfaces.SMIB_AVR_PSS_wInput_wLineRmoval
-            sMIB_AVR_PSS_wInput_wLineRmoval(t1=0.5)
+            sMIB_AVR_PSS_wInput_wLineRmoval(t1=0.5, G1(pss(Kw=9.5, Tw=1.41)))
             annotation (Placement(transformation(extent={{-40,-40},{40,40}})));
         equation
           connect(sMIB_AVR_PSS_wInput_wLineRmoval.uPSS, uPSS) annotation (Line(
@@ -2726,42 +2730,44 @@ They have to be rearranged based on the order provided by the linearization func
           Modelica.Blocks.Sources.Constant Pmchange(k=0)
             annotation (Placement(transformation(extent={{-100,-10},{-80,10}})));
           Modelica.Blocks.Sources.Step     Ploadchange(
-            height=0.05,
+            height=0.1,
             offset=0,
             startTime=30.5)                                 annotation (Placement(
                 transformation(extent={{-100,-42},{-80,-22}})));
           Interfaces.SMIB_AVR_PSS_wInput_wLineRmoval
-            sMIB_AVR_PSS_wInput_wLineRmoval(t1=0.5)
+            sMIB_AVR_PSS_wInput_wLineRmoval(t1=0.5, G1(pss(Kw=12.7759, Tw=
+                    0.4766)))
             annotation (Placement(transformation(extent={{-40,-40},{40,40}})));
         equation
           connect(sMIB_AVR_PSS_wInput_wLineRmoval.uPSS, PSSchange.y)
-            annotation (Line(points={{-45.7143,22.8571},{-62.4286,22.8571},{
-                  -62.4286,30},{-79,30}}, color={0,0,127}));
+            annotation (Line(points={{-45.7143,22.8571},{-62.8572,22.8571},{
+                  -62.8572,30},{-79,30}}, color={0,0,127}));
           connect(sMIB_AVR_PSS_wInput_wLineRmoval.uPm, Pmchange.y)
             annotation (Line(points={{-45.7143,0},{-79,0}}, color={0,0,127}));
           connect(sMIB_AVR_PSS_wInput_wLineRmoval.uPload, Ploadchange.y)
             annotation (Line(points={{-45.7143,-22.8571},{-62.8572,-22.8571},{
                   -62.8572,-32},{-79,-32}}, color={0,0,127}));
           connect(sMIB_AVR_PSS_wInput_wLineRmoval.Vt, Vt) annotation (Line(
-                points={{42.8571,22.8571},{42.8571,24},{64,24},{64,80},{110,80}},
+                points={{42.8571,22.8571},{72.4286,22.8571},{72.4286,80},{110,
+                  80}}, color={0,0,127}));
+          connect(sMIB_AVR_PSS_wInput_wLineRmoval.P, P) annotation (Line(points={{42.8571,
+                  11.4286},{73.4286,11.4286},{73.4286,40},{110,40}},
                 color={0,0,127}));
-          connect(P, sMIB_AVR_PSS_wInput_wLineRmoval.P) annotation (Line(points={{110,40},
-                  {68,40},{68,11.4286},{42.8571,11.4286}},          color={0,0,
-                  127}));
-          connect(Q, sMIB_AVR_PSS_wInput_wLineRmoval.Q) annotation (Line(points={{110,0},
-                  {76,0},{76,0},{42.8571,0}},                       color={0,0,
-                  127}));
-          connect(w, sMIB_AVR_PSS_wInput_wLineRmoval.w) annotation (Line(points={{110,-40},
-                  {80,-40},{80,-11.4286},{42.8571,-11.4286}},           color={
-                  0,0,127}));
-          connect(delta, sMIB_AVR_PSS_wInput_wLineRmoval.delta) annotation (
-              Line(points={{110,-80},{60,-80},{60,-22.8571},{42.8571,-22.8571}},
+          connect(sMIB_AVR_PSS_wInput_wLineRmoval.Q, Q)
+            annotation (Line(points={{42.8571,0},{110,0}}, color={0,0,127}));
+          connect(sMIB_AVR_PSS_wInput_wLineRmoval.w, w) annotation (Line(points={{42.8571,
+                  -11.4286},{73.4286,-11.4286},{73.4286,-40},{110,-40}},
                 color={0,0,127}));
+          connect(sMIB_AVR_PSS_wInput_wLineRmoval.delta, delta) annotation (
+              Line(points={{42.8571,-22.8571},{72.4286,-22.8571},{72.4286,-80},
+                  {110,-80}}, color={0,0,127}));
           annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
                 coordinateSystem(preserveAspectRatio=false)),
             experiment(
               StopTime=40,
-              __Dymola_NumberOfIntervals=1000,
+              __Dymola_NumberOfIntervals=10000,
+              Tolerance=1e-06,
+              __Dymola_fixedstepsize=0.01,
               __Dymola_Algorithm="Dassl"));
         end NonlinModel_for_NonlinExperiment;
 
@@ -2777,54 +2783,54 @@ They have to be rearranged based on the order provided by the linearization func
           Modelica.Blocks.Routing.Multiplex3 multiplex3_1(n1=1, n2=1)
             annotation (Placement(transformation(extent={{-80,-10},{-60,10}})));
           Modelica_LinearSystems2.Controller.StateSpace stateSpace(system(
-              A=[0.0,376.99111838900376,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0;
-                  -0.06866172157436483,0.0,0.0,0.0,-0.13089553805695955,-0.007996158813506517,
-                  0.0,0.0,0.0,0.0,0.0,0.0; -0.17084367956584362,0.0,-0.12499999999370072,
-                  0.0,-0.17040348889278564,-0.0005205012335237335,0.0,0.0,
-                  0.12500000001264727,0.0,0.0,0.0; -0.054929009666219,0.0,0.0,-1.0000000000918718,
-                  0.006479547985583815,-0.9628997952694285,0.0,0.0,0.0,0.0,0.0,
-                  0.0; -2.2494220893758543,0.0,33.33333333165353,0.0,-35.57695963015827,
-                  -0.0068532061489849395,0.0,0.0,0.0,0.0,0.0,0.0; -0.31230970471005864,
-                  0.0,0.0,14.28571428702674,0.0368407467393937,-19.76047075622232,
-                  0.0,0.0,0.0,0.0,0.0,0.0; -11.01505344351068,0.0,0.0,0.0,
-                  39.131006300072514,34.81062225999472,-66.6666666604358,0.0,
+              A=[0.0,376.99111839064904,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0;
+                  -0.10222534656118121,0.0,0.0,0.0,-0.1253996809934411,
+                  0.03527128800562188,0.0,0.0,0.0,0.0,0.0,0.0; -0.16393921110225104,
+                  0.0,-0.12500000001769324,0.0,-0.17040127587364104,-0.0005774410215435405,
+                  0.0,0.0,0.12499999998180834,0.0,0.0,0.0; 0.2711868922353234,
+                  0.0,0.0,-1.0000000000766203,0.004727742649967058,-0.9629194874097231,
+                  0.0,0.0,0.0,0.0,0.0,0.0; -2.158514050713154,0.0,
+                  33.3333333301509,0.0,-35.57693049204494,-0.0076029066725198866,
+                  0.0,0.0,0.0,0.0,0.0,0.0; 1.5418864968427204,0.0,0.0,
+                  14.285714286808858,0.02688051231726427,-19.76058271917301,0.0,
+                  0.0,0.0,0.0,0.0,0.0; -7.67934456223644,0.0,0.0,0.0,
+                  40.32753369945327,33.445190018349685,-66.66666667236385,0.0,
                   0.0,0.0,0.0,0.0; 0.0,0.0,0.0,0.0,0.0,0.0,0.0,-1.0,0.0,0.0,0.0,
-                  0.0; 0.0,18999999.99623109,0.0,0.0,0.0,0.0,-1999999.9998130735,
-                  10000.00082740371,-10000.000001011782,0.0,0.0,-18999999.99978613;
-                  0.0,0.009499999998115545,0.0,0.0,0.0,0.0,0.0,0.0,0.0,-0.001,
-                  0.0,-0.009499999999893066; 0.0,0.009499999998115545,0.0,0.0,
-                  0.0,0.0,0.0,0.0,0.0,0.0,-0.001,-0.009499999999893066; 0.0,
-                  0.7092198580774454,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,-0.7092198580776647],
-              B=[0.0,0.0,0.0; 0.0,0.14285715467719584,-0.04316848465992149; 0.0,
-                  0.0,-0.06524164541943378; 0.0,0.0,0.11073453265453281; 0.0,
-                  0.0,-0.8590077723210262; 0.0,0.0,0.6296031156744724; 0.0,0.0,
-                  -2.8629173106272297; 0.0,0.0,0.0; 19000001.57206705,0.0,0.0;
-                  0.009500000786033526,0.0,0.0; 0.009500000786033526,0.0,0.0;
-                  0.7092199168371426,0.0,0.0],
-              C=[-0.1652258016526602,0.0,0.0,0.0,0.5869650945010877,
-                  0.5221593338999209,0.0,0.0,0.0,0.0,0.0,0.0;
-                  0.5205641319797044,0.0,0.0,0.0,1.3973765860221798,
-                  0.30371677737740654,0.0,0.0,0.0,0.0,0.0,0.0;
-                  0.4757286783602097,0.0,0.0,0.0,0.9112481248640445,
-                  0.057999429135694204,0.0,0.0,0.0,0.0,0.0,0.0; 0.0,
-                  0.999999999889198,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0;
-                  0.9999999998823222,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,
-                  0.0],
-              D=[0.0,0.0,-0.04294375965940844; 0.0,0.0,0.10523959481645306; 0.0,
-                  0.0,0.300027558353122; 0.0,0.0,0.0; 0.0,0.0,0.0],
+                  0.0; 0.0,18999999.99631401,0.0,0.0,0.0,0.0,-2000000.000170915,
+                  10000.00082740371,-10000.000001042516,0.0,0.0,-19000000.00157931;
+                  0.0,0.009499999998157005,0.0,0.0,0.0,0.0,0.0,0.0,0.0,-0.0010000000000000005,
+                  0.0,-0.009500000000789656; 0.0,0.009499999998157005,0.0,0.0,
+                  0.0,0.0,0.0,0.0,0.0,0.0,-0.0010000000000000005,-0.009500000000789656;
+                  0.0,0.7092198580805406,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,-0.7092198581694396],
+              B=[0.0,0.0,0.0; 0.0,0.14285715467719584,-0.045273626117900014;
+                  0.0,0.0,-0.05592637464246763; 0.0,0.0,0.17935802842927728;
+                  0.0,0.0,-0.7363572714543428; 0.0,0.0,1.0197751373500603; 0.0,
+                  0.0,-1.7695474715158828; 0.0,0.0,0.0; 19000001.57206705,0.0,
+                  0.0; 0.009500000786033523,0.0,0.0; 0.009500000786033523,0.0,
+                  0.0; 0.7092199168371426,0.0,0.0],
+              C=[-0.1151901684335466,0.0,0.0,0.0,0.604913005491799,
+                  0.5016778502752451,0.0,0.0,0.0,0.0,0.0,0.0;
+                  0.3702772112669391,0.0,0.0,0.0,1.1324193765325372,
+                  0.29207073712488274,0.0,0.0,0.0,0.0,0.0,0.0;
+                  0.7121061004642758,0.0,0.0,0.0,0.8747536242236411,-0.24494970284313788,
+                  0.0,0.0,0.0,0.0,0.0,0.0; 0.0,0.9999999998935621,0.0,0.0,0.0,
+                  0.0,0.0,0.0,0.0,0.0,0.0,0.0; 1.0000000000088987,0.0,0.0,0.0,
+                  0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],
+              D=[0.0,0.0,-0.026543212072738243; 0.0,0.0,0.06711059485908777;
+                  0.0,0.0,0.31555447144171467; 0.0,0.0,0.0; 0.0,0.0,0.0],
               yNames={"Vt","Q","P","w","delta"},
-              xNames={"sMIB_AVR_PSS_wInput_wFault.G1.machine.delta",
-                  "sMIB_AVR_PSS_wInput_wFault.G1.machine.w",
-                  "sMIB_AVR_PSS_wInput_wFault.G1.machine.e1q",
-                  "sMIB_AVR_PSS_wInput_wFault.G1.machine.e1d",
-                  "sMIB_AVR_PSS_wInput_wFault.G1.machine.e2q",
-                  "sMIB_AVR_PSS_wInput_wFault.G1.machine.e2d",
-                  "sMIB_AVR_PSS_wInput_wFault.G1.avr.vm",
-                  "sMIB_AVR_PSS_wInput_wFault.G1.avr.vr",
-                  "sMIB_AVR_PSS_wInput_wFault.G1.avr.vf1",
-                  "sMIB_AVR_PSS_wInput_wFault.G1.pss.imLeadLag.TF.x_scaled[1]",
-                  "sMIB_AVR_PSS_wInput_wFault.G1.pss.imLeadLag1.TF.x_scaled[1]",
-                  "sMIB_AVR_PSS_wInput_wFault.G1.pss.derivativeLag.TF.x_scaled[1]"},
+              xNames={"sMIB_AVR_PSS_wInput_wLineRmoval.G1.machine.delta",
+                  "sMIB_AVR_PSS_wInput_wLineRmoval.G1.machine.w",
+                  "sMIB_AVR_PSS_wInput_wLineRmoval.G1.machine.e1q",
+                  "sMIB_AVR_PSS_wInput_wLineRmoval.G1.machine.e1d",
+                  "sMIB_AVR_PSS_wInput_wLineRmoval.G1.machine.e2q",
+                  "sMIB_AVR_PSS_wInput_wLineRmoval.G1.machine.e2d",
+                  "sMIB_AVR_PSS_wInput_wLineRmoval.G1.avr.vm",
+                  "sMIB_AVR_PSS_wInput_wLineRmoval.G1.avr.vr",
+                  "sMIB_AVR_PSS_wInput_wLineRmoval.G1.avr.vf1",
+                  "sMIB_AVR_PSS_wInput_wLineRmoval.G1.pss.imLeadLag.TF.x_scaled[1]",
+                  "sMIB_AVR_PSS_wInput_wLineRmoval.G1.pss.imLeadLag1.TF.x_scaled[1]",
+                  "sMIB_AVR_PSS_wInput_wLineRmoval.G1.pss.derivativeLag.TF.x_scaled[1]"},
               uNames={"uPSS","uPm","uPload"}),
                                       blockType=Modelica_LinearSystems2.Controller.Types.BlockTypeWithGlobalDefault.Continuous)
             annotation (Placement(transformation(extent={{-36,-10},{-16,10}})));
@@ -2836,13 +2842,14 @@ They have to be rearranged based on the order provided by the linearization func
           Modelica.Blocks.Sources.Constant Pmchange(k=0)
             annotation (Placement(transformation(extent={{-124,-10},{-104,10}})));
           Modelica.Blocks.Sources.Step     Ploadchange(
-            height=0.05,
+            height=0.1,
             offset=0,
             startTime=30.5)                                 annotation (Placement(
                 transformation(extent={{-124,-42},{-104,-22}})));
-          Modelica.Blocks.Sources.Constant y0_initial[5](k={0.998570621013641,
-                0.427906930446625,0.89956396818161,0.999999940395355,
-                1.62256383895874})
+          Modelica.Blocks.Sources.Constant y0_initial[5](k={
+                0.999222218990325927734375,0.186013534665107727050781,
+                0.639392852783203125,0.999999940395355224609375,
+                1.26497113704681396484375})
             annotation (Placement(transformation(
                 extent={{-10,-10},{10,10}},
                 rotation=90,
@@ -2923,12 +2930,150 @@ This is visible in the Text layer only."),
                   arrow={Arrow.None,Arrow.Filled},
                   smooth=Smooth.Bezier)}),
             experiment(
-              StopTime=30,
+              StopTime=40,
               __Dymola_NumberOfIntervals=10000,
               Tolerance=1e-06,
               __Dymola_fixedstepsize=0.01,
               __Dymola_Algorithm="Dassl"));
         end LinearModelExperiment;
+
+        model LinearModelGeneral
+          "Simulate the linearized SMIB model obtained by running the function LinearizeSMIB."
+          extends SMIBPS_IdControl.Utilities.Icons.FunctionDependentExample;
+          extends
+            SMIBPS_IdControl.Analysis.LinearAnalysis.Interfaces.OutputsInterface;
+          // The following definitions are very important to couple the linear model
+          // to the linearization of the nonlinear model and the simulation
+          parameter Real[:] y0=vector(DataFiles.readMATmatrix("MyData.mat", "y0_beforedist")) annotation (Evaluate=false);
+          // The following has to be imported in order to be able to interpret and manipulate the StateSpace types
+          import Modelica_LinearSystems2.StateSpace;
+          parameter StateSpace ss=StateSpace.Import.fromFile("MyData.mat", "ABCD");
+          parameter Integer ny=size(ss.C, 1);
+          inner Modelica_LinearSystems2.Controller.SampleClock sampleClock
+            annotation (Placement(transformation(extent={{60,60},{80,80}})));
+          Modelica.Blocks.Routing.Multiplex3 multiplex3_1(n1=1, n2=1)
+            annotation (Placement(transformation(extent={{-80,-10},{-60,10}})));
+          Modelica.Blocks.Routing.DeMultiplex5 demultiplex2_2
+            annotation (Placement(transformation(extent={{60,-20},{100,20}})));
+          Modelica.Blocks.Math.Add addy[ny]
+            annotation (Placement(transformation(extent={{6,-16},{26,4}})));
+          Modelica.Blocks.Sources.Constant Pmchange(k=0)
+            annotation (Placement(transformation(extent={{-122,-10},{-102,10}})));
+          Modelica.Blocks.Sources.Constant y0_initial[ny](k=y0)      annotation (
+              Placement(transformation(
+                extent={{-10,-10},{10,10}},
+                rotation=90,
+                origin={0,-32})));
+          Modelica_LinearSystems2.Controller.StateSpace stateSpace(system=ss)
+            annotation (Placement(transformation(extent={{-40,-10},{-20,10}})));
+          Modelica.Blocks.Sources.Constant PSSchange(k=0)
+            annotation (Placement(transformation(extent={{-120,20},{-100,40}})));
+          Modelica.Blocks.Sources.Step     Ploadchange(
+            height=0.1,
+            offset=0,
+            startTime=30.5)                                 annotation (Placement(
+                transformation(extent={{-120,-40},{-100,-20}})));
+        equation
+          connect(demultiplex2_2.y1[1], Vt) annotation (Line(points={{102,16},{
+                  108,16},{108,80},{150,80}},
+                                 color={0,0,127}));
+          connect(demultiplex2_2.y4[1], w) annotation (Line(points={{102,-8},{
+                  110,-8},{110,-40},{150,-40}},
+                                   color={0,0,127}));
+          connect(demultiplex2_2.y5[1], delta) annotation (Line(points={{102,-16},
+                  {108,-16},{108,-80},{150,-80}},
+                                        color={0,0,127}));
+          connect(addy.y, demultiplex2_2.u)
+            annotation (Line(points={{27,-6},{28,-6},{28,0},{56,0}}, color={0,0,127}));
+          connect(Pmchange.y,multiplex3_1. u2[1]) annotation (Line(points={{-101,0},
+                  {-82,0}},                color={0,0,127}));
+          connect(demultiplex2_2.y3[1], P) annotation (Line(points={{102,0},{
+                  122,0},{122,40},{150,40}},
+                                 color={0,0,127}));
+          connect(Q, demultiplex2_2.y2[1]) annotation (Line(points={{150,0},{
+                  126,0},{126,8},{102,8}},
+                               color={0,0,127}));
+          connect(y0_initial.y, addy.u2)
+            annotation (Line(points={{0,-21},{0,-12},{4,-12}}, color={0,0,127}));
+          connect(multiplex3_1.y, stateSpace.u)
+            annotation (Line(points={{-59,0},{-42,0}}, color={0,0,127}));
+          connect(stateSpace.y, addy.u1)
+            annotation (Line(points={{-19,0},{4,0}}, color={0,0,127}));
+          connect(PSSchange.y, multiplex3_1.u1[1]) annotation (Line(points={{
+                  -99,30},{-92,30},{-92,7},{-82,7}}, color={0,0,127}));
+          connect(Ploadchange.y, multiplex3_1.u3[1]) annotation (Line(points={{
+                  -99,-30},{-90,-30},{-90,-7},{-82,-7}}, color={0,0,127}));
+          annotation (
+            Icon(coordinateSystem(preserveAspectRatio=false)),
+            Diagram(coordinateSystem(preserveAspectRatio=false), graphics={
+                Text(
+                  extent={{-58,24},{-44,4}},
+                  lineColor={238,46,47},
+                  fillPattern=FillPattern.VerticalCylinder,
+                  fillColor={255,0,0},
+                  textString="du",
+                  fontSize=24),
+                Text(
+                  extent={{-12,20},{-2,4}},
+                  lineColor={238,46,47},
+                  fillPattern=FillPattern.VerticalCylinder,
+                  fillColor={255,0,0},
+                  textString="dy",
+                  fontSize=24),
+                Text(
+                  extent={{-38,-18},{-22,-38}},
+                  lineColor={238,46,47},
+                  fillPattern=FillPattern.VerticalCylinder,
+                  fillColor={255,0,0},
+                  textString="y0",
+                  fontSize=24),
+                Text(
+                  extent={{40,20},{50,4}},
+                  lineColor={238,46,47},
+                  fillPattern=FillPattern.VerticalCylinder,
+                  fillColor={255,0,0},
+                  fontSize=24,
+                  textString="y"),
+                Text(
+                  extent={{-80,80},{0,60}},
+                  lineColor={85,170,255},
+                  fillPattern=FillPattern.HorizontalCylinder,
+                  fillColor={28,108,200},
+                  horizontalAlignment=TextAlignment.Left,
+                  textString="Note: the addy[] and y0_initial[] blocks 
+are defined with ny, where ny is 
+an integer of the size of the output matrix. 
+This is visible in the Text layer only."),
+                Text(
+                  extent={{-80,-80},{80,-100}},
+                  lineColor={85,170,255},
+                  fillPattern=FillPattern.HorizontalCylinder,
+                  fillColor={28,108,200},
+                  horizontalAlignment=TextAlignment.Left,
+                  textString="Notice the change in the order of the outputs w.r.t. the nonlinear model.
+They have to be rearranged based on the order provided by the linearization function."),
+                Line(
+                  points={{66,-86},{106,-84},{120,-4}},
+                  color={0,0,255},
+                  thickness=0.5,
+                  arrow={Arrow.None,Arrow.Filled},
+                  smooth=Smooth.Bezier),
+                Line(
+                  points={{-4,68},{24,48},{18,18}},
+                  color={0,0,255},
+                  thickness=0.5,
+                  arrow={Arrow.None,Arrow.Filled},
+                  smooth=Smooth.Bezier)}),
+            experiment(
+              StopTime=15,
+              __Dymola_NumberOfIntervals=1000,
+              __Dymola_Algorithm="Dassl"),
+            Documentation(info="<html>
+<p>DO NOT try to run this model on it&apos;s own! </p>
+<p>Models with this icon will not simulate on their own, instead they work together with a function that populates certain parameters in the model and perform other operations.</p>
+<p><br>See the associated function to run:<span style=\"color: #1c6cc8;\"> <span style=\"font-family: Courier New; font-size: 8pt;\">LinearizeSMIBGeneral </span>within <span style=\"font-family: Courier New; font-size: 8pt; color: #1c6cc8;\">SMIB_PSControl.Analysis.LinearAnalysis.BasicLinearization.LinearizeSMIBGeneral()</span></p>
+</html>"));
+        end LinearModelGeneral;
 
         function LinearizeSimple
           // Import things needed for the calculations
@@ -2942,8 +3087,8 @@ This is visible in the Text layer only."),
           output String outputNames[:] "Modelica names of outputs";
           output String stateNames[:] "Modelica names of states";
           // Declare reconfigurable inputs
-          input Modelica.SIunits.Time tlin = 30 "t for model linearization";
-          input Modelica.SIunits.Time tsim = 30 "Simulation time";
+          input Modelica.SIunits.Time tlin = 40 "t for model linearization";
+          input Modelica.SIunits.Time tsim = 40 "Simulation time";
           input String pathToNonlinearPlantModel = "SMIBPS_IdControl.Analysis.LinearAnalysis.LinearizeAfterDisturbance.LinAfterDisturbance.NonlinModel_for_Linearization";
           input String pathToNonlinearExperiment = "SMIBPS_IdControl.Analysis.LinearAnalysis.LinearizeAfterDisturbance.LinAfterDisturbance.NonlinModel_for_NonlinExperiment";
         algorithm
@@ -2976,28 +3121,31 @@ This is visible in the Text layer only."),
           // Print y0's last values which is needed for the linear response model
           y0out := y0[:,ylen]; // we only want the last few elements
           Modelica.Utilities.Streams.print("y0 = ");
-          Modelica.Math.Vectors.toString(y0out);
+          Modelica.Math.Vectors.toString(y0out,name="y0 = ",significantDigits=24);
           annotation(__Dymola_interactive=true);
         end LinearizeSimple;
 
-        function Compare "Compares the responses"
+        function Compare "Compares the responses of the linear vs the nonlinear model"
           // INPUTS TO THE FUNCTION
           // Declare reconfigurable simulation parameters
           input Modelica.SIunits.Time tsim = 40 "Simulation time";
           input Integer numberOfIntervalsin=10000 "No. of intervals";
           //input String methodin = "Rkfix4" "Solver";
           input String methodin = "DASSL" "Solver";
-          input Real fixedstepsizein= 1e-4 "Time step - needed only for fixed time step solvers";
+          input Real fixedstepsizein= 1e-6 "Time step - needed only for fixed time step solvers";
           //
           // DEFINING THE NONLINEAR EXPERIMENT, AND LINEAR EXPERIMENT MODELS
           //
-          // 1) NONLINEAR EXPERIMENT: this is a model which applies a change to the input of the nonlinear model.
-          // This model will be simulated, and the simulation results will be compared to the simulation of the corresponding linearized model.
+          // 1) NONLINEAR EXPERIMENT: this is a model which applies a change to the
+          // input of the nonlinear model.
+          // This model will be simulated, and the simulation results will be compared
+          // to the simulation of the corresponding linearized model.
           input String pathToNonlinearExperiment="SMIBPS_IdControl.Analysis.LinearAnalysis.LinearizeAfterDisturbance.LinAfterDisturbance.NonlinModel_for_NonlinExperiment" "Nonlinear experiment model";
           //
-          // 2) LINEAR EXPERIMENT: this is a template that can be used for all three cases, so it is not necessary to create other cases here
-          input String pathToLinearExperiment="SMIBPS_IdControl.Analysis.LinearAnalysis.LinearizeAfterDisturbance.LinAfterDisturbance.LinearModelExperiment";
-
+          // 2) LINEAR EXPERIMENT: this is the corresponding linear model, remember that
+          // the ABCD matrices and names of I/O and states need to be updated according to changes to the plant model.
+          input String pathToLinearExperiment="SMIBPS_IdControl.Analysis.LinearAnalysis.LinearizeAfterDisturbance.LinAfterDisturbance.LinearModelExperiment" "Linear model to compare";
+          input String nametosave = "Compare_" "Leading name to save output results";
         algorithm
 
 
@@ -3018,34 +3166,169 @@ This is visible in the Text layer only."),
 
         // plot
 
-        createPlot(id=1, position={0, 2, 622, 900}, y={"Vt"}, range={30.0, 40.0, 0.985, 1.005}, autoscale=false, grid=true, filename="res_nl.mat", colors={{28,108,200}}, range2={0.55, 0.7000000000000001}, displayUnits={"1"});
-        createPlot(id=1, position={0, 2, 622, 900}, y={"Q"}, range={30.0, 40.0, 0.35000000000000003, 0.45000000000000007}, autoscale=false, grid=true, subPlot=102, colors={{28,108,200}}, range2={0.30000000000000004, 0.5}, displayUnits={"1"});
-        createPlot(id=1, position={0, 2, 622, 900}, y={"P"}, range={30.0, 40.0, 0.86, 0.94}, autoscale=false, grid=true, subPlot=103, colors={{28,108,200}}, range2={0.4, 0.8}, displayUnits={"1"});
-        createPlot(id=1, position={0, 2, 622, 900}, y={"w"}, range={30.0, 40.0, 0.9995, 1.0005}, autoscale=false, grid=true, subPlot=104, colors={{28,108,200}}, range2={0.46, 0.54}, displayUnits={"1"});
-        createPlot(id=1, position={0, 2, 622, 900}, y={"delta"}, range={30.0, 40.0, 1.55, 1.6500000000000001}, autoscale=false, grid=true, subPlot=105, colors={{28,108,200}}, range2={0.30000000000000004, 0.45000000000000007}, displayUnits={"rad"});
-        createPlot(id=1, position={0, 2, 622, 900}, y={"Vt"}, range={30.0, 40.0, 0.985, 1.005}, erase=false, autoscale=false, grid=true, filename="res_lin.mat", colors={{238,46,47}}, range2={0.55, 0.7000000000000001});
-        createPlot(id=1, position={0, 2, 622, 900}, y={"Q"}, range={30.0, 40.0, 0.35000000000000003, 0.45000000000000007}, erase=false, autoscale=false, grid=true, subPlot=102, colors={{238,46,47}}, range2={0.30000000000000004, 0.5});
-        createPlot(id=1, position={0, 2, 622, 900}, y={"P"}, range={30.0, 40.0, 0.86, 0.94}, erase=false, autoscale=false, grid=true, subPlot=103, colors={{238,46,47}}, range2={0.4, 0.8});
-        createPlot(id=1, position={0, 2, 622, 900}, y={"w"}, range={30.0, 40.0, 0.9995, 1.0005}, erase=false, autoscale=false, grid=true, subPlot=104, colors={{238,46,47}}, range2={0.46, 0.54});
-        createPlot(id=1, position={0, 2, 622, 900}, y={"delta"}, range={30.0, 40.0, 1.55, 1.6500000000000001}, erase=false, autoscale=false, grid=true, subPlot=105, colors={{238,46,47}}, range2={0.30000000000000004, 0.45000000000000007});
+         createPlot(id=1, position={0, 2, 622, 900}, y={"Vt"}, range={30.0, 40.0, 0.985, 1.005}, autoscale=false, grid=true, filename="res_nl.mat", colors={{28,108,200}}, range2={0.55, 0.7000000000000001}, displayUnits={"1"});
+         createPlot(id=1, position={0, 2, 622, 900}, y={"Q"}, range={30.0, 40.0, 0.35000000000000003, 0.45000000000000007}, autoscale=false, grid=true, subPlot=102, colors={{28,108,200}}, range2={0.30000000000000004, 0.5}, displayUnits={"1"});
+         createPlot(id=1, position={0, 2, 622, 900}, y={"P"}, range={30.0, 40.0, 0.86, 0.94}, autoscale=false, grid=true, subPlot=103, colors={{28,108,200}}, range2={0.4, 0.8}, displayUnits={"1"});
+         createPlot(id=1, position={0, 2, 622, 900}, y={"w"}, range={30.0, 40.0, 0.9995, 1.0005}, autoscale=false, grid=true, subPlot=104, colors={{28,108,200}}, range2={0.46, 0.54}, displayUnits={"1"});
+         createPlot(id=1, position={0, 2, 622, 900}, y={"delta"}, range={30.0, 40.0, 1.55, 1.6500000000000001}, autoscale=false, grid=true, subPlot=105, colors={{28,108,200}}, range2={0.30000000000000004, 0.45000000000000007}, displayUnits={"rad"});
+         createPlot(id=1, position={0, 2, 622, 900}, y={"Vt"}, range={30.0, 40.0, 0.985, 1.005}, erase=false, autoscale=false, grid=true, filename="res_lin.mat", colors={{238,46,47}}, range2={0.55, 0.7000000000000001});
+         createPlot(id=1, position={0, 2, 622, 900}, y={"Q"}, range={30.0, 40.0, 0.35000000000000003, 0.45000000000000007}, erase=false, autoscale=false, grid=true, subPlot=102, colors={{238,46,47}}, range2={0.30000000000000004, 0.5});
+         createPlot(id=1, position={0, 2, 622, 900}, y={"P"}, range={30.0, 40.0, 0.86, 0.94}, erase=false, autoscale=false, grid=true, subPlot=103, colors={{238,46,47}}, range2={0.4, 0.8});
+         createPlot(id=1, position={0, 2, 622, 900}, y={"w"}, range={30.0, 40.0, 0.9995, 1.0005}, erase=false, autoscale=false, grid=true, subPlot=104, colors={{238,46,47}}, range2={0.46, 0.54});
+         createPlot(id=1, position={0, 2, 622, 900}, y={"delta"}, range={30.0, 40.0, 1.55, 1.6500000000000001}, erase=false, autoscale=false, grid=true, subPlot=105, colors={{238,46,47}}, range2={0.30000000000000004, 0.45000000000000007});
 
-        //removePlots(false);
-        createPlot(id=2, position={308, 10, 734, 889}, y={"Vt"}, range={0.0, 40.0, 0.9, 1.05}, grid=true, filename="res_nl.mat", colors={{28,108,200}}, displayUnits={"1"});
-        createPlot(id=2, position={308, 10, 734, 889}, y={"Q"}, range={0.0, 40.0, 0.0, 1.0}, grid=true, subPlot=102, colors={{28,108,200}}, displayUnits={"1"});
-        createPlot(id=2, position={308, 10, 734, 889}, y={"P"}, range={0.0, 40.0, 0.4, 1.2000000000000002}, grid=true, subPlot=103, colors={{28,108,200}}, displayUnits={"1"});
-        createPlot(id=2, position={308, 10, 734, 889}, y={"w"}, range={0.0, 40.0, 0.99, 1.01}, grid=true, subPlot=104, colors={{28,108,200}}, displayUnits={"1"});
-        createPlot(id=2, position={308, 10, 734, 889}, y={"delta"}, range={0.0, 40.0, 1.0, 2.5}, grid=true, subPlot=105, colors={{28,108,200}}, displayUnits={"rad"});
-        createPlot(id=2, position={308, 10, 734, 889}, y={"Vt"}, range={0.0, 40.0, 0.9, 1.05}, erase=false, grid=true, filename="res_lin.mat", colors={{238,46,47}});
-        createPlot(id=2, position={308, 10, 734, 889}, y={"Q"}, range={0.0, 40.0, 0.0, 1.0}, erase=false, grid=true, subPlot=102, colors={{238,46,47}});
-        createPlot(id=2, position={308, 10, 734, 889}, y={"P"}, range={0.0, 40.0, 0.4, 1.2000000000000002}, erase=false, grid=true, subPlot=103, colors={{238,46,47}});
-        createPlot(id=2, position={308, 10, 734, 889}, y={"w"}, range={0.0, 40.0, 0.99, 1.01}, erase=false, grid=true, subPlot=104, colors={{238,46,47}});
-        createPlot(id=2, position={308, 10, 734, 889}, y={"delta"}, range={0.0, 40.0, 1.0, 2.5}, erase=false, grid=true, subPlot=105, colors={{238,46,47}});
+         removePlots(false);
+         createPlot(id=2, position={308, 10, 734, 889}, y={"Vt"}, range={0.0, 40.0, 0.9, 1.05}, grid=true, filename="res_nl.mat", colors={{28,108,200}}, displayUnits={"1"});
+         createPlot(id=2, position={308, 10, 734, 889}, y={"Q"}, range={0.0, 40.0, 0.0, 1.0}, grid=true, subPlot=102, colors={{28,108,200}}, displayUnits={"1"});
+         createPlot(id=2, position={308, 10, 734, 889}, y={"P"}, range={0.0, 40.0, 0.4, 1.2000000000000002}, grid=true, subPlot=103, colors={{28,108,200}}, displayUnits={"1"});
+         createPlot(id=2, position={308, 10, 734, 889}, y={"w"}, range={0.0, 40.0, 0.99, 1.01}, grid=true, subPlot=104, colors={{28,108,200}}, displayUnits={"1"});
+         createPlot(id=2, position={308, 10, 734, 889}, y={"delta"}, range={0.0, 40.0, 1.0, 2.5}, grid=true, subPlot=105, colors={{28,108,200}}, displayUnits={"rad"});
+         createPlot(id=2, position={308, 10, 734, 889}, y={"Vt"}, range={0.0, 40.0, 0.9, 1.05}, erase=false, grid=true, filename="res_lin.mat", colors={{238,46,47}});
+         createPlot(id=2, position={308, 10, 734, 889}, y={"Q"}, range={0.0, 40.0, 0.0, 1.0}, erase=false, grid=true, subPlot=102, colors={{238,46,47}});
+         createPlot(id=2, position={308, 10, 734, 889}, y={"P"}, range={0.0, 40.0, 0.4, 1.2000000000000002}, erase=false, grid=true, subPlot=103, colors={{238,46,47}});
+         createPlot(id=2, position={308, 10, 734, 889}, y={"w"}, range={0.0, 40.0, 0.99, 1.01}, erase=false, grid=true, subPlot=104, colors={{238,46,47}});
+         createPlot(id=2, position={308, 10, 734, 889}, y={"delta"}, range={0.0, 40.0, 1.0, 2.5}, erase=false, grid=true, subPlot=105, colors={{238,46,47}});
 
+
+          annotation(__Dymola_interactive=true, Documentation(info="<html>
+<p>This function compares the nonlinear model to the linear model at a specific time.</p>
+</html>"));
+        end Compare;
+
+        function LinearizeAndCompare
+          "Linearizes the model at initialization and after a disturbance at a given time"
+          // See the Documentation for an explanation of the goals.
+          // IMPORTING FUNCTIONS
+          // Import things needed for the calculations
+          import Modelica_LinearSystems2.StateSpace; // to create and manipulate state space objects
+          // OUTPUTS OF THEFUNCTION - FOR DISPLAY
+          // Declare outputs to display
+          output Real A[:,:] "A-matrix";
+          output Real B[:,:] "B-matrix";
+          output Real C[:,:] "C-matrix";
+          output Real D[:,:] "D-matrix";
+          output String inputNames[:] "Modelica names of inputs";
+          output String outputNames[:] "Modelica names of outputs";
+          output String stateNames[:] "Modelica names of states";
+          output Real y0out[:] "Initial value of the output variables";
+          // INPUTS TO THE FUNCTION
+          // Declare reconfigurable simulation parameters
+          input Modelica.SIunits.Time tlin = 30.5 "t for model linearization";
+          input Modelica.SIunits.Time tsim = 40 "Simulation time";
+          input Real numberOfIntervalsin=10000 "No. of intervals";
+          // Use this for Case A
+          //input String method = "Rkfix4" "Solver";
+          input String methodin = "DASSL" "Solver";
+          input Real fixedstepsizein= 1e-6 "Time step - needed only for fixed time step solvers";
+          //
+          // DEFINING THE NONLINEAR PLANT, NONLINEAR EXPERIMENT, AND LINEAR EXPERIMENT MODELS
+          //
+          // 1) NONLINEAR PLANT:
+          // This is the model that will be linearized, i.e. the nonlinear plant model
+           input String pathToNonlinearPlantModel = "SMIBPS_IdControl.Analysis.LinearAnalysis.LinearizeAfterDisturbance.LinAfterDisturbance.NonlinModel_for_Linearization" "Nonlinear plant model";
+          //
+          //
+          // 2) NONLINEAR EXPERIMENT: this is a model which applies a change to the input of the nonlinear model.
+          // It must match the nonlinar plant above.
+          // This model will be simulated, and the simulation results will be compared to the simulation of the corresponding linearized model.
+          input String pathToNonlinearExperiment= "SMIBPS_IdControl.Analysis.LinearAnalysis.LinearizeAfterDisturbance.LinAfterDisturbance.NonlinModel_for_NonlinExperiment" "Nonlinear experiment model";
+          //
+          //
+          // 3) LINEAR EXPERIMENT: this is a template that can be used for all three cases, so it is not necessary to create other cases here
+          input String pathToLinearExperiment = "SMIBPS_IdControl.Analysis.LinearAnalysis.LinearizeAfterDisturbance.LinAfterDisturbance.LinearModelGeneral";
+
+        algorithm
+          // Compute and display the ABCD matrices, etc
+          (A,B,C,D,inputNames,outputNames,stateNames) :=
+            Modelica_LinearSystems2.Utilities.Import.linearize(
+            pathToNonlinearPlantModel,tlin);
+          // LINEARIZE plant model at t_lin
+          // This is the same as above, however, it stores it in a StateSpace object
+          ss := Modelica_LinearSystems2.ModelAnalysis.Linearize(
+            pathToNonlinearPlantModel, simulationSetup=
+            Modelica_LinearSystems2.Records.SimulationOptionsForLinearization(
+            linearizeAtInitial=false, t_linearize=tlin));
+          // PRINT linear system
+          Modelica.Utilities.Streams.print(String(ss));
+          // SAVE the data in a mat file
+          DataFiles.writeMATmatrix(
+            "MyData.mat",
+            "ABCD",
+            [ss.A, ss.B; ss.C, ss.D],
+            append=false);
+          nx := size(ss.A, 1);
+          DataFiles.writeMATmatrix(
+            "MyData.mat",
+            "nx",
+            [nx],
+            append=true);
+          Modelica.Utilities.Streams.print("Simulating nonlinear model");
+          simulateModel(
+            pathToNonlinearExperiment,
+            stopTime=tsim,
+            numberOfIntervals=numberOfIntervalsin, method = methodin, fixedstepsize=fixedstepsizein,
+            resultFile="res_nl");
+        //    ny := size(ss.C, 1);
+        //    y0 := DymolaCommands.Trajectories.readTrajectory(
+        //      "res_nl.mat",
+        //      {ss.yNames[i] for i in 1:ny},
+        //      DymolaCommands.Trajectories.readTrajectorySize("res_nl.mat"));
+        //
+        //    DataFiles.writeMATmatrix(
+        //      "MyData.mat",
+        //      "y0",
+        //      [y0[1:ny,1]],
+        //      append=true);
+
+           // NOTE!!!
+           // here we simulate the model again until 30.5, before the model undergoes the
+           // disturbance to extract the correct values of the y outout
+           simulateModel(
+             pathToNonlinearExperiment,
+             stopTime=tlin,
+             numberOfIntervals=numberOfIntervalsin, method = methodin, fixedstepsize=fixedstepsizein,
+             resultFile="res_nl_beforedist");
+            ny := size(ss.C, 1);
+            ylen :=DymolaCommands.Trajectories.readTrajectorySize("res_nl_beforedist.mat");
+            y0 := DymolaCommands.Trajectories.readTrajectory(
+              "res_nl_beforedist.mat",
+              {ss.yNames[i] for i in 1:ny},
+              DymolaCommands.Trajectories.readTrajectorySize("res_nl_beforedist.mat"));
+            DataFiles.writeMATmatrix(
+              "MyData.mat",
+              "y0_beforedist",
+              [y0[1:ny,ylen-100]],
+              append=true);
+
+          // Print y0's first values which is needed for the linear response model
+          y0out := y0[1:ny,ylen]; // we only want the elements at ylen
+          Modelica.Utilities.Streams.print("y0 before disturbance =");
+          Modelica.Math.Vectors.toString(y0out);
+          //
+          // We now simulate the linear model, which requires y0
+          Modelica.Utilities.Streams.print("Simulating linear model");
+          simulateModel(
+            pathToLinearExperiment,
+            stopTime=tsim,
+            numberOfIntervals=numberOfIntervalsin, method = methodin, fixedstepsize=fixedstepsizein,
+            resultFile="res_lin");
+            // Plot
+        removePlots(true);
+        createPlot(id=1, position={-2, 1, 584, 782}, y={"Vt"}, range={0.0, 20.0, 0.998, 1.002}, grid=true, filename="res_nl.mat", colors={{28,108,200}}, displayUnits={"1"});
+        createPlot(id=1, position={-2, 1, 584, 782}, y={"Q"}, range={0.0, 20.0, 0.18, 0.21}, grid=true, subPlot=102, colors={{28,108,200}}, displayUnits={"1"});
+        createPlot(id=1, position={-2, 1, 584, 782}, y={"P"}, range={0.0, 20.0, 0.86, 0.94}, grid=true, subPlot=103, colors={{28,108,200}}, displayUnits={"1"});
+        createPlot(id=1, position={-2, 1, 584, 782}, y={"w"}, range={0.0, 20.0, 0.9996, 1.0004}, grid=true, subPlot=104, colors={{28,108,200}}, displayUnits={"1"});
+        createPlot(id=1, position={-2, 1, 584, 782}, y={"delta"}, range={0.0, 20.0, 1.27, 1.3}, grid=true, subPlot=105, colors={{28,108,200}}, displayUnits={"rad"});
+        createPlot(id=1, position={-2, 1, 584, 782}, y={"Vt"}, range={0.0, 20.0, 0.998, 1.002}, erase=false, grid=true, filename="res_lin.mat", colors={{238,46,47}});
+        createPlot(id=1, position={-2, 1, 584, 782}, y={"Q"}, range={0.0, 20.0, 0.18, 0.21}, erase=false, grid=true, subPlot=102, colors={{238,46,47}});
+        createPlot(id=1, position={-2, 1, 584, 782}, y={"P"}, range={0.0, 20.0, 0.86, 0.94}, erase=false, grid=true, subPlot=103, colors={{238,46,47}});
+        createPlot(id=1, position={-2, 1, 584, 782}, y={"w"}, range={0.0, 20.0, 0.9996, 1.0004}, erase=false, grid=true, subPlot=104, colors={{238,46,47}});
+        createPlot(id=1, position={-2, 1, 584, 782}, y={"delta"}, range={0.0, 20.0, 1.27, 1.3}, erase=false, grid=true, subPlot=105, colors={{238,46,47}});
 
           annotation(__Dymola_interactive=true, Documentation(info="<html>
 <p>This function linearizes the model at two different times, initialization and at a user provided time.</p>
 </html>"));
-        end Compare;
+        end LinearizeAndCompare;
       end LinAfterDisturbance;
     end LinearizeAfterDisturbance;
 
