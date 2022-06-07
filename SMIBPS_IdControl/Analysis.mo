@@ -8,10 +8,10 @@ package Analysis
       extends Modelica.Icons.Example;
       extends BaseModelsPartial.BaseNetwork.SMIB_Partial(
         powerFlow_Data(
-          redeclare record Bus = PF_Data.Bus_Data.PF_Bus_0,
-          redeclare record Loads = PF_Data.Loads_Data.PF_Loads_0,
-          redeclare record Trafos = PF_Data.Trafos_Data.PF_Trafos_0,
-          redeclare record Machines = PF_Data.Machines_Data.PF_Machines_0),
+          redeclare record Bus = PF_Data.Bus_Data.PF_Bus_10,
+          redeclare record Loads = PF_Data.Loads_Data.PF_Loads_10,
+          redeclare record Trafos = PF_Data.Trafos_Data.PF_Trafos_10,
+          redeclare record Machines = PF_Data.Machines_Data.PF_Machines_10),
         transformer(kT=1),
         load_ExtInput(
           d_P=0,
@@ -77,10 +77,10 @@ package Analysis
     model SMIB_AVR
         extends Modelica.Icons.Example;
       extends BaseModelsPartial.BaseNetwork.SMIB_Partial(powerFlow_Data(
-          redeclare record Bus = PF_Data.Bus_Data.PF_Bus_0,
-          redeclare record Loads = PF_Data.Loads_Data.PF_Loads_0,
-          redeclare record Trafos = PF_Data.Trafos_Data.PF_Trafos_0,
-          redeclare record Machines = PF_Data.Machines_Data.PF_Machines_0),
+          redeclare record Bus = PF_Data.Bus_Data.PF_Bus_10,
+          redeclare record Loads = PF_Data.Loads_Data.PF_Loads_10,
+          redeclare record Trafos = PF_Data.Trafos_Data.PF_Trafos_10,
+          redeclare record Machines = PF_Data.Machines_Data.PF_Machines_10),
           load_ExtInput(
           d_P=0,
           t1=0,
@@ -105,7 +105,7 @@ package Analysis
       annotation (
         Diagram(coordinateSystem(extent={{-140,-100},{120,100}},
               preserveAspectRatio=false), graphics={Text(
-              extent={{-110,70},{110,50}},
+              extent={{-56,66},{56,50}},
               lineColor={0,0,0},
               lineThickness=1,
               fillPattern=FillPattern.Solid,
@@ -145,10 +145,10 @@ package Analysis
     model SMIB_AVR_PSS
         extends Modelica.Icons.Example;
       extends BaseModelsPartial.BaseNetwork.SMIB_Partial(powerFlow_Data(
-          redeclare record Bus = PF_Data.Bus_Data.PF_Bus_8,
-          redeclare record Loads = PF_Data.Loads_Data.PF_Loads_8,
-          redeclare record Trafos = PF_Data.Trafos_Data.PF_Trafos_8,
-          redeclare record Machines = PF_Data.Machines_Data.PF_Machines_8),
+          redeclare record Bus = PF_Data.Bus_Data.PF_Bus_10,
+          redeclare record Loads = PF_Data.Loads_Data.PF_Loads_10,
+          redeclare record Trafos = PF_Data.Trafos_Data.PF_Trafos_10,
+          redeclare record Machines = PF_Data.Machines_Data.PF_Machines_10),
           load_ExtInput(
           d_P=0,
           t1=0,
@@ -173,7 +173,7 @@ package Analysis
       annotation (
         Diagram(coordinateSystem(extent={{-140,-100},{120,100}},
               preserveAspectRatio=false), graphics={Text(
-              extent={{-112,64},{108,44}},
+              extent={{-66,66},{58,48}},
               lineColor={0,0,0},
               lineThickness=1,
               fillPattern=FillPattern.Solid,
@@ -269,10 +269,10 @@ package Analysis
     package Interfaces
       model SMIB_GEN_wInput
         extends BaseModelsPartial.BaseNetwork.SMIB_BaseWithPF(powerFlow_Data(
-            redeclare record Bus = PF_Data.Bus_Data.PF_Bus_5,
-            redeclare record Loads = PF_Data.Loads_Data.PF_Loads_5,
-            redeclare record Trafos = PF_Data.Trafos_Data.PF_Trafos_5,
-            redeclare record Machines = PF_Data.Machines_Data.PF_Machines_5));
+            redeclare record Bus = PF_Data.Bus_Data.PF_Bus_10,
+            redeclare record Loads = PF_Data.Loads_Data.PF_Loads_10,
+            redeclare record Trafos = PF_Data.Trafos_Data.PF_Trafos_10,
+            redeclare record Machines = PF_Data.Machines_Data.PF_Machines_10));
           extends
           SMIBPS_IdControl.Analysis.LinearAnalysis.Interfaces.OutputsInterface;
 
@@ -361,10 +361,10 @@ Generator
       extends Modelica.Icons.InterfacesPackage;
       model SMIB_AVR_wInput
         extends BaseModelsPartial.BaseNetwork.SMIB_BaseWithPF(powerFlow_Data(
-            redeclare record Bus = PF_Data.Bus_Data.PF_Bus_5,
-            redeclare record Loads = PF_Data.Loads_Data.PF_Loads_5,
-            redeclare record Trafos = PF_Data.Trafos_Data.PF_Trafos_5,
-            redeclare record Machines = PF_Data.Machines_Data.PF_Machines_5));
+            redeclare record Bus = PF_Data.Bus_Data.PF_Bus_10,
+            redeclare record Loads = PF_Data.Loads_Data.PF_Loads_10,
+            redeclare record Trafos = PF_Data.Trafos_Data.PF_Trafos_10,
+            redeclare record Machines = PF_Data.Machines_Data.PF_Machines_10));
           extends
           SMIBPS_IdControl.Analysis.LinearAnalysis.Interfaces.OutputsInterface;
 
@@ -460,10 +460,10 @@ with AVR
 
       model SMIB_AVR_PSS_wInput
         extends BaseModelsPartial.BaseNetwork.SMIB_BaseWithPF(powerFlow_Data(
-            redeclare record Bus = PF_Data.Bus_Data.PF_Bus_5,
-            redeclare record Loads = PF_Data.Loads_Data.PF_Loads_5,
-            redeclare record Trafos = PF_Data.Trafos_Data.PF_Trafos_5,
-            redeclare record Machines = PF_Data.Machines_Data.PF_Machines_5));
+            redeclare record Bus = PF_Data.Bus_Data.PF_Bus_10,
+            redeclare record Loads = PF_Data.Loads_Data.PF_Loads_10,
+            redeclare record Trafos = PF_Data.Trafos_Data.PF_Trafos_10,
+            redeclare record Machines = PF_Data.Machines_Data.PF_Machines_10));
         extends
           SMIBPS_IdControl.Analysis.LinearAnalysis.Interfaces.OutputsInterface;
         import Modelica.Constants.pi;
@@ -556,10 +556,10 @@ AVR+PSS
 
       model SMIB_AVR_PSS_wInput_wLineRmoval
         extends BaseModelsPartial.BaseNetwork.SMIB_Partial(powerFlow_Data(
-            redeclare record Bus = PF_Data.Bus_Data.PF_Bus_5,
-            redeclare record Loads = PF_Data.Loads_Data.PF_Loads_5,
-            redeclare record Trafos = PF_Data.Trafos_Data.PF_Trafos_5,
-            redeclare record Machines = PF_Data.Machines_Data.PF_Machines_5),
+            redeclare record Bus = PF_Data.Bus_Data.PF_Bus_10,
+            redeclare record Loads = PF_Data.Loads_Data.PF_Loads_10,
+            redeclare record Trafos = PF_Data.Trafos_Data.PF_Trafos_10,
+            redeclare record Machines = PF_Data.Machines_Data.PF_Machines_10),
           line_1(X=3.25),
           line_2(t1=Modelica.Constants.inf),
           fault(t1=Modelica.Constants.inf, t2=Modelica.Constants.inf));
@@ -675,10 +675,10 @@ AVR+PSS
         extends
           SMIBPS_IdControl.Analysis.LinearAnalysis.Interfaces.OutputsInterfaceBusVoltagesBranchPowers;
         extends BaseModelsPartial.BaseNetwork.SMIB_Partial(powerFlow_Data(
-            redeclare record Bus = PF_Data.Bus_Data.PF_Bus_5,
-            redeclare record Loads = PF_Data.Loads_Data.PF_Loads_5,
-            redeclare record Trafos = PF_Data.Trafos_Data.PF_Trafos_5,
-            redeclare record Machines = PF_Data.Machines_Data.PF_Machines_5),
+            redeclare record Bus = PF_Data.Bus_Data.PF_Bus_10,
+            redeclare record Loads = PF_Data.Loads_Data.PF_Loads_10,
+            redeclare record Trafos = PF_Data.Trafos_Data.PF_Trafos_10,
+            redeclare record Machines = PF_Data.Machines_Data.PF_Machines_10),
           line_1(X=3.25),
           line_2(t1=Modelica.Constants.inf),
           fault(t1=Modelica.Constants.inf, t2=Modelica.Constants.inf));
@@ -1704,20 +1704,19 @@ They have to be rearranged based on the order provided by the linearization func
               rotation=0,
               origin={-70,-60})));
       equation
-        connect(Vt, PS_ConstantEfd.Vt) annotation (Line(points={{150,79},{98,79},
-                {98,22.5714},{42.8571,22.5714}},
+        connect(Vt, PS_ConstantEfd.Vt) annotation (Line(points={{150,80},{98,80},
+                {98,22.8571},{42.8571,22.8571}},
                                     color={0,0,127}));
-        connect(P, PS_ConstantEfd.P) annotation (Line(points={{150,41},{112,41},
-                {112,11.7143},{42.8571,11.7143}},
+        connect(P, PS_ConstantEfd.P) annotation (Line(points={{150,40},{112,40},
+                {112,11.4286},{42.8571,11.4286}},
                                     color={0,0,127}));
-        connect(Q, PS_ConstantEfd.Q) annotation (Line(points={{150,1},{96,1},{
-                96,0.285714},{42.8571,0.285714}},
-                                     color={0,0,127}));
-        connect(w, PS_ConstantEfd.w) annotation (Line(points={{150,-39},{108,
-                -39},{108,-11.1429},{42.8571,-11.1429}},
+        connect(Q, PS_ConstantEfd.Q) annotation (Line(points={{150,0},{96,0},{
+                96,0},{42.8571,0}},  color={0,0,127}));
+        connect(w, PS_ConstantEfd.w) annotation (Line(points={{150,-40},{108,
+                -40},{108,-11.4286},{42.8571,-11.4286}},
                                                color={0,0,127}));
-        connect(delta, PS_ConstantEfd.delta) annotation (Line(points={{150,-81},
-                {92,-81},{92,-23.1429},{42.8571,-23.1429}},
+        connect(delta, PS_ConstantEfd.delta) annotation (Line(points={{150,-80},
+                {92,-80},{92,-22.8571},{42.8571,-22.8571}},
                                                    color={0,0,127}));
         connect(efdInputGain.u, stepEfd.y)
           annotation (Line(points={{-82,20},{-99,20}}, color={0,0,127}));
@@ -2735,8 +2734,7 @@ They have to be rearranged based on the order provided by the linearization func
             startTime=30.5)                                 annotation (Placement(
                 transformation(extent={{-100,-42},{-80,-22}})));
           Interfaces.SMIB_AVR_PSS_wInput_wLineRmoval
-            sMIB_AVR_PSS_wInput_wLineRmoval(t1=0.5, G1(pss(Kw=12.7759, Tw=
-                    0.4766)))
+            sMIB_AVR_PSS_wInput_wLineRmoval(t1=0.5, G1(pss(Kw=9.5, Tw=1.41)))
             annotation (Placement(transformation(extent={{-40,-40},{40,40}})));
         equation
           connect(sMIB_AVR_PSS_wInput_wLineRmoval.uPSS, PSSchange.y)
@@ -5365,10 +5363,10 @@ They have to be rearranged based on the order provided by the linearization func
         extends SMIBPS_IdControl.BaseModelsPartial.OutputInterfaces.OutputsInterfaceBusVoltagesBranchPowers_noInfiniteBus;
         extends SMIBPS_IdControl.BaseModelsPartial.OutputInterfaces.OutputsInterfaceBig;
         extends BaseModelsPartial.BaseNetwork.SMIB_Partial(powerFlow_Data(
-            redeclare record Bus = PF_Data.Bus_Data.PF_Bus_5,
-            redeclare record Loads = PF_Data.Loads_Data.PF_Loads_5,
-            redeclare record Trafos = PF_Data.Trafos_Data.PF_Trafos_5,
-            redeclare record Machines = PF_Data.Machines_Data.PF_Machines_5),
+            redeclare record Bus = PF_Data.Bus_Data.PF_Bus_10,
+            redeclare record Loads = PF_Data.Loads_Data.PF_Loads_10,
+            redeclare record Trafos = PF_Data.Trafos_Data.PF_Trafos_10,
+            redeclare record Machines = PF_Data.Machines_Data.PF_Machines_10),
           line_1(X=3.25),
           line_2(t1=Modelica.Constants.inf),
           fault(t1=Modelica.Constants.inf, t2=Modelica.Constants.inf));
