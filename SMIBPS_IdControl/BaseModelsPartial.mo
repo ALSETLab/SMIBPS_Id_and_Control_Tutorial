@@ -780,6 +780,305 @@ package BaseModelsPartial "Partial Models - Cannot be simulated!"
               "MosScripts/nonlinear_simulation_line_removal_gen_output.mos"
             "genoutput", file="MosScripts/genoutput.mos" "genoutput"));
     end Generator_AVR_PSS_w3Inputs;
+
+    model Generator_AVR_PSS_wInputs_propagate
+      extends OpenIPSL.Electrical.Essentials.pfComponent;
+      OpenIPSL.Electrical.Machines.PSAT.Order6 machine(
+        Vn=400,
+        V_b=V_b,
+        ra=0.003,
+        xd=1.81,
+        xq=1.76,
+        x1d=0.3,
+        x1q=0.65,
+        x2d=0.23,
+        x2q=0.25,
+        T1d0=8,
+        T1q0=1,
+        T2d0=0.03,
+        T2q0=0.07,
+        M=7,
+        D=0,
+        P_0=P_0,
+        Q_0=Q_0,
+        V_0=V_0,
+        angle_0=angle_0,
+        Sn=2220,
+        Taa=0) annotation (Placement(transformation(extent={{14,-30},{74,30}})));
+      OpenIPSL.Interfaces.PwPin pwPin annotation (Placement(transformation(extent={
+                {100,-10},{120,10}}), iconTransformation(extent={{100,-10},{120,10}})));
+      OpenIPSL.Electrical.Controls.PSAT.AVR.AVRtypeIII avr(
+        vfmax=7,
+        vfmin=-6.40,
+        K0=200,
+        T2=1,
+        T1=1,
+        Te=0.0001,
+        Tr=0.015) annotation (Placement(transformation(extent={{-52,-4},{-12,36}})));
+      OpenIPSL.Electrical.Controls.PSAT.PSS.PSSTypeII pss(
+        vsmax=0.2,
+        vsmin=-0.2,
+        Kw=Kw,
+        Tw=Tw,
+        T1=0,
+        T2=0,
+        T3=0,
+        T4=0) annotation (Placement(transformation(extent={{-76,-4},{-56,16}})));
+      Modelica.Blocks.Interfaces.RealInput uPSS annotation (Placement(
+            transformation(extent={{-140,40},{-100,80}}), iconTransformation(
+              extent={{-140,40},{-100,80}})));
+      Modelica.Blocks.Math.Feedback feedback
+        annotation (Placement(transformation(extent={{-100,-4},{-80,16}})));
+      Modelica.Blocks.Math.Gain gain(k=-1) annotation (Placement(transformation(
+            extent={{-10,-10},{10,10}},
+            rotation=180,
+            origin={0,84})));
+      Modelica.Blocks.Math.Gain pmInputGain(k=-1) annotation (Placement(
+            transformation(
+            extent={{-10,-10},{10,10}},
+            rotation=180,
+            origin={-32,-80})));
+      Modelica.Blocks.Math.Feedback pm_fdbck annotation (Placement(
+            transformation(
+            extent={{-10,-10},{10,10}},
+            rotation=0,
+            origin={-66,-28})));
+      Modelica.Blocks.Interfaces.RealInput pm annotation (Placement(
+            transformation(extent={{-140,-80},{-100,-40}})));
+      parameter Real Kw=9.5 "Stabilizer gain (pu/pu)";
+      parameter Real Tw=1.41 "Wash-out time constant (s)";
+    equation
+      connect(machine.p, pwPin) annotation (Line(points={{74,0},{78.5,0},{78.5,0},{
+              110,0}},           color={0,0,255}));
+      connect(avr.vf, machine.vf) annotation (Line(points={{-10.3333,16},{2,16},
+              {2,15},{8,15}},
+                       color={0,0,127}));
+      connect(machine.v, avr.v) annotation (Line(points={{77,9},{98,9},{98,54},
+              {-50.3333,54},{-50.3333,26}},
+                             color={0,0,127}));
+      connect(pss.vs, avr.vs)
+        annotation (Line(points={{-55,6},{-50.3333,6}},    color={0,0,127}));
+      connect(machine.vf0, avr.vf0) annotation (Line(points={{20,33},{-6,33},{
+              -6,44},{-32,44},{-32,34.3333}},
+                                       color={0,0,127}));
+      connect(uPSS, feedback.u1) annotation (Line(points={{-120,60},{-110,60},
+              {-110,6},{-98,6}}, color={0,0,127}));
+      connect(feedback.y, pss.vSI)
+        annotation (Line(points={{-81,6},{-77,6}},  color={0,0,127}));
+      connect(machine.w, gain.u) annotation (Line(points={{77,27},{94,27},{94,
+              84},{12,84}},
+                          color={0,0,127}));
+      connect(gain.y, feedback.u2)
+        annotation (Line(points={{-11,84},{-90,84},{-90,-2}},    color={0,0,127}));
+      connect(pm_fdbck.y, machine.pm) annotation (Line(points={{-57,-28},{8,
+              -28},{8,-15}}, color={0,0,127}));
+      connect(pmInputGain.y, pm_fdbck.u2) annotation (Line(points={{-43,-80},
+              {-56,-80},{-56,-36},{-66,-36}}, color={0,0,127}));
+      connect(pm, pm_fdbck.u1) annotation (Line(points={{-120,-60},{-88,-60},
+              {-88,-28},{-74,-28}}, color={0,0,127}));
+      connect(pmInputGain.u, machine.pm0) annotation (Line(points={{-20,-80},
+              {-20,-33},{20,-33}}, color={0,0,127}));
+      annotation (
+        Icon(coordinateSystem(preserveAspectRatio=false),
+                        graphics={Ellipse(
+              extent={{-100,100},{100,-100}},
+              lineColor={0,0,0},
+              fillColor={255,255,255},
+              fillPattern=FillPattern.Solid),Line(
+              points={{-48,2},{-20,56},{2,4},{24,-28},{48,22}},
+              color={0,0,0},
+              smooth=Smooth.Bezier),Text(
+              extent={{-52,-18},{56,-66}},
+              lineColor={0,0,0},
+              fillColor={255,255,255},
+              fillPattern=FillPattern.Solid,
+              textString="%name")}),
+        Diagram(coordinateSystem(preserveAspectRatio=false)),
+        Documentation(info="<html>
+<table cellspacing=\"1\" cellpadding=\"1\" border=\"1\">
+<tr>
+<td><p>Reference</p></td>
+<td><p>SMIB PSAT, d_kundur2.mdl, PSAT</p></td>
+</tr>
+<tr>
+<td><p>Last update</p></td>
+<td>February 2016</td>
+</tr>
+<tr>
+<td><p>Author</p></td>
+<td><p>Maxime Baudette, Ahsan Murad, SmarTS Lab, KTH Royal Institute of Technology</p></td>
+</tr>
+<tr>
+<td><p>Contact</p></td>
+<td><p><a href=\"mailto:luigiv@kth.se\">luigiv@kth.se</a></p></td>
+</tr>
+</table>
+</html>"),
+        __Dymola_Commands(file=
+              "MosScripts/nonlinear_simulation_line_removal_gen_output.mos"
+            "genoutput", file="MosScripts/genoutput.mos" "genoutput"));
+    end Generator_AVR_PSS_wInputs_propagate;
+
+    model Generator_AVR_PSS_w3Inputs_propagate
+      extends OpenIPSL.Electrical.Essentials.pfComponent;
+      OpenIPSL.Electrical.Machines.PSAT.Order6 machine(
+        Vn=400,
+        V_b=V_b,
+        ra=0.003,
+        xd=1.81,
+        xq=1.76,
+        x1d=0.3,
+        x1q=0.65,
+        x2d=0.23,
+        x2q=0.25,
+        T1d0=8,
+        T1q0=1,
+        T2d0=0.03,
+        T2q0=0.07,
+        M=7,
+        D=0,
+        P_0=P_0,
+        Q_0=Q_0,
+        V_0=V_0,
+        angle_0=angle_0,
+        Sn=2220,
+        Taa=0) annotation (Placement(transformation(extent={{14,-30},{74,30}})));
+      OpenIPSL.Interfaces.PwPin pwPin annotation (Placement(transformation(extent={
+                {100,-10},{120,10}}), iconTransformation(extent={{100,-10},{120,10}})));
+      OpenIPSL.Electrical.Controls.PSAT.AVR.AVRtypeIII avr(
+        vfmax=7,
+        vfmin=-6.40,
+        K0=200,
+        T2=1,
+        T1=1,
+        Te=0.0001,
+        Tr=0.015) annotation (Placement(transformation(extent={{-46,-4},{-6,36}})));
+      OpenIPSL.Electrical.Controls.PSAT.PSS.PSSTypeII pss(
+        vsmax=0.2,
+        vsmin=-0.2,
+        Kw=Kw,
+        Tw=Tw,
+        T1=0,
+        T2=0,
+        T3=0,
+        T4=0) annotation (Placement(transformation(extent={{-112,-4},{-92,16}})));
+      Modelica.Blocks.Interfaces.RealInput uPSS annotation (Placement(
+            transformation(extent={{-140,40},{-100,80}}), iconTransformation(
+              extent={{-140,40},{-100,80}})));
+      Modelica.Blocks.Math.Feedback feedbackPSS annotation (Placement(
+            transformation(
+            extent={{-10,-10},{10,10}},
+            rotation=0,
+            origin={-126,6})));
+      Modelica.Blocks.Math.Gain gain_uPSS(k=-1) annotation (Placement(
+            transformation(
+            extent={{-10,-10},{10,10}},
+            rotation=180,
+            origin={2,70})));
+      Modelica.Blocks.Math.Gain pmInputGain(k=-1) annotation (Placement(
+            transformation(
+            extent={{-10,-10},{10,10}},
+            rotation=180,
+            origin={-26,-44})));
+      Modelica.Blocks.Math.Feedback pm_fdbck annotation (Placement(
+            transformation(
+            extent={{-10,-10},{10,10}},
+            rotation=0,
+            origin={-66,-28})));
+      Modelica.Blocks.Interfaces.RealInput upm
+        annotation (Placement(transformation(extent={{-140,-80},{-100,-40}})));
+      Modelica.Blocks.Math.Feedback feedbackAVR annotation (Placement(
+            transformation(
+            extent={{-10,-10},{10,10}},
+            rotation=0,
+            origin={-64,6})));
+      Modelica.Blocks.Math.Gain gain_uAVR(k=-1) annotation (Placement(
+            transformation(
+            extent={{-10,-10},{10,10}},
+            rotation=180,
+            origin={-44,-80})));
+      Modelica.Blocks.Interfaces.RealInput uvsAVR annotation (Placement(
+            transformation(
+            extent={{-20,-20},{20,20}},
+            rotation=90,
+            origin={0,-120})));
+      parameter Real Kw=9.5 "Stabilizer gain (pu/pu)";
+      parameter Real Tw=1.41 "Wash-out time constant (s)";
+    equation
+      connect(machine.p, pwPin) annotation (Line(points={{74,0},{110,0}},
+                                 color={0,0,255}));
+      connect(avr.vf, machine.vf) annotation (Line(points={{-4.33333,16},{2,16},
+              {2,15},{8,15}},
+                       color={0,0,127}));
+      connect(machine.vf0, avr.vf0) annotation (Line(points={{20,33},{20,48},{
+              -26,48},{-26,34.3333}},  color={0,0,127}));
+      connect(feedbackPSS.y, pss.vSI)
+        annotation (Line(points={{-117,6},{-113,6}}, color={0,0,127}));
+      connect(machine.w, gain_uPSS.u) annotation (Line(points={{77,27},{94,27},
+              {94,70},{14,70}}, color={0,0,127}));
+      connect(pm_fdbck.y, machine.pm) annotation (Line(points={{-57,-28},{8,-28},
+              {8,-15}},      color={0,0,127}));
+      connect(pmInputGain.y, pm_fdbck.u2) annotation (Line(points={{-37,-44},{
+              -66,-44},{-66,-36}},            color={0,0,127}));
+      connect(upm, pm_fdbck.u1) annotation (Line(points={{-120,-60},{-88,-60},{
+              -88,-28},{-74,-28}}, color={0,0,127}));
+      connect(pmInputGain.u, machine.pm0) annotation (Line(points={{-14,-44},{
+              20,-44},{20,-33}},   color={0,0,127}));
+      connect(pss.vs, feedbackAVR.u1)
+        annotation (Line(points={{-91,6},{-72,6}}, color={0,0,127}));
+      connect(avr.vs, feedbackAVR.y)
+        annotation (Line(points={{-44.3333,6},{-55,6}}, color={0,0,127}));
+      connect(avr.v, machine.v) annotation (Line(points={{-44.3333,26},{-54,26},
+              {-54,54},{86,54},{86,9},{77,9}}, color={0,0,127}));
+      connect(gain_uPSS.y, feedbackPSS.u2) annotation (Line(points={{-9,70},{
+              -86,70},{-86,26},{-156,26},{-156,-18},{-126,-18},{-126,-2}},
+            color={0,0,127}));
+      connect(uPSS, feedbackPSS.u1) annotation (Line(points={{-120,60},{-96,60},
+              {-96,38},{-148,38},{-148,6},{-134,6}}, color={0,0,127}));
+      connect(gain_uAVR.y, feedbackAVR.u2) annotation (Line(points={{-55,-80},{
+              -80,-80},{-80,-8},{-64,-8},{-64,-2}}, color={0,0,127}));
+      connect(uvsAVR, gain_uAVR.u) annotation (Line(points={{0,-120},{0,-80},{-32,
+              -80}}, color={0,0,127}));
+      annotation (
+        Icon(coordinateSystem(preserveAspectRatio=false),
+                        graphics={Ellipse(
+              extent={{-100,100},{100,-100}},
+              lineColor={0,0,0},
+              fillColor={255,255,255},
+              fillPattern=FillPattern.Solid),Line(
+              points={{-48,2},{-20,56},{2,4},{24,-28},{48,22}},
+              color={0,0,0},
+              smooth=Smooth.Bezier),Text(
+              extent={{-52,-18},{56,-66}},
+              lineColor={0,0,0},
+              fillColor={255,255,255},
+              fillPattern=FillPattern.Solid,
+              textString="%name")}),
+        Diagram(coordinateSystem(preserveAspectRatio=false)),
+        Documentation(info="<html>
+<table cellspacing=\"1\" cellpadding=\"1\" border=\"1\">
+<tr>
+<td><p>Reference</p></td>
+<td><p>SMIB PSAT, d_kundur2.mdl, PSAT</p></td>
+</tr>
+<tr>
+<td><p>Last update</p></td>
+<td>February 2016</td>
+</tr>
+<tr>
+<td><p>Author</p></td>
+<td><p>Maxime Baudette, Ahsan Murad, SmarTS Lab, KTH Royal Institute of Technology</p></td>
+</tr>
+<tr>
+<td><p>Contact</p></td>
+<td><p><a href=\"mailto:luigiv@kth.se\">luigiv@kth.se</a></p></td>
+</tr>
+</table>
+</html>"),
+        __Dymola_Commands(file=
+              "MosScripts/nonlinear_simulation_line_removal_gen_output.mos"
+            "genoutput", file="MosScripts/genoutput.mos" "genoutput"));
+    end Generator_AVR_PSS_w3Inputs_propagate;
   annotation (Documentation(info="<html>
 <table cellspacing=\"1\" cellpadding=\"1\" border=\"1\">
 <tr>

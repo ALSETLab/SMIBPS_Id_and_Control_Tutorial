@@ -1153,6 +1153,134 @@ AVR+PSS
 
 ")}));
       end OutputsInterfaceBusVoltagesBranchPowers;
+
+      model SMIB_AVR_PSS_wInput_wLineRmoval_propagate
+        extends BaseModelsPartial.BaseNetwork.SMIB_Partial(powerFlow_Data(
+            redeclare record Bus = PF_Data.Bus_Data.PF_Bus_10,
+            redeclare record Loads = PF_Data.Loads_Data.PF_Loads_10,
+            redeclare record Trafos = PF_Data.Trafos_Data.PF_Trafos_10,
+            redeclare record Machines = PF_Data.Machines_Data.PF_Machines_10),
+          line_1(X=3.25),
+          line_2(t1=Modelica.Constants.inf),
+          fault(t1=Modelica.Constants.inf, t2=Modelica.Constants.inf));
+        extends
+          SMIBPS_IdControl.Analysis.LinearAnalysis.Interfaces.OutputsInterface;
+        import Modelica.Constants.pi;
+        BaseModelsPartial.BasePlants.Generator_AVR_PSS_w3Inputs_propagate
+                                                               G1(
+          V_0=powerFlow_Data.bus.V1,
+          P_0=powerFlow_Data.machines.PG1,
+          Q_0=powerFlow_Data.machines.QG1,
+          angle_0=powerFlow_Data.bus.A1,
+          Kw=Kw,
+          Tw=Tw)
+          annotation (Placement(transformation(extent={{-120,-8},{-100,12}})));
+        Modelica.Blocks.Interfaces.RealInput uPSS
+          annotation (Placement(transformation(extent={{-180,100},{-140,140}}),
+              iconTransformation(extent={{-180,100},{-140,140}})));
+        Modelica.Blocks.Interfaces.RealInput uPm
+          annotation (Placement(transformation(extent={{-180,20},{-140,60}})));
+        Modelica.Blocks.Interfaces.RealInput uPload annotation (Placement(
+              transformation(extent={{-180,-60},{-140,-20}}),
+              iconTransformation(extent={{-180,-60},{-140,-20}})));
+
+        OpenIPSL.Electrical.Branches.PwLine line_4(
+          R=0,
+          G=0,
+          B=0,
+          X=3.25/5.5,
+          t1=t1,
+          t2=t2,
+          opening=opening)
+                 annotation (Placement(transformation(extent={{22,2},{40,14}})));
+        parameter Modelica.SIunits.Time t1=Modelica.Constants.inf "Time of line removal"
+          annotation (Dialog(group="Line Removal Parameters"));
+        parameter Modelica.SIunits.Time t2=Modelica.Constants.inf
+          "Line re-insertion time"     annotation (Dialog(group="Line Removal Parameters"));
+        parameter Integer opening=1
+          "Type of opening (1: removes both ends at same time, 2: removes sending end, 3: removes receiving end)"     annotation (Dialog(group="Line Removal Parameters"));
+        parameter Real Kw=9.5 "Stabilizer gain (pu/pu)";
+        parameter Real Tw=1.41 "Wash-out time constant (s)";
+        Modelica.Blocks.Interfaces.RealInput uvs annotation (Placement(
+              transformation(extent={{-178,-140},{-138,-100}})));
+      protected
+        parameter Real S_b=SysData.S_b;
+      equation
+        w = G1.machine.w;
+        delta = G1.machine.delta;
+        Vt = G1.machine.v;
+        P = G1.machine.P;
+        Q = G1.machine.Q;
+        connect(load_ExtInput.u, uPload) annotation (Line(points={{17.14,-66.7},
+                {-22,-66.7},{-22,-66},{-60,-66},{-60,-40},{-160,-40}},
+                                                     color={0,0,127}));
+        connect(G1.uPSS, uPSS) annotation (Line(points={{-122,8},{-128,8},{-128,
+                120},{-160,120}},
+                      color={0,0,127}));
+        connect(G1.pwPin, B1.p)
+          annotation (Line(points={{-99,2},{-90,2},{-90,0},{-80,0}},
+                                                     color={0,0,255}));
+        connect(line_4.n, line_1.n)
+          annotation (Line(points={{39.1,8},{39.1,20}}, color={0,0,255}));
+        connect(line_4.p, line_1.p)
+          annotation (Line(points={{22.9,8},{22.9,20}}, color={0,0,255}));
+        connect(G1.upm, uPm) annotation (Line(points={{-122,-4},{-136,-4},{-136,
+                40},{-160,40}}, color={0,0,127}));
+        connect(G1.uvsAVR, uvs) annotation (Line(points={{-110,-10},{-110,-120},
+                {-158,-120}}, color={0,0,127}));
+        annotation (
+          Diagram(coordinateSystem(extent={{-140,-140},{140,140}}), graphics={
+                Rectangle(
+                extent={{12,28},{50,0}},
+                lineColor={238,46,47},
+                fillColor={244,125,35},
+                fillPattern=FillPattern.None,
+                lineThickness=1)}),
+          Icon(coordinateSystem(extent={{-140,-140},{140,140}}), graphics={
+              Rectangle(extent={{-140,140},{140,-140}}, lineColor={28,108,200}),
+              Text(
+                extent={{-140,60},{140,-80}},
+                lineColor={28,108,200},
+                fillColor={255,255,255},
+                fillPattern=FillPattern.Solid,
+                textString="Nonlinear
+Model
+AVR+PSS
+
+"),           Text(
+                extent={{-140,-80},{140,-220}},
+                lineColor={238,46,47},
+                fillColor={255,255,255},
+                fillPattern=FillPattern.Solid,
+                textString="%name
+")}),     experiment(
+            StopTime=20,
+            Interval=0.0001,
+            Tolerance=1e-06,
+            __Dymola_fixedstepsize=0.0001,
+            __Dymola_Algorithm="Dassl"),
+          __Dymola_experimentSetupOutput,
+          Documentation(info="<html>
+<table cellspacing=\"1\" cellpadding=\"1\" border=\"1\">
+<tr>
+<td><p>Reference</p></td>
+<td><p>SMIB PSAT, d_kundur2.mdl, PSAT</p></td>
+</tr>
+<tr>
+<td><p>Last update</p></td>
+<td>February 2016</td>
+</tr>
+<tr>
+<td><p>Author</p></td>
+<td><p>Maxime Baudette, Ahsan Murad, SmarTS Lab, KTH Royal Institute of Technology</p></td>
+</tr>
+<tr>
+<td><p>Contact</p></td>
+<td><p><a href=\"mailto:luigiv@kth.se\">luigiv@kth.se</a></p></td>
+</tr>
+</table>
+</html>"));
+      end SMIB_AVR_PSS_wInput_wLineRmoval_propagate;
     end Interfaces;
 
     package Linearization
@@ -3327,6 +3455,421 @@ They have to be rearranged based on the order provided by the linearization func
 <p>This function linearizes the model at two different times, initialization and at a user provided time.</p>
 </html>"));
         end LinearizeAndCompare;
+
+        model NonlinModel_for_Linearization_propagate
+          extends Modelica.Icons.Example;
+          Modelica.Blocks.Interfaces.RealOutput Vt
+            annotation (Placement(transformation(extent={{100,70},{120,90}}),
+                iconTransformation(extent={{100,70},{120,90}})));
+        public
+          Modelica.Blocks.Interfaces.RealOutput Q
+            annotation (Placement(transformation(extent={{100,-10},{120,10}}),
+                iconTransformation(extent={{100,-10},{120,10}})));
+          Modelica.Blocks.Interfaces.RealOutput P
+            annotation (Placement(transformation(extent={{100,30},{120,50}}),
+                iconTransformation(extent={{100,30},{120,50}})));
+          Modelica.Blocks.Interfaces.RealOutput w
+            annotation (Placement(transformation(extent={{100,-50},{120,-30}}),
+                iconTransformation(extent={{100,-50},{120,-30}})));
+          Modelica.Blocks.Interfaces.RealOutput delta
+            annotation (Placement(transformation(extent={{100,-90},{120,-70}}),
+                iconTransformation(extent={{100,-90},{120,-70}})));
+          Modelica.Blocks.Interfaces.RealInput uPSS
+            annotation (Placement(transformation(extent={{-140,60},{-100,100}})));
+          Modelica.Blocks.Interfaces.RealInput uPm
+            annotation (Placement(transformation(extent={{-140,0},{-100,40}})));
+          Modelica.Blocks.Interfaces.RealInput uPload annotation (Placement(
+                transformation(extent={{-140,-40},{-100,0}})));
+          Interfaces.SMIB_AVR_PSS_wInput_wLineRmoval_propagate
+            sMIB_AVR_PSS_wInput_wLineRmoval_propagate(
+                                            t1=0.5)
+            annotation (Placement(transformation(extent={{-40,-40},{40,40}})));
+
+          Modelica.Blocks.Interfaces.RealInput uvsAVR annotation (Placement(
+                transformation(extent={{-140,-100},{-100,-60}})));
+        equation
+          connect(sMIB_AVR_PSS_wInput_wLineRmoval_propagate.Vt, Vt) annotation (Line(
+                points={{42.8571,22.8571},{72.4286,22.8571},{72.4286,80},{110,
+                  80}},
+                color={0,0,127}));
+          connect(sMIB_AVR_PSS_wInput_wLineRmoval_propagate.P, P) annotation (Line(
+                points={{42.8571,11.4286},{86,11.4286},{86,40},{110,40}}, color={0,0,127}));
+          connect(Q, sMIB_AVR_PSS_wInput_wLineRmoval_propagate.Q) annotation (Line(
+                points={{110,0},{76,0},{76,0},{42.8571,0}}, color={0,0,127}));
+          connect(w, sMIB_AVR_PSS_wInput_wLineRmoval_propagate.w) annotation (Line(
+                points={{110,-40},{84,-40},{84,-11.4286},{42.8571,-11.4286}}, color={0,0,
+                  127}));
+          connect(delta, sMIB_AVR_PSS_wInput_wLineRmoval_propagate.delta) annotation (
+              Line(points={{110,-80},{68,-80},{68,-22.8571},{42.8571,-22.8571}}, color={
+                  0,0,127}));
+          connect(sMIB_AVR_PSS_wInput_wLineRmoval_propagate.uvs, uvsAVR)
+            annotation (Line(points={{-45.1429,-34.2857},{-77.5714,-34.2857},{
+                  -77.5714,-80},{-120,-80}}, color={0,0,127}));
+          connect(sMIB_AVR_PSS_wInput_wLineRmoval_propagate.uPload, uPload)
+            annotation (Line(points={{-45.7143,-11.4286},{-78.8572,-11.4286},{
+                  -78.8572,-20},{-120,-20}}, color={0,0,127}));
+          connect(sMIB_AVR_PSS_wInput_wLineRmoval_propagate.uPm, uPm)
+            annotation (Line(points={{-45.7143,11.4286},{-77.8572,11.4286},{
+                  -77.8572,20},{-120,20}}, color={0,0,127}));
+          connect(sMIB_AVR_PSS_wInput_wLineRmoval_propagate.uPSS, uPSS)
+            annotation (Line(points={{-45.7143,34.2857},{-76.8572,34.2857},{
+                  -76.8572,80},{-120,80}}, color={0,0,127}));
+          annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
+                coordinateSystem(preserveAspectRatio=false)));
+        end NonlinModel_for_Linearization_propagate;
+
+        model NonlinModel_for_NonlinExperiment_propagate
+          extends Modelica.Icons.Example;
+          Modelica.Blocks.Interfaces.RealOutput Vt
+            annotation (Placement(transformation(extent={{100,70},{120,90}}),
+                iconTransformation(extent={{100,70},{120,90}})));
+        public
+          Modelica.Blocks.Interfaces.RealOutput Q
+            annotation (Placement(transformation(extent={{100,-10},{120,10}}),
+                iconTransformation(extent={{100,-10},{120,10}})));
+          Modelica.Blocks.Interfaces.RealOutput P
+            annotation (Placement(transformation(extent={{100,30},{120,50}}),
+                iconTransformation(extent={{100,30},{120,50}})));
+          Modelica.Blocks.Interfaces.RealOutput w
+            annotation (Placement(transformation(extent={{100,-50},{120,-30}}),
+                iconTransformation(extent={{100,-50},{120,-30}})));
+          Modelica.Blocks.Interfaces.RealOutput delta
+            annotation (Placement(transformation(extent={{100,-90},{120,-70}}),
+                iconTransformation(extent={{100,-90},{120,-70}})));
+          Modelica.Blocks.Sources.Constant PSSchange(k=0)
+            annotation (Placement(transformation(extent={{-100,36},{-80,56}})));
+          Modelica.Blocks.Sources.Constant Pmchange(k=0)
+            annotation (Placement(transformation(extent={{-100,6},{-80,26}})));
+          Modelica.Blocks.Sources.Step     Ploadchange(
+            height=0.1,
+            offset=0,
+            startTime=30.5)                                 annotation (Placement(
+                transformation(extent={{-100,-26},{-80,-6}})));
+          Interfaces.SMIB_AVR_PSS_wInput_wLineRmoval_propagate
+            sMIB_AVR_PSS_wInput_wLineRmoval_propagate(
+                                            t1=0.5)
+            annotation (Placement(transformation(extent={{-40,-40},{40,40}})));
+          Modelica.Blocks.Sources.Constant AVRchange(k=0)
+            annotation (Placement(transformation(extent={{-100,-64},{-80,-44}})));
+        equation
+          connect(sMIB_AVR_PSS_wInput_wLineRmoval_propagate.uPSS, PSSchange.y)
+            annotation (Line(points={{-45.7143,34.2857},{-62.8572,34.2857},{
+                  -62.8572,46},{-79,46}},
+                             color={0,0,127}));
+          connect(sMIB_AVR_PSS_wInput_wLineRmoval_propagate.uPm, Pmchange.y)
+            annotation (Line(points={{-45.7143,11.4286},{-62,11.4286},{-62,16},
+                  {-79,16}},                                color={0,0,127}));
+          connect(sMIB_AVR_PSS_wInput_wLineRmoval_propagate.uPload, Ploadchange.y)
+            annotation (Line(points={{-45.7143,-11.4286},{-62.8572,-11.4286},{
+                  -62.8572,-16},{-79,-16}},
+                              color={0,0,127}));
+          connect(sMIB_AVR_PSS_wInput_wLineRmoval_propagate.Vt, Vt) annotation (Line(
+                points={{42.8571,22.8571},{72.4286,22.8571},{72.4286,80},{110,
+                  80}},
+                color={0,0,127}));
+          connect(sMIB_AVR_PSS_wInput_wLineRmoval_propagate.P, P) annotation (Line(
+                points={{42.8571,11.4286},{73.4286,11.4286},{73.4286,40},{110,
+                  40}},
+                color={0,0,127}));
+          connect(sMIB_AVR_PSS_wInput_wLineRmoval_propagate.Q, Q)
+            annotation (Line(points={{42.8571,0},{110,0}}, color={0,0,127}));
+          connect(sMIB_AVR_PSS_wInput_wLineRmoval_propagate.w, w) annotation (Line(
+                points={{42.8571,-11.4286},{73.4286,-11.4286},{73.4286,-40},{
+                  110,-40}},
+                color={0,0,127}));
+          connect(sMIB_AVR_PSS_wInput_wLineRmoval_propagate.delta, delta) annotation (
+              Line(points={{42.8571,-22.8571},{72.4286,-22.8571},{72.4286,-80},
+                  {110,-80}},
+                color={0,0,127}));
+          connect(AVRchange.y, sMIB_AVR_PSS_wInput_wLineRmoval_propagate.uvs)
+            annotation (Line(points={{-79,-54},{-64,-54},{-64,-34.2857},{
+                  -45.1429,-34.2857}}, color={0,0,127}));
+          annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
+                coordinateSystem(preserveAspectRatio=false)),
+            experiment(
+              StopTime=40,
+              __Dymola_NumberOfIntervals=10000,
+              Tolerance=1e-06,
+              __Dymola_fixedstepsize=0.01,
+              __Dymola_Algorithm="Dassl"));
+        end NonlinModel_for_NonlinExperiment_propagate;
+
+        model LinearModelGeneral_propagate
+          "Simulate the linearized SMIB model obtained by running the function LinearizeSMIB."
+          extends SMIBPS_IdControl.Utilities.Icons.FunctionDependentExample;
+          extends
+            SMIBPS_IdControl.Analysis.LinearAnalysis.Interfaces.OutputsInterface;
+          // The following definitions are very important to couple the linear model
+          // to the linearization of the nonlinear model and the simulation
+          parameter Real[:] y0=vector(DataFiles.readMATmatrix("MyData.mat", "y0_beforedist")) annotation (Evaluate=false);
+          // The following has to be imported in order to be able to interpret and manipulate the StateSpace types
+          import Modelica_LinearSystems2.StateSpace;
+          parameter StateSpace ss=StateSpace.Import.fromFile("MyData.mat", "ABCD");
+          parameter Integer ny=size(ss.C, 1);
+          inner Modelica_LinearSystems2.Controller.SampleClock sampleClock
+            annotation (Placement(transformation(extent={{60,60},{80,80}})));
+          Modelica.Blocks.Routing.Multiplex4 multiplex4_2(n1=1, n2=1)
+            annotation (Placement(transformation(extent={{-76,-10},{-56,10}})));
+          Modelica.Blocks.Routing.DeMultiplex5 demultiplex2_2
+            annotation (Placement(transformation(extent={{60,-20},{100,20}})));
+          Modelica.Blocks.Math.Add addy[ny]
+            annotation (Placement(transformation(extent={{6,-16},{26,4}})));
+          Modelica.Blocks.Sources.Constant Pmchange(k=0)
+            annotation (Placement(transformation(extent={{-122,-10},{-102,10}})));
+          Modelica.Blocks.Sources.Constant y0_initial[ny](k=y0)      annotation (
+              Placement(transformation(
+                extent={{-10,-10},{10,10}},
+                rotation=90,
+                origin={0,-32})));
+          Modelica_LinearSystems2.Controller.StateSpace stateSpace(system=ss)
+            annotation (Placement(transformation(extent={{-40,-10},{-20,10}})));
+          Modelica.Blocks.Sources.Constant PSSchange(k=0)
+            annotation (Placement(transformation(extent={{-120,20},{-100,40}})));
+          Modelica.Blocks.Sources.Step     Ploadchange(
+            height=0.1,
+            offset=0,
+            startTime=30.5)                                 annotation (Placement(
+                transformation(extent={{-122,-40},{-102,-20}})));
+          Modelica.Blocks.Sources.Constant AVRchange(k=0) annotation (Placement(
+                transformation(extent={{-120,-70},{-100,-50}})));
+        equation
+          connect(demultiplex2_2.y1[1], Vt) annotation (Line(points={{102,16},{
+                  108,16},{108,80},{150,80}},
+                                 color={0,0,127}));
+          connect(demultiplex2_2.y4[1], w) annotation (Line(points={{102,-8},{
+                  110,-8},{110,-40},{150,-40}},
+                                   color={0,0,127}));
+          connect(demultiplex2_2.y5[1], delta) annotation (Line(points={{102,-16},
+                  {108,-16},{108,-80},{150,-80}},
+                                        color={0,0,127}));
+          connect(addy.y, demultiplex2_2.u)
+            annotation (Line(points={{27,-6},{28,-6},{28,0},{56,0}}, color={0,0,127}));
+          connect(Pmchange.y,multiplex4_2. u2[1]) annotation (Line(points={{-101,0},
+                  {-92,0},{-92,3},{-78,3}},color={0,0,127}));
+          connect(demultiplex2_2.y3[1], P) annotation (Line(points={{102,0},{
+                  122,0},{122,40},{150,40}},
+                                 color={0,0,127}));
+          connect(Q, demultiplex2_2.y2[1]) annotation (Line(points={{150,0},{
+                  126,0},{126,8},{102,8}},
+                               color={0,0,127}));
+          connect(y0_initial.y, addy.u2)
+            annotation (Line(points={{0,-21},{0,-12},{4,-12}}, color={0,0,127}));
+          connect(multiplex4_2.y, stateSpace.u)
+            annotation (Line(points={{-55,0},{-42,0}}, color={0,0,127}));
+          connect(stateSpace.y, addy.u1)
+            annotation (Line(points={{-19,0},{4,0}}, color={0,0,127}));
+          connect(PSSchange.y,multiplex4_2. u1[1]) annotation (Line(points={{-99,30},
+                  {-92,30},{-92,9},{-78,9}},         color={0,0,127}));
+          connect(Ploadchange.y,multiplex4_2. u3[1]) annotation (Line(points={{-101,
+                  -30},{-94,-30},{-94,-3},{-78,-3}},     color={0,0,127}));
+          connect(AVRchange.y, multiplex4_2.u4[1]) annotation (Line(points={{
+                  -99,-60},{-90,-60},{-90,-9},{-78,-9}}, color={0,0,127}));
+          annotation (
+            Icon(coordinateSystem(preserveAspectRatio=false)),
+            Diagram(coordinateSystem(preserveAspectRatio=false), graphics={
+                Text(
+                  extent={{-58,24},{-44,4}},
+                  lineColor={238,46,47},
+                  fillPattern=FillPattern.VerticalCylinder,
+                  fillColor={255,0,0},
+                  textString="du",
+                  fontSize=24),
+                Text(
+                  extent={{-12,20},{-2,4}},
+                  lineColor={238,46,47},
+                  fillPattern=FillPattern.VerticalCylinder,
+                  fillColor={255,0,0},
+                  textString="dy",
+                  fontSize=24),
+                Text(
+                  extent={{-38,-18},{-22,-38}},
+                  lineColor={238,46,47},
+                  fillPattern=FillPattern.VerticalCylinder,
+                  fillColor={255,0,0},
+                  textString="y0",
+                  fontSize=24),
+                Text(
+                  extent={{40,20},{50,4}},
+                  lineColor={238,46,47},
+                  fillPattern=FillPattern.VerticalCylinder,
+                  fillColor={255,0,0},
+                  fontSize=24,
+                  textString="y"),
+                Text(
+                  extent={{-80,80},{0,60}},
+                  lineColor={85,170,255},
+                  fillPattern=FillPattern.HorizontalCylinder,
+                  fillColor={28,108,200},
+                  horizontalAlignment=TextAlignment.Left,
+                  textString="Note: the addy[] and y0_initial[] blocks 
+are defined with ny, where ny is 
+an integer of the size of the output matrix. 
+This is visible in the Text layer only."),
+                Text(
+                  extent={{-80,-80},{80,-100}},
+                  lineColor={85,170,255},
+                  fillPattern=FillPattern.HorizontalCylinder,
+                  fillColor={28,108,200},
+                  horizontalAlignment=TextAlignment.Left,
+                  textString="Notice the change in the order of the outputs w.r.t. the nonlinear model.
+They have to be rearranged based on the order provided by the linearization function."),
+                Line(
+                  points={{66,-86},{106,-84},{120,-4}},
+                  color={0,0,255},
+                  thickness=0.5,
+                  arrow={Arrow.None,Arrow.Filled},
+                  smooth=Smooth.Bezier),
+                Line(
+                  points={{-4,68},{24,48},{18,18}},
+                  color={0,0,255},
+                  thickness=0.5,
+                  arrow={Arrow.None,Arrow.Filled},
+                  smooth=Smooth.Bezier)}),
+            experiment(
+              StopTime=15,
+              __Dymola_NumberOfIntervals=1000,
+              __Dymola_Algorithm="Dassl"),
+            Documentation(info="<html>
+<p>DO NOT try to run this model on it&apos;s own! </p>
+<p>Models with this icon will not simulate on their own, instead they work together with a function that populates certain parameters in the model and perform other operations.</p>
+<p><br>See the associated function to run:<span style=\"color: #1c6cc8;\"> <span style=\"font-family: Courier New; font-size: 8pt;\">LinearizeSMIBGeneral </span>within <span style=\"font-family: Courier New; font-size: 8pt; color: #1c6cc8;\">SMIB_PSControl.Analysis.LinearAnalysis.BasicLinearization.LinearizeSMIBGeneral()</span></p>
+</html>"));
+        end LinearModelGeneral_propagate;
+
+        function LinearizeAndCompare_propagate
+          "Linearizes the model at initialization and after a disturbance at a given time"
+          // See the Documentation for an explanation of the goals.
+          // IMPORTING FUNCTIONS
+          // Import things needed for the calculations
+          import Modelica_LinearSystems2.StateSpace; // to create and manipulate state space objects
+          // OUTPUTS OF THEFUNCTION - FOR DISPLAY
+          // Declare outputs to display
+          output Real A[:,:] "A-matrix";
+          output Real B[:,:] "B-matrix";
+          output Real C[:,:] "C-matrix";
+          output Real D[:,:] "D-matrix";
+          output String inputNames[:] "Modelica names of inputs";
+          output String outputNames[:] "Modelica names of outputs";
+          output String stateNames[:] "Modelica names of states";
+          output Real y0out[:] "Initial value of the output variables";
+          // INPUTS TO THE FUNCTION
+          // Declare reconfigurable simulation parameters
+          input Modelica.SIunits.Time tlin = 30.5 "t for model linearization";
+          input Modelica.SIunits.Time tsim = 40 "Simulation time";
+          input Real numberOfIntervalsin=10000 "No. of intervals";
+          // Use this for Case A
+          //input String method = "Rkfix4" "Solver";
+          input String methodin = "DASSL" "Solver";
+          input Real fixedstepsizein= 1e-6 "Time step - needed only for fixed time step solvers";
+          //
+          // DEFINING THE NONLINEAR PLANT, NONLINEAR EXPERIMENT, AND LINEAR EXPERIMENT MODELS
+          //
+          // 1) NONLINEAR PLANT:
+          // This is the model that will be linearized, i.e. the nonlinear plant model
+           input String pathToNonlinearPlantModel = "SMIBPS_IdControl.Analysis.LinearAnalysis.LinearizeAfterDisturbance.LinAfterDisturbance.NonlinModel_for_Linearization_propagate" "Nonlinear plant model";
+          //
+          //
+          // 2) NONLINEAR EXPERIMENT: this is a model which applies a change to the input of the nonlinear model.
+          // It must match the nonlinar plant above.
+          // This model will be simulated, and the simulation results will be compared to the simulation of the corresponding linearized model.
+          input String pathToNonlinearExperiment= "SMIBPS_IdControl.Analysis.LinearAnalysis.LinearizeAfterDisturbance.LinAfterDisturbance.NonlinModel_for_NonlinExperiment_propagate" "Nonlinear experiment model";
+          //
+          //
+          // 3) LINEAR EXPERIMENT: this is a template that can be used for all three cases, so it is not necessary to create other cases here
+          input String pathToLinearExperiment = "SMIBPS_IdControl.Analysis.LinearAnalysis.LinearizeAfterDisturbance.LinAfterDisturbance.LinearModelGeneral_propagate";
+
+        algorithm
+          // Compute and display the ABCD matrices, etc
+          (A,B,C,D,inputNames,outputNames,stateNames) :=
+            Modelica_LinearSystems2.Utilities.Import.linearize(
+            pathToNonlinearPlantModel,tlin);
+          // LINEARIZE plant model at t_lin
+          // This is the same as above, however, it stores it in a StateSpace object
+          ss := Modelica_LinearSystems2.ModelAnalysis.Linearize(
+            pathToNonlinearPlantModel, simulationSetup=
+            Modelica_LinearSystems2.Records.SimulationOptionsForLinearization(
+            linearizeAtInitial=false, t_linearize=tlin));
+          // PRINT linear system
+          Modelica.Utilities.Streams.print(String(ss));
+          // SAVE the data in a mat file
+          DataFiles.writeMATmatrix(
+            "MyData.mat",
+            "ABCD",
+            [ss.A, ss.B; ss.C, ss.D],
+            append=false);
+          nx := size(ss.A, 1);
+          DataFiles.writeMATmatrix(
+            "MyData.mat",
+            "nx",
+            [nx],
+            append=true);
+          Modelica.Utilities.Streams.print("Simulating nonlinear model");
+          simulateModel(
+            pathToNonlinearExperiment,
+            stopTime=tsim,
+            numberOfIntervals=numberOfIntervalsin, method = methodin, fixedstepsize=fixedstepsizein,
+            resultFile="res_nl");
+        //    ny := size(ss.C, 1);
+        //    y0 := DymolaCommands.Trajectories.readTrajectory(
+        //      "res_nl.mat",
+        //      {ss.yNames[i] for i in 1:ny},
+        //      DymolaCommands.Trajectories.readTrajectorySize("res_nl.mat"));
+        //
+        //    DataFiles.writeMATmatrix(
+        //      "MyData.mat",
+        //      "y0",
+        //      [y0[1:ny,1]],
+        //      append=true);
+
+           // NOTE!!!
+           // here we simulate the model again until 30.5, before the model undergoes the
+           // disturbance to extract the correct values of the y outout
+           simulateModel(
+             pathToNonlinearExperiment,
+             stopTime=tlin,
+             numberOfIntervals=numberOfIntervalsin, method = methodin, fixedstepsize=fixedstepsizein,
+             resultFile="res_nl_beforedist");
+            ny := size(ss.C, 1);
+            ylen :=DymolaCommands.Trajectories.readTrajectorySize("res_nl_beforedist.mat");
+            y0 := DymolaCommands.Trajectories.readTrajectory(
+              "res_nl_beforedist.mat",
+              {ss.yNames[i] for i in 1:ny},
+              DymolaCommands.Trajectories.readTrajectorySize("res_nl_beforedist.mat"));
+            DataFiles.writeMATmatrix(
+              "MyData.mat",
+              "y0_beforedist",
+              [y0[1:ny,ylen-100]],
+              append=true);
+
+          // Print y0's first values which is needed for the linear response model
+          y0out := y0[1:ny,ylen]; // we only want the elements at ylen
+          Modelica.Utilities.Streams.print("y0 before disturbance =");
+          Modelica.Math.Vectors.toString(y0out);
+          //
+          // We now simulate the linear model, which requires y0
+          Modelica.Utilities.Streams.print("Simulating linear model");
+          simulateModel(
+            pathToLinearExperiment,
+            stopTime=tsim,
+            numberOfIntervals=numberOfIntervalsin, method = methodin, fixedstepsize=fixedstepsizein,
+            resultFile="res_lin");
+            // Plot
+        removePlots(true);
+        createPlot(id=1, position={-2, 1, 584, 782}, y={"Vt"}, range={0.0, 20.0, 0.998, 1.002}, grid=true, filename="res_nl.mat", colors={{28,108,200}}, displayUnits={"1"});
+        createPlot(id=1, position={-2, 1, 584, 782}, y={"Q"}, range={0.0, 20.0, 0.18, 0.21}, grid=true, subPlot=102, colors={{28,108,200}}, displayUnits={"1"});
+        createPlot(id=1, position={-2, 1, 584, 782}, y={"P"}, range={0.0, 20.0, 0.86, 0.94}, grid=true, subPlot=103, colors={{28,108,200}}, displayUnits={"1"});
+        createPlot(id=1, position={-2, 1, 584, 782}, y={"w"}, range={0.0, 20.0, 0.9996, 1.0004}, grid=true, subPlot=104, colors={{28,108,200}}, displayUnits={"1"});
+        createPlot(id=1, position={-2, 1, 584, 782}, y={"delta"}, range={0.0, 20.0, 1.27, 1.3}, grid=true, subPlot=105, colors={{28,108,200}}, displayUnits={"rad"});
+        createPlot(id=1, position={-2, 1, 584, 782}, y={"Vt"}, range={0.0, 20.0, 0.998, 1.002}, erase=false, grid=true, filename="res_lin.mat", colors={{238,46,47}});
+        createPlot(id=1, position={-2, 1, 584, 782}, y={"Q"}, range={0.0, 20.0, 0.18, 0.21}, erase=false, grid=true, subPlot=102, colors={{238,46,47}});
+        createPlot(id=1, position={-2, 1, 584, 782}, y={"P"}, range={0.0, 20.0, 0.86, 0.94}, erase=false, grid=true, subPlot=103, colors={{238,46,47}});
+        createPlot(id=1, position={-2, 1, 584, 782}, y={"w"}, range={0.0, 20.0, 0.9996, 1.0004}, erase=false, grid=true, subPlot=104, colors={{238,46,47}});
+        createPlot(id=1, position={-2, 1, 584, 782}, y={"delta"}, range={0.0, 20.0, 1.27, 1.3}, erase=false, grid=true, subPlot=105, colors={{238,46,47}});
+
+          annotation(__Dymola_interactive=true, Documentation(info="<html>
+<p>This function linearizes the model at two different times, initialization and at a user provided time.</p>
+</html>"));
+        end LinearizeAndCompare_propagate;
       end LinAfterDisturbance;
     end LinearizeAfterDisturbance;
 
@@ -4464,80 +5007,82 @@ They have to be rearranged based on the order provided by the linearization func
                 origin={70,-146})));
         equation
           connect(sMIB_AVR_PSS_wInput_wLineRmovaland4inputs.uPSS, uPSS)
-            annotation (Line(points={{-44.2105,42.8571},{-69.5714,42.8571},{
+            annotation (Line(points={{-44.2105,47.3684},{-69.5714,47.3684},{
                   -69.5714,60},{-120,60}}, color={0,0,127}));
           connect(sMIB_AVR_PSS_wInput_wLineRmovaland4inputs.uPm, uPm)
-            annotation (Line(points={{-44.2105,20},{-84,20},{-84,0},{-120,0}},
+            annotation (Line(points={{-44.2105,30.5263},{-84,30.5263},{-84,0},{
+                  -120,0}},
                 color={0,0,127}));
           connect(sMIB_AVR_PSS_wInput_wLineRmovaland4inputs.uPload, uPload)
-            annotation (Line(points={{-44.2105,2.85714},{-67.1428,2.85714},{
+            annotation (Line(points={{-44.2105,17.8947},{-67.1428,17.8947},{
                   -67.1428,-40},{-120,-40}}, color={0,0,127}));
           connect(sMIB_AVR_PSS_wInput_wLineRmovaland4inputs.Vt, Vt) annotation (
-             Line(points={{42.1053,42.8571},{73.0714,42.8571},{73.0714,80},{110,
+             Line(points={{42.1053,47.3684},{73.0714,47.3684},{73.0714,80},{110,
                   80}}, color={0,0,127}));
           connect(sMIB_AVR_PSS_wInput_wLineRmovaland4inputs.P, P) annotation (
-              Line(points={{42.1053,31.4286},{72.0714,31.4286},{72.0714,40},{
+              Line(points={{42.1053,38.9474},{72.0714,38.9474},{72.0714,40},{
                   110,40}}, color={0,0,127}));
           connect(sMIB_AVR_PSS_wInput_wLineRmovaland4inputs.Q, Q) annotation (
-              Line(points={{42.1053,20},{92,20},{92,0},{110,0}}, color={0,0,127}));
+              Line(points={{42.1053,30.5263},{92,30.5263},{92,0},{110,0}},
+                                                                 color={0,0,127}));
           connect(sMIB_AVR_PSS_wInput_wLineRmovaland4inputs.w, w) annotation (
-              Line(points={{42.1053,8.57143},{88,8.57143},{88,-40},{110,-40}},
+              Line(points={{42.1053,22.1053},{88,22.1053},{88,-40},{110,-40}},
                 color={0,0,127}));
           connect(uvsAVR, sMIB_AVR_PSS_wInput_wLineRmovaland4inputs.uvsAVR)
-            annotation (Line(points={{-120,-80},{-60,-80},{-60,-14.2857},{
-                  -44.2105,-14.2857}}, color={0,0,127}));
+            annotation (Line(points={{-120,-80},{-60,-80},{-60,5.26316},{
+                  -44.2105,5.26316}},  color={0,0,127}));
           connect(Vs.y, BusVm) annotation (Line(points={{-36,-78.8},{-36,-110}},
                 color={0,0,127}));
           connect(sMIB_AVR_PSS_wInput_wLineRmovaland4inputs.delta, delta)
-            annotation (Line(points={{42.1053,-2.85714},{84,-2.85714},{84,-80},
-                  {110,-80}}, color={0,0,127}));
+            annotation (Line(points={{42.1053,13.6842},{84,13.6842},{84,-80},{
+                  110,-80}},  color={0,0,127}));
           connect(sMIB_AVR_PSS_wInput_wLineRmovaland4inputs.Bvm4, Vs.u4[1])
-            annotation (Line(points={{-25.2632,-22.8571},{-25.2632,-51.4286},{
+            annotation (Line(points={{-25.2632,-1.05263},{-25.2632,-51.4286},{
                   -43.2,-51.4286},{-43.2,-60.4}}, color={0,0,127}));
           connect(sMIB_AVR_PSS_wInput_wLineRmovaland4inputs.Bvm3, Vs.u3[1])
-            annotation (Line(points={{-29.4737,-22.8571},{-29.4737,-51.4286},{
+            annotation (Line(points={{-29.4737,-1.05263},{-29.4737,-51.4286},{
                   -38.4,-51.4286},{-38.4,-60.4}}, color={0,0,127}));
           connect(sMIB_AVR_PSS_wInput_wLineRmovaland4inputs.Bvm2, Vs.u2[1])
-            annotation (Line(points={{-33.6842,-22.8571},{-33.6842,-51.4286},{
+            annotation (Line(points={{-33.6842,-1.05263},{-33.6842,-51.4286},{
                   -33.6,-51.4286},{-33.6,-60.4}}, color={0,0,127}));
           connect(sMIB_AVR_PSS_wInput_wLineRmovaland4inputs.Bvm1, Vs.u1[1])
-            annotation (Line(points={{-37.8947,-22.8571},{-37.8947,-51.4286},{
+            annotation (Line(points={{-37.8947,-1.05263},{-37.8947,-51.4286},{
                   -28.8,-51.4286},{-28.8,-60.4}}, color={0,0,127}));
           connect(sMIB_AVR_PSS_wInput_wLineRmovaland4inputs.Bva1, As.u1[1])
-            annotation (Line(points={{-21.0526,-22.8571},{-21.0526,-50},{-4.8,
+            annotation (Line(points={{-21.0526,-1.05263},{-21.0526,-50},{-4.8,
                   -50},{-4.8,-58.4}}, color={0,0,127}));
           connect(sMIB_AVR_PSS_wInput_wLineRmovaland4inputs.Bva2, As.u2[1])
-            annotation (Line(points={{-16.8421,-22.8571},{-16.8421,-48},{-9.6,
+            annotation (Line(points={{-16.8421,-1.05263},{-16.8421,-48},{-9.6,
                   -48},{-9.6,-58.4}}, color={0,0,127}));
           connect(sMIB_AVR_PSS_wInput_wLineRmovaland4inputs.Bva3, As.u3[1])
-            annotation (Line(points={{-12.6316,-22.8571},{-12.6316,-52},{-14.4,
+            annotation (Line(points={{-12.6316,-1.05263},{-12.6316,-52},{-14.4,
                   -52},{-14.4,-58.4}}, color={0,0,127}));
           connect(sMIB_AVR_PSS_wInput_wLineRmovaland4inputs.Bva4, As.u4[1])
-            annotation (Line(points={{-8.42105,-22.8571},{-8.42105,-52},{-19.2,
+            annotation (Line(points={{-8.42105,-1.05263},{-8.42105,-52},{-19.2,
                   -52},{-19.2,-58.4}}, color={0,0,127}));
           connect(sMIB_AVR_PSS_wInput_wLineRmovaland4inputs.Pline1, Ps.u1[1])
-            annotation (Line(points={{-4.21053,-22.8571},{-4.21053,-50},{19.2,
+            annotation (Line(points={{-4.21053,-1.05263},{-4.21053,-50},{19.2,
                   -50},{19.2,-58.4}}, color={0,0,127}));
           connect(sMIB_AVR_PSS_wInput_wLineRmovaland4inputs.Pline2, Ps.u2[1])
-            annotation (Line(points={{-1.77636e-15,-22.8571},{-1.77636e-15,-52},
+            annotation (Line(points={{-1.77636e-15,-1.05263},{-1.77636e-15,-52},
                   {14.4,-52},{14.4,-58.4}}, color={0,0,127}));
           connect(sMIB_AVR_PSS_wInput_wLineRmovaland4inputs.Pline3, Ps.u3[1])
-            annotation (Line(points={{4.21053,-22.8571},{4.21053,-54},{9.6,-54},
+            annotation (Line(points={{4.21053,-1.05263},{4.21053,-54},{9.6,-54},
                   {9.6,-58.4}}, color={0,0,127}));
           connect(sMIB_AVR_PSS_wInput_wLineRmovaland4inputs.Pline4, Ps.u4[1])
-            annotation (Line(points={{8.42105,-22.8571},{8.42105,-52},{4.8,-52},
+            annotation (Line(points={{8.42105,-1.05263},{8.42105,-52},{4.8,-52},
                   {4.8,-58.4}}, color={0,0,127}));
           connect(sMIB_AVR_PSS_wInput_wLineRmovaland4inputs.Qline1, Qs.u1[1])
-            annotation (Line(points={{12.6316,-22.8571},{12.6316,-50},{43.2,-50},
+            annotation (Line(points={{12.6316,-1.05263},{12.6316,-50},{43.2,-50},
                   {43.2,-58.4}}, color={0,0,127}));
           connect(sMIB_AVR_PSS_wInput_wLineRmovaland4inputs.Qline2, Qs.u2[1])
-            annotation (Line(points={{16.8421,-22.8571},{16.8421,-52},{38.4,-52},
+            annotation (Line(points={{16.8421,-1.05263},{16.8421,-52},{38.4,-52},
                   {38.4,-58.4}}, color={0,0,127}));
           connect(sMIB_AVR_PSS_wInput_wLineRmovaland4inputs.Qline3, Qs.u3[1])
-            annotation (Line(points={{21.0526,-22.8571},{21.0526,-48},{33.6,-48},
+            annotation (Line(points={{21.0526,-1.05263},{21.0526,-48},{33.6,-48},
                   {33.6,-58.4}}, color={0,0,127}));
           connect(sMIB_AVR_PSS_wInput_wLineRmovaland4inputs.Qline4, Qs.u4[1])
-            annotation (Line(points={{25.2632,-22.8571},{25.2632,-52},{28.8,-52},
+            annotation (Line(points={{25.2632,-1.05263},{25.2632,-52},{28.8,-52},
                   {28.8,-58.4}}, color={0,0,127}));
           connect(As.y, BusAn) annotation (Line(points={{-12,-76.8},{-12,-110}},
                 color={0,0,127}));
@@ -4548,13 +5093,13 @@ They have to be rearranged based on the order provided by the linearization func
           connect(Adiffs.y, BAnDiffs1toN) annotation (Line(points={{62,-81},{62,
                   -146},{70,-146}}, color={0,0,127}));
           connect(sMIB_AVR_PSS_wInput_wLineRmovaland4inputs.Bvadiff1to2, Adiffs.u1
-            [1]) annotation (Line(points={{29.4737,-22.8571},{29.4737,-34},{69,
+            [1]) annotation (Line(points={{29.4737,-1.05263},{29.4737,-34},{69,
                   -34},{69,-58}}, color={0,0,127}));
           connect(sMIB_AVR_PSS_wInput_wLineRmovaland4inputs.Bvadiff1to3, Adiffs.u2
-            [1]) annotation (Line(points={{33.6842,-22.8571},{62,-22.8571},{62,
+            [1]) annotation (Line(points={{33.6842,-1.05263},{62,-1.05263},{62,
                   -58}}, color={0,0,127}));
           connect(sMIB_AVR_PSS_wInput_wLineRmovaland4inputs.Bvadiff1to4, Adiffs.u3
-            [1]) annotation (Line(points={{37.8947,-22.8571},{37.8947,-52},{55,
+            [1]) annotation (Line(points={{37.8947,-1.05263},{37.8947,-52},{55,
                   -52},{55,-58}}, color={0,0,127}));
           annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
                 coordinateSystem(preserveAspectRatio=false, extent={{-100,-160},
@@ -4646,82 +5191,107 @@ They have to be rearranged based on the order provided by the linearization func
                 origin={70,-276})));
         equation
           connect(PSSchange.y, sMIB_AVR_PSS_wInput_wLineRmovaland4inputs.uPSS)
-            annotation (Line(points={{-79,30},{-52,30},{-52,4},{-21.4737,4}},
+            annotation (Line(points={{-79,30},{-52,30},{-52,5.57895},{-21.4737,
+                  5.57895}},
                 color={0,0,127}));
           connect(Pmchange.y, sMIB_AVR_PSS_wInput_wLineRmovaland4inputs.uPm)
-            annotation (Line(points={{-79,0},{-50,0},{-50,-4},{-21.4737,-4}},
+            annotation (Line(points={{-79,0},{-50,0},{-50,-0.315789},{-21.4737,
+                  -0.315789}},
                 color={0,0,127}));
           connect(Ploadchange.y, sMIB_AVR_PSS_wInput_wLineRmovaland4inputs.uPload)
-            annotation (Line(points={{-79,-30},{-50,-30},{-50,-10},{-21.4737,
-                  -10}}, color={0,0,127}));
+            annotation (Line(points={{-79,-30},{-50,-30},{-50,-4.73684},{
+                  -21.4737,-4.73684}},
+                         color={0,0,127}));
           connect(sMIB_AVR_PSS_wInput_wLineRmovaland4inputs.Vt, Vt) annotation (
-             Line(points={{8.73684,4},{55.5,4},{55.5,79},{108,79}}, color={0,0,
+             Line(points={{8.73684,5.57895},{55.5,5.57895},{55.5,79},{108,79}},
+                                                                    color={0,0,
                   127}));
           connect(sMIB_AVR_PSS_wInput_wLineRmovaland4inputs.P, P) annotation (
-              Line(points={{8.73684,0},{55.5,0},{55.5,41},{108,41}}, color={0,0,
+              Line(points={{8.73684,2.63158},{55.5,2.63158},{55.5,41},{108,41}},
+                                                                     color={0,0,
                   127}));
           connect(sMIB_AVR_PSS_wInput_wLineRmovaland4inputs.Q, Q) annotation (
-              Line(points={{8.73684,-4},{55.5,-4},{55.5,1},{108,1}}, color={0,0,
+              Line(points={{8.73684,-0.315789},{55.5,-0.315789},{55.5,1},{108,1}},
+                                                                     color={0,0,
                   127}));
           connect(sMIB_AVR_PSS_wInput_wLineRmovaland4inputs.w, w) annotation (
-              Line(points={{8.73684,-8},{54.5,-8},{54.5,-39},{108,-39}}, color=
+              Line(points={{8.73684,-3.26316},{54.5,-3.26316},{54.5,-39},{108,
+                  -39}},                                                 color=
                   {0,0,127}));
           connect(sMIB_AVR_PSS_wInput_wLineRmovaland4inputs.delta, delta)
-            annotation (Line(points={{8.73684,-12},{56.5,-12},{56.5,-81},{108,
-                  -81}}, color={0,0,127}));
+            annotation (Line(points={{8.73684,-6.21053},{56.5,-6.21053},{56.5,
+                  -81},{108,-81}},
+                         color={0,0,127}));
           connect(sMIB_AVR_PSS_wInput_wLineRmovaland4inputs.uvsAVR,
-            AVRvs_change.y) annotation (Line(points={{-21.4737,-16},{-40,-16},{
-                  -40,-70},{-79,-70}}, color={0,0,127}));
+            AVRvs_change.y) annotation (Line(points={{-21.4737,-9.15789},{-40,
+                  -9.15789},{-40,-70},{-79,-70}},
+                                       color={0,0,127}));
           connect(Vs.y, BusVm) annotation (Line(points={{-50,-240.8},{-50,-272}},
                 color={0,0,127}));
           connect(sMIB_AVR_PSS_wInput_wLineRmovaland4inputs.Bvm4, Vs.u4[1])
-            annotation (Line(points={{-14.8421,-19},{-14.8421,-187.429},{-57.2,
-                  -187.429},{-57.2,-222.4}}, color={0,0,127}));
+            annotation (Line(points={{-14.8421,-11.3684},{-14.8421,-187.429},{
+                  -57.2,-187.429},{-57.2,-222.4}},
+                                             color={0,0,127}));
           connect(sMIB_AVR_PSS_wInput_wLineRmovaland4inputs.Bvm3, Vs.u3[1])
-            annotation (Line(points={{-16.3158,-19},{-16.3158,-187.429},{-52.4,
-                  -187.429},{-52.4,-222.4}}, color={0,0,127}));
+            annotation (Line(points={{-16.3158,-11.3684},{-16.3158,-187.429},{
+                  -52.4,-187.429},{-52.4,-222.4}},
+                                             color={0,0,127}));
           connect(sMIB_AVR_PSS_wInput_wLineRmovaland4inputs.Bvm2, Vs.u2[1])
-            annotation (Line(points={{-17.7895,-19},{-17.7895,-187.429},{-47.6,
-                  -187.429},{-47.6,-222.4}}, color={0,0,127}));
+            annotation (Line(points={{-17.7895,-11.3684},{-17.7895,-187.429},{
+                  -47.6,-187.429},{-47.6,-222.4}},
+                                             color={0,0,127}));
           connect(sMIB_AVR_PSS_wInput_wLineRmovaland4inputs.Bvm1, Vs.u1[1])
-            annotation (Line(points={{-19.2632,-19},{-19.2632,-187.429},{-42.8,
-                  -187.429},{-42.8,-222.4}}, color={0,0,127}));
+            annotation (Line(points={{-19.2632,-11.3684},{-19.2632,-187.429},{
+                  -42.8,-187.429},{-42.8,-222.4}},
+                                             color={0,0,127}));
           connect(sMIB_AVR_PSS_wInput_wLineRmovaland4inputs.Bva1, As.u1[1])
-            annotation (Line(points={{-13.3684,-19},{-13.3684,-186},{-18.8,-186},
-                  {-18.8,-220.4}}, color={0,0,127}));
+            annotation (Line(points={{-13.3684,-11.3684},{-13.3684,-186},{-18.8,
+                  -186},{-18.8,-220.4}},
+                                   color={0,0,127}));
           connect(sMIB_AVR_PSS_wInput_wLineRmovaland4inputs.Bva2, As.u2[1])
-            annotation (Line(points={{-11.8947,-19},{-11.8947,-184},{-23.6,-184},
-                  {-23.6,-220.4}}, color={0,0,127}));
+            annotation (Line(points={{-11.8947,-11.3684},{-11.8947,-184},{-23.6,
+                  -184},{-23.6,-220.4}},
+                                   color={0,0,127}));
           connect(sMIB_AVR_PSS_wInput_wLineRmovaland4inputs.Bva3, As.u3[1])
-            annotation (Line(points={{-10.4211,-19},{-10.4211,-188},{-28.4,-188},
-                  {-28.4,-220.4}}, color={0,0,127}));
+            annotation (Line(points={{-10.4211,-11.3684},{-10.4211,-188},{-28.4,
+                  -188},{-28.4,-220.4}},
+                                   color={0,0,127}));
           connect(sMIB_AVR_PSS_wInput_wLineRmovaland4inputs.Bva4, As.u4[1])
-            annotation (Line(points={{-8.94737,-19},{-8.94737,-188},{-33.2,-188},
-                  {-33.2,-220.4}}, color={0,0,127}));
+            annotation (Line(points={{-8.94737,-11.3684},{-8.94737,-188},{-33.2,
+                  -188},{-33.2,-220.4}},
+                                   color={0,0,127}));
           connect(sMIB_AVR_PSS_wInput_wLineRmovaland4inputs.Pline1, Ps.u1[1])
-            annotation (Line(points={{-7.47368,-19},{-7.47368,-186},{5.2,-186},
-                  {5.2,-220.4}}, color={0,0,127}));
+            annotation (Line(points={{-7.47368,-11.3684},{-7.47368,-186},{5.2,
+                  -186},{5.2,-220.4}},
+                                 color={0,0,127}));
           connect(sMIB_AVR_PSS_wInput_wLineRmovaland4inputs.Pline2, Ps.u2[1])
-            annotation (Line(points={{-6,-19},{-6,-188},{0.4,-188},{0.4,-220.4}},
+            annotation (Line(points={{-6,-11.3684},{-6,-188},{0.4,-188},{0.4,
+                  -220.4}},
                 color={0,0,127}));
           connect(sMIB_AVR_PSS_wInput_wLineRmovaland4inputs.Pline3, Ps.u3[1])
-            annotation (Line(points={{-4.52632,-19},{-4.52632,-190},{-4.4,-190},
-                  {-4.4,-220.4}}, color={0,0,127}));
+            annotation (Line(points={{-4.52632,-11.3684},{-4.52632,-190},{-4.4,
+                  -190},{-4.4,-220.4}},
+                                  color={0,0,127}));
           connect(sMIB_AVR_PSS_wInput_wLineRmovaland4inputs.Pline4, Ps.u4[1])
-            annotation (Line(points={{-3.05263,-19},{-3.05263,-188},{-9.2,-188},
-                  {-9.2,-220.4}}, color={0,0,127}));
+            annotation (Line(points={{-3.05263,-11.3684},{-3.05263,-188},{-9.2,
+                  -188},{-9.2,-220.4}},
+                                  color={0,0,127}));
           connect(sMIB_AVR_PSS_wInput_wLineRmovaland4inputs.Qline1, Qs.u1[1])
-            annotation (Line(points={{-1.57895,-19},{-1.57895,-186},{29.2,-186},
-                  {29.2,-220.4}}, color={0,0,127}));
+            annotation (Line(points={{-1.57895,-11.3684},{-1.57895,-186},{29.2,
+                  -186},{29.2,-220.4}},
+                                  color={0,0,127}));
           connect(sMIB_AVR_PSS_wInput_wLineRmovaland4inputs.Qline2, Qs.u2[1])
-            annotation (Line(points={{-0.105263,-19},{-0.105263,-188},{24.4,
-                  -188},{24.4,-220.4}}, color={0,0,127}));
+            annotation (Line(points={{-0.105263,-11.3684},{-0.105263,-188},{
+                  24.4,-188},{24.4,-220.4}},
+                                        color={0,0,127}));
           connect(sMIB_AVR_PSS_wInput_wLineRmovaland4inputs.Qline3, Qs.u3[1])
-            annotation (Line(points={{1.36842,-19},{1.36842,-184},{19.6,-184},{
-                  19.6,-220.4}}, color={0,0,127}));
+            annotation (Line(points={{1.36842,-11.3684},{1.36842,-184},{19.6,
+                  -184},{19.6,-220.4}},
+                                 color={0,0,127}));
           connect(sMIB_AVR_PSS_wInput_wLineRmovaland4inputs.Qline4, Qs.u4[1])
-            annotation (Line(points={{2.84211,-19},{2.84211,-188},{14.8,-188},{
-                  14.8,-220.4}}, color={0,0,127}));
+            annotation (Line(points={{2.84211,-11.3684},{2.84211,-188},{14.8,
+                  -188},{14.8,-220.4}},
+                                 color={0,0,127}));
           connect(As.y, BusAn) annotation (Line(points={{-26,-238.8},{-26,-272}},
                 color={0,0,127}));
           connect(Ps.y, Plines)
@@ -4731,14 +5301,17 @@ They have to be rearranged based on the order provided by the linearization func
           connect(Adiffs.y, BAnDiffs1toN) annotation (Line(points={{48,-243},{
                   48,-276},{70,-276}}, color={0,0,127}));
           connect(sMIB_AVR_PSS_wInput_wLineRmovaland4inputs.Bvadiff1to2, Adiffs.u1
-            [1]) annotation (Line(points={{4.31579,-19},{4.31579,-170},{55,-170},
-                  {55,-220}}, color={0,0,127}));
+            [1]) annotation (Line(points={{4.31579,-11.3684},{4.31579,-170},{55,
+                  -170},{55,-220}},
+                              color={0,0,127}));
           connect(sMIB_AVR_PSS_wInput_wLineRmovaland4inputs.Bvadiff1to3, Adiffs.u2
-            [1]) annotation (Line(points={{5.78947,-19},{2,-19},{2,-220},{48,
-                  -220}}, color={0,0,127}));
+            [1]) annotation (Line(points={{5.78947,-11.3684},{2,-11.3684},{2,
+                  -220},{48,-220}},
+                          color={0,0,127}));
           connect(sMIB_AVR_PSS_wInput_wLineRmovaland4inputs.Bvadiff1to4, Adiffs.u3
-            [1]) annotation (Line(points={{7.26316,-19},{7.26316,-188},{41,-188},
-                  {41,-220}}, color={0,0,127}));
+            [1]) annotation (Line(points={{7.26316,-11.3684},{7.26316,-188},{41,
+                  -188},{41,-220}},
+                              color={0,0,127}));
           annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
                 coordinateSystem(preserveAspectRatio=false, extent={{-100,-300},
                     {100,100}})),
