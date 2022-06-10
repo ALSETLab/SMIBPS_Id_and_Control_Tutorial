@@ -1,0 +1,35 @@
+﻿// Simple script to vary parameters of PSS, linearize and simulate model
+// LV, 2022/6/8
+// Display time/date
+
+(ms, sec, min, hour, mon, year) = Modelica.Utilities.System.getTime();
+mytime = String(hour)+":"+String(min)+":"+String(sec);
+Modelica.Utilities.Streams.print("Script has started at: "+mytime);
+
+// Nonlinear simulations
+// Load models check and translate
+nonlinear_experiment_model = "SMIBPS_IdControl.Analysis.LinearAnalysis.LinearizeAfterDisturbance.LinAfterDisturbance.NonlinModel_for_NonlinExperiment_propagate";
+checkModel(nonlinear_experiment_model)
+translateModel(nonlinear_experiment_model)
+
+// First set of parameters , original parameters, Kw = 9.5 and Tw = 1.41
+simulateModel(nonlinear_experiment_model, stopTime=40, numberOfIntervals=10000, outputInterval =0.1, method = "Dassl", 
+                                          tolerance=1e-06,fixedstepsize=0.01, resultFile="nonlin_Kw9p5");
+
+// Second set of paramters
+sMIB_AVR_PSS_wInput_wLineRmoval_propagate.Kw = 12.7759;
+sMIB_AVR_PSS_wInput_wLineRmoval_propagate.Tw = 0.4766;
+simulateModel(nonlinear_experiment_model, stopTime=40, numberOfIntervals=10000, outputInterval =0.1, method = "Dassl", 
+                                          tolerance=1e-06,fixedstepsize=0.01, resultFile="nonlin_Kw12p7759");
+
+
+// Third set of parameters
+sMIB_AVR_PSS_wInput_wLineRmoval_propagate.Kw = 20.16;
+sMIB_AVR_PSS_wInput_wLineRmoval_propagate.Kw = 0.48;
+simulateModel(nonlinear_experiment_model, stopTime=40, numberOfIntervals=10000, outputInterval =0.1, method = "Dassl", 
+                                          tolerance=1e-06,fixedstepsize=0.01, resultFile="nonlin_Kw12p7759");
+
+
+// Linearizations
+plant_forlin_model = "SMIBPS_IdControl.Analysis.LinearAnalysis.LinearizeAfterDisturbance.LinAfterDisturbance.NonlinModel_for_Linearization_propagate";
+checkModel(plant_forlin_model)

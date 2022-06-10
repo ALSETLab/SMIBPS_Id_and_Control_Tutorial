@@ -445,8 +445,9 @@ package BaseModelsPartial "Partial Models - Cannot be simulated!"
       connect(machine.vf0, avr.vf0) annotation (Line(points={{20,33},{-6,33},{
               -6,44},{-32,44},{-32,34.3333}},
                                        color={0,0,127}));
-      connect(machine.w, pss.vSI) annotation (Line(points={{77,27},{77,-54},{-98,
-              -54},{-98,8},{-85,8}}, color={0,0,127}));
+      connect(machine.w, pss.vSI) annotation (Line(points={{77,27},{78,27},{78,
+              28},{90,28},{90,-56},{-98,-56},{-98,8},{-85,8}},
+                                     color={0,0,127}));
       annotation (
         Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,
                 100}}), graphics={Ellipse(
@@ -946,9 +947,9 @@ package BaseModelsPartial "Partial Models - Cannot be simulated!"
       OpenIPSL.Interfaces.PwPin pwPin annotation (Placement(transformation(extent={
                 {100,-10},{120,10}}), iconTransformation(extent={{100,-10},{120,10}})));
       OpenIPSL.Electrical.Controls.PSAT.AVR.AVRtypeIII avr(
-        vfmax=7,
-        vfmin=-6.40,
-        K0=200,
+        vfmax=vfmax,
+        vfmin=vfmin,
+        K0=K0,
         T2=1,
         T1=1,
         Te=0.0001,
@@ -958,10 +959,11 @@ package BaseModelsPartial "Partial Models - Cannot be simulated!"
         vsmin=-0.2,
         Kw=Kw,
         Tw=Tw,
-        T1=0,
-        T2=0,
-        T3=0,
-        T4=0) annotation (Placement(transformation(extent={{-112,-4},{-92,16}})));
+        T1=T1,
+        T2=T2,
+        T3=T3,
+        T4=T4)
+              annotation (Placement(transformation(extent={{-112,-4},{-92,16}})));
       Modelica.Blocks.Interfaces.RealInput uPSS annotation (Placement(
             transformation(extent={{-140,40},{-100,80}}), iconTransformation(
               extent={{-140,40},{-100,80}})));
@@ -1002,8 +1004,15 @@ package BaseModelsPartial "Partial Models - Cannot be simulated!"
             extent={{-20,-20},{20,20}},
             rotation=90,
             origin={0,-120})));
-      parameter Real Kw=9.5 "Stabilizer gain (pu/pu)";
-      parameter Real Tw=1.41 "Wash-out time constant (s)";
+      parameter Real Kw=9.5 "Stabilizer gain (pu/pu)" annotation (Dialog(group="PSS"));
+      parameter Real Tw=1.41 "Wash-out time constant (s)" annotation (Dialog(group="PSS"));
+      parameter Real T1=0 "First stabilizer time constant (s)" annotation (Dialog(group="PSS"));
+      parameter Real T2=0 "Second stabilizer time constant (s)" annotation (Dialog(group="PSS"));
+      parameter Real T3=0 "Third stabilizer time constant (s)" annotation (Dialog(group="PSS"));
+      parameter Real T4=0 "Fourth stabilizer time constant (s)" annotation (Dialog(group="PSS"));
+      parameter Real vfmax=7.0 "max lim." annotation (Dialog(group="AVR"));
+      parameter Real vfmin=-6.40 "min lim." annotation (Dialog(group="AVR"));
+      parameter Real K0=200 "regulator gain" annotation (Dialog(group="AVR"));
     equation
       connect(machine.p, pwPin) annotation (Line(points={{74,0},{110,0}},
                                  color={0,0,255}));
