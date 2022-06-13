@@ -953,7 +953,7 @@ package BaseModelsPartial "Partial Models - Cannot be simulated!"
         T2=1,
         T1=1,
         Te=0.0001,
-        Tr=0.015) annotation (Placement(transformation(extent={{-46,-4},{-6,36}})));
+        Tr=0.015) annotation (Placement(transformation(extent={{-52,-4},{-12,36}})));
       OpenIPSL.Electrical.Controls.PSAT.PSS.PSSTypeII pss(
         vsmax=0.2,
         vsmin=-0.2,
@@ -963,15 +963,15 @@ package BaseModelsPartial "Partial Models - Cannot be simulated!"
         T2=T2,
         T3=T3,
         T4=T4)
-              annotation (Placement(transformation(extent={{-112,-4},{-92,16}})));
+              annotation (Placement(transformation(extent={{-114,-4},{-94,16}})));
       Modelica.Blocks.Interfaces.RealInput uPSS annotation (Placement(
-            transformation(extent={{-140,40},{-100,80}}), iconTransformation(
-              extent={{-140,40},{-100,80}})));
+            transformation(extent={{-200,-14},{-160,26}}),iconTransformation(
+              extent={{-200,-14},{-160,26}})));
       Modelica.Blocks.Math.Feedback feedbackPSS annotation (Placement(
             transformation(
             extent={{-10,-10},{10,10}},
             rotation=0,
-            origin={-126,6})));
+            origin={-130,6})));
       Modelica.Blocks.Math.Gain gain_uPSS(k=-1) annotation (Placement(
             transformation(
             extent={{-10,-10},{10,10}},
@@ -988,12 +988,13 @@ package BaseModelsPartial "Partial Models - Cannot be simulated!"
             rotation=0,
             origin={-66,-28})));
       Modelica.Blocks.Interfaces.RealInput upm
-        annotation (Placement(transformation(extent={{-140,-80},{-100,-40}})));
+        annotation (Placement(transformation(extent={{-190,-48},{-150,-8}}),
+            iconTransformation(extent={{-190,-48},{-150,-8}})));
       Modelica.Blocks.Math.Feedback feedbackAVR annotation (Placement(
             transformation(
             extent={{-10,-10},{10,10}},
             rotation=0,
-            origin={-64,6})));
+            origin={-80,6})));
       Modelica.Blocks.Math.Gain gain_uAVR(k=-1) annotation (Placement(
             transformation(
             extent={{-10,-10},{10,10}},
@@ -1013,43 +1014,57 @@ package BaseModelsPartial "Partial Models - Cannot be simulated!"
       parameter Real vfmax=7.0 "max lim." annotation (Dialog(group="AVR"));
       parameter Real vfmin=-6.40 "min lim." annotation (Dialog(group="AVR"));
       parameter Real K0=200 "regulator gain" annotation (Dialog(group="AVR"));
+      Modelica.Blocks.Interfaces.RealOutput AVRout
+        annotation (Placement(transformation(extent={{100,-90},{120,-70}})));
+      Modelica.Blocks.Interfaces.RealOutput AVRin
+        annotation (Placement(transformation(extent={{100,70},{120,90}})));
     equation
       connect(machine.p, pwPin) annotation (Line(points={{74,0},{110,0}},
                                  color={0,0,255}));
-      connect(avr.vf, machine.vf) annotation (Line(points={{-4.33333,16},{2,16},
+      connect(avr.vf, machine.vf) annotation (Line(points={{-10.3333,16},{2,16},
               {2,15},{8,15}},
                        color={0,0,127}));
       connect(machine.vf0, avr.vf0) annotation (Line(points={{20,33},{20,48},{
-              -26,48},{-26,34.3333}},  color={0,0,127}));
+              -32,48},{-32,34.3333}},  color={0,0,127}));
       connect(feedbackPSS.y, pss.vSI)
-        annotation (Line(points={{-117,6},{-113,6}}, color={0,0,127}));
+        annotation (Line(points={{-121,6},{-115,6}}, color={0,0,127}));
       connect(machine.w, gain_uPSS.u) annotation (Line(points={{77,27},{94,27},
               {94,70},{14,70}}, color={0,0,127}));
       connect(pm_fdbck.y, machine.pm) annotation (Line(points={{-57,-28},{8,-28},
               {8,-15}},      color={0,0,127}));
       connect(pmInputGain.y, pm_fdbck.u2) annotation (Line(points={{-37,-44},{
               -66,-44},{-66,-36}},            color={0,0,127}));
-      connect(upm, pm_fdbck.u1) annotation (Line(points={{-120,-60},{-88,-60},{
-              -88,-28},{-74,-28}}, color={0,0,127}));
+      connect(upm, pm_fdbck.u1) annotation (Line(points={{-170,-28},{-74,-28}},
+                                   color={0,0,127}));
       connect(pmInputGain.u, machine.pm0) annotation (Line(points={{-14,-44},{
               20,-44},{20,-33}},   color={0,0,127}));
       connect(pss.vs, feedbackAVR.u1)
-        annotation (Line(points={{-91,6},{-72,6}}, color={0,0,127}));
+        annotation (Line(points={{-93,6},{-88,6}}, color={0,0,127}));
       connect(avr.vs, feedbackAVR.y)
-        annotation (Line(points={{-44.3333,6},{-55,6}}, color={0,0,127}));
-      connect(avr.v, machine.v) annotation (Line(points={{-44.3333,26},{-54,26},
-              {-54,54},{86,54},{86,9},{77,9}}, color={0,0,127}));
+        annotation (Line(points={{-50.3333,6},{-71,6}}, color={0,0,127}));
+      connect(avr.v, machine.v) annotation (Line(points={{-50.3333,26},{-60,26},
+              {-60,54},{86,54},{86,9},{77,9}}, color={0,0,127}));
       connect(gain_uPSS.y, feedbackPSS.u2) annotation (Line(points={{-9,70},{
-              -86,70},{-86,26},{-156,26},{-156,-18},{-126,-18},{-126,-2}},
+              -86,70},{-86,26},{-156,26},{-156,-18},{-130,-18},{-130,-2}},
             color={0,0,127}));
-      connect(uPSS, feedbackPSS.u1) annotation (Line(points={{-120,60},{-96,60},
-              {-96,38},{-148,38},{-148,6},{-134,6}}, color={0,0,127}));
+      connect(uPSS, feedbackPSS.u1) annotation (Line(points={{-180,6},{-138,6}},
+                                                     color={0,0,127}));
       connect(gain_uAVR.y, feedbackAVR.u2) annotation (Line(points={{-55,-80},{
-              -80,-80},{-80,-8},{-64,-8},{-64,-2}}, color={0,0,127}));
-      connect(uvsAVR, gain_uAVR.u) annotation (Line(points={{0,-120},{0,-80},{-32,
-              -80}}, color={0,0,127}));
+              -80,-80},{-80,-2}},                   color={0,0,127}));
+      connect(uvsAVR, gain_uAVR.u) annotation (Line(points={{0,-120},{0,-100},{
+              -20,-100},{-20,-78},{-26,-78},{-26,-80},{-32,-80}},
+                     color={0,0,127}));
+      connect(AVRout, machine.vf) annotation (Line(
+          points={{110,-80},{-6,-80},{-6,16},{2,16},{2,15},{8,15}},
+          color={0,140,72},
+          thickness=1));
+      connect(AVRin, feedbackAVR.y) annotation (Line(
+          points={{110,80},{58,80},{58,90},{-68,90},{-68,6},{-71,6}},
+          color={217,67,180},
+          thickness=1));
       annotation (
-        Icon(coordinateSystem(preserveAspectRatio=false),
+        Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{
+                100,100}}),
                         graphics={Ellipse(
               extent={{-100,100},{100,-100}},
               lineColor={0,0,0},
@@ -1063,7 +1078,8 @@ package BaseModelsPartial "Partial Models - Cannot be simulated!"
               fillColor={255,255,255},
               fillPattern=FillPattern.Solid,
               textString="%name")}),
-        Diagram(coordinateSystem(preserveAspectRatio=false)),
+        Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-160,-100},
+                {100,100}})),
         Documentation(info="<html>
 <table cellspacing=\"1\" cellpadding=\"1\" border=\"1\">
 <tr>
