@@ -920,7 +920,7 @@ package BaseModelsPartial "Partial Models - Cannot be simulated!"
             "genoutput", file="MosScripts/genoutput.mos" "genoutput"));
     end Generator_AVR_PSS_wInputs_propagate;
 
-    model Generator_AVR_PSS_w3Inputs_propagate
+    model Generator_AVR_PSS_w3InputsMoreOutputs_propagate
       extends OpenIPSL.Electrical.Essentials.pfComponent;
       OpenIPSL.Electrical.Machines.PSAT.Order6 machine(
         Vn=400,
@@ -965,8 +965,8 @@ package BaseModelsPartial "Partial Models - Cannot be simulated!"
         T4=T4)
               annotation (Placement(transformation(extent={{-114,-4},{-94,16}})));
       Modelica.Blocks.Interfaces.RealInput uPSS annotation (Placement(
-            transformation(extent={{-200,-14},{-160,26}}),iconTransformation(
-              extent={{-200,-14},{-160,26}})));
+            transformation(extent={{-140,40},{-100,80}}), iconTransformation(
+              extent={{-140,40},{-100,80}})));
       Modelica.Blocks.Math.Feedback feedbackPSS annotation (Placement(
             transformation(
             extent={{-10,-10},{10,10}},
@@ -988,8 +988,8 @@ package BaseModelsPartial "Partial Models - Cannot be simulated!"
             rotation=0,
             origin={-66,-28})));
       Modelica.Blocks.Interfaces.RealInput upm
-        annotation (Placement(transformation(extent={{-190,-48},{-150,-8}}),
-            iconTransformation(extent={{-190,-48},{-150,-8}})));
+        annotation (Placement(transformation(extent={{-140,-80},{-100,-40}}),
+            iconTransformation(extent={{-140,-80},{-100,-40}})));
       Modelica.Blocks.Math.Feedback feedbackAVR annotation (Placement(
             transformation(
             extent={{-10,-10},{10,10}},
@@ -1034,8 +1034,8 @@ package BaseModelsPartial "Partial Models - Cannot be simulated!"
               {8,-15}},      color={0,0,127}));
       connect(pmInputGain.y, pm_fdbck.u2) annotation (Line(points={{-37,-44},{
               -66,-44},{-66,-36}},            color={0,0,127}));
-      connect(upm, pm_fdbck.u1) annotation (Line(points={{-170,-28},{-74,-28}},
-                                   color={0,0,127}));
+      connect(upm, pm_fdbck.u1) annotation (Line(points={{-120,-60},{-98,-60},{
+              -98,-28},{-74,-28}}, color={0,0,127}));
       connect(pmInputGain.u, machine.pm0) annotation (Line(points={{-14,-44},{
               20,-44},{20,-33}},   color={0,0,127}));
       connect(pss.vs, feedbackAVR.u1)
@@ -1047,8 +1047,8 @@ package BaseModelsPartial "Partial Models - Cannot be simulated!"
       connect(gain_uPSS.y, feedbackPSS.u2) annotation (Line(points={{-9,70},{
               -86,70},{-86,26},{-156,26},{-156,-18},{-130,-18},{-130,-2}},
             color={0,0,127}));
-      connect(uPSS, feedbackPSS.u1) annotation (Line(points={{-180,6},{-138,6}},
-                                                     color={0,0,127}));
+      connect(uPSS, feedbackPSS.u1) annotation (Line(points={{-120,60},{-160,60},
+              {-160,6},{-138,6}},                    color={0,0,127}));
       connect(gain_uAVR.y, feedbackAVR.u2) annotation (Line(points={{-55,-80},{
               -80,-80},{-80,-2}},                   color={0,0,127}));
       connect(uvsAVR, gain_uAVR.u) annotation (Line(points={{0,-120},{0,-100},{
@@ -1103,7 +1103,7 @@ package BaseModelsPartial "Partial Models - Cannot be simulated!"
         __Dymola_Commands(file=
               "MosScripts/nonlinear_simulation_line_removal_gen_output.mos"
             "genoutput", file="MosScripts/genoutput.mos" "genoutput"));
-    end Generator_AVR_PSS_w3Inputs_propagate;
+    end Generator_AVR_PSS_w3InputsMoreOutputs_propagate;
   annotation (Documentation(info="<html>
 <table cellspacing=\"1\" cellpadding=\"1\" border=\"1\">
 <tr>
@@ -1201,13 +1201,7 @@ package BaseModelsPartial "Partial Models - Cannot be simulated!"
         annotation (Line(points={{-80,0},{-67,0}}, color={0,0,255}));
       annotation (
         Diagram(coordinateSystem(extent={{-140,-100},{120,100}},
-              preserveAspectRatio=false), graphics={Text(
-              extent={{-110,80},{110,60}},
-              lineColor={0,0,0},
-              lineThickness=1,
-              fontSize=15,
-              textStyle={TextStyle.Bold},
-              textString="Single-machine infinite bus model*")}),
+              preserveAspectRatio=false)),
         Icon(coordinateSystem(extent={{-140,-100},{120,100}})),
         experiment(
           StopTime=10,
