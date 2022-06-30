@@ -161,11 +161,11 @@ def gridcal2rec(grid, pf, model_name, path_PF_data = None, pf_num = 1, export_pf
     for n_load, load in enumerate(grid.get_loads()):
 
         load_result.write("// Load: '{}'\n".format(str(load.name)))
-        load_result.write("PL{n_l} = {p_l},\n".format(n_l = n_load + 1, p_l = load.P))
+        load_result.write("PL{n_l} = {p_l},\n".format(n_l = n_load + 1, p_l = load.P*1000000))
         if n_load == len(grid.get_loads()) - 1:
-            load_result.write("QL{n_l} = {q_l}\n\n".format(n_l = n_load + 1, q_l = load.Q))
+            load_result.write("QL{n_l} = {q_l}\n\n".format(n_l = n_load + 1, q_l = load.Q*1000000))
         else:
-            load_result.write("QL{n_l} = {q_l},\n\n".format(n_l = n_load + 1, q_l = load.Q))
+            load_result.write("QL{n_l} = {q_l},\n\n".format(n_l = n_load + 1, q_l = load.Q*1000000))
 
     load_result.write(");\n")
     load_result.write("end PF_Loads_{};".format(pf_num))
@@ -197,7 +197,7 @@ def gridcal2rec(grid, pf, model_name, path_PF_data = None, pf_num = 1, export_pf
         bus_result.write("V{b_name} = {v_magn:.7f},\n".format(b_name = n_bus + 1, v_magn = bus_voltage_magnitude))
 
         # Writing bus voltage phasor angle in degrees
-        bus_voltage_angle = np.arctan(np.imag(pf.results.voltage[n_bus])/np.real(pf.results.voltage[n_bus]))*180/np.pi
+        bus_voltage_angle = np.arctan(np.imag(pf.results.voltage[n_bus])/np.real(pf.results.voltage[n_bus]))
         if n_bus == len(grid.buses) - 1:
             bus_result.write("A{b_name} = {v_angl:.7f}\n\n".format(b_name = n_bus + 1, v_angl = bus_voltage_angle))
         else:
@@ -361,12 +361,12 @@ def gridcal2rec(grid, pf, model_name, path_PF_data = None, pf_num = 1, export_pf
 
         machines_result.write("// MACHINE: '{}'\n".format(gen))
         machines_result.write("// Bus: {}'\n".format(gen_bus))
-        machines_result.write("PG{} = {:.7f},\n".format(n_gen + 1, P_machine))
+        machines_result.write("PG{} = {:.7f},\n".format(n_gen + 1, P_machine*1000000))
 
         if n_gen == len(gen_name) - 1:
-            machines_result.write("QG{} = {:.7f}\n\n".format(n_gen + 1, Q_machine))
+            machines_result.write("QG{} = {:.7f}\n\n".format(n_gen + 1, Q_machine*1000000))
         else:
-            machines_result.write("QG{} = {:.7f},\n\n".format(n_gen + 1, Q_machine))
+            machines_result.write("QG{} = {:.7f},\n\n".format(n_gen + 1, Q_machine*1000000))
 
     machines_result.write(");\n")
     machines_result.write("end PF_Machines_{};".format(pf_num))
